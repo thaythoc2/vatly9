@@ -1,6 +1,6 @@
 // =========================================================================
 // CẤU HÌNH GOOGLE SHEETS DUY NHẤT TẠI ĐÂY (Dán link Web App URL vào giữa dấu nháy)
-const GOOGLE_SHEET_URL = ''; 
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbzHHVpWBFOZdYUV7j-p3YjhiY1NAPBIVpVzBDB0aQuh3ByjI460FDPCQY8ub6qmvHbyuA/exec'; 
 // =========================================================================
 
 let currentMode = 'practice'; // 'practice' | 'exam'

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 11. Điện trở. Định luật Ohm - KHTN 9 THCS Ninh Hòa</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>body { font-family: 'Be Vietnam Pro', sans-serif; }</style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- Thanh điều hướng về Trang chủ -->
+  <header class="bg-blue-900 text-white shadow sticky top-0 z-30">
+    <div class="max-w-4xl mx-auto px-4 py-3.5 flex items-center justify-between gap-3">
+      <a href="index.html" class="bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 transition">
+        ← Trang chủ (17 bài)
+      </a>
+      <span id="lessonTopic" class="text-xs font-semibold bg-blue-700 px-3 py-1 rounded-full">Điện - Từ</span>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-6 flex-1 w-full">
+    <h1 id="lessonTitle" class="text-xl sm:text-2xl font-extrabold text-slate-900 mb-4">Bài 11. Điện trở. Định luật Ohm</h1>
+
+    <!-- Nhập nhanh tên lớp -->
+    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 mb-5 flex flex-wrap gap-2.5 items-center justify-between">
+      <div class="flex flex-wrap gap-2 flex-1">
+        <input id="stuName" type="text" placeholder="Họ và tên học sinh..." class="border border-slate-300 rounded-xl px-3 py-1.5 text-sm flex-1 min-w-[180px]">
+        <select id="stuClass" class="border border-slate-300 rounded-xl px-3 py-1.5 text-sm bg-white">
+          <option value="">-- Lớp --</option>
+          <option value="9/1">9/1</option><option value="9/2">9/2</option>
+          <option value="9/3">9/3</option><option value="9/4">9/4</option>
+          <option value="9/5">9/5</option><option value="9/6">9/6</option>
+          <option value="9/7">9/7</option><option value="9/8">9/8</option>
+        </select>
+      </div>
+      <div class="flex gap-2">
+        <button id="btnTabTheory" onclick="switchTab('theory')" class="px-4 py-2 rounded-xl font-bold text-sm bg-white text-slate-600 border border-slate-200">📖 Lý thuyết</button>
+        <button id="btnTabQuiz" onclick="switchTab('quiz')" class="px-4 py-2 rounded-xl font-bold text-sm bg-blue-700 text-white shadow">✍️ Luyện tập & Kiểm tra</button>
+      </div>
+    </div>
+
+    <!-- Tab 1: Tóm tắt lý thuyết -->
+    <section id="tabTheory" class="hidden bg-white rounded-2xl p-6 border border-slate-200 shadow-sm leading-relaxed space-y-3">
+      <div id="theoryContent"></div>
+      <div class="pt-4 border-t">
+        <button onclick="switchTab('quiz')" class="bg-blue-700 hover:bg-blue-800 text-white px-5 py-2.5 rounded-xl font-bold text-sm">
+          Chuyển sang làm bài tập →
+        </button>
+      </div>
+    </section>
+
+    <!-- Tab 2: Luyện tập & Kiểm tra -->
+    <section id="tabQuiz">
+      <div id="resultBanner" class="hidden bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-2xl p-5 mb-5 shadow-md">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <div class="text-xs uppercase font-bold opacity-90">Kết quả bài làm</div>
+            <div id="scoreDisplay" class="text-3xl font-extrabold mt-0.5">10 / 10 điểm</div>
+            <div id="detailDisplay" class="text-sm mt-1 opacity-95"></div>
+            <div id="syncStatus" class="text-xs mt-1.5 font-semibold bg-black/20 inline-block px-2.5 py-1 rounded-lg"></div>
+          </div>
+          <button onclick="startQuiz(currentMode)" class="bg-white text-emerald-800 hover:bg-emerald-50 px-4 py-2 rounded-xl font-bold text-sm shadow">
+            🔄 Làm đề mới (Xáo câu)
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-white p-3.5 rounded-2xl border border-slate-200 mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold text-slate-500">Chế độ:</span>
+          <button id="btnModePractice" onclick="startQuiz('practice')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white">Luyện tập (Xem giải ngay)</button>
+          <button id="btnModeExam" onclick="startQuiz('exam')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600">Kiểm tra (Tính giờ)</button>
+        </div>
+        <div id="timerBox" class="hidden text-sm font-extrabold text-rose-600 bg-rose-50 px-3 py-1 rounded-lg border border-rose-200">
+          ⏱️ Còn lại: <span id="timerText">10:00</span>
+        </div>
+      </div>
+
+      <div id="questionList" class="space-y-4"></div>
+
+      <div class="mt-6 text-center">
+        <button id="submitBtn" onclick="submitQuiz(false)" class="bg-blue-700 hover:bg-blue-800 text-white px-8 py-3.5 rounded-2xl font-extrabold text-base shadow-lg transition">
+          📩 NỘP BÀI & CHẤM ĐIỂM
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- DỮ LIỆU RIÊNG CỦA BÀI HỌC (Thầy chỉnh sửa / thêm câu hỏi tại đây)     -->
+  <!-- ===================================================================== -->
+  <script>
+    const LESSON_DATA = {
+  "id": 11,
+  "topic": "Điện - Từ",
+  "title": "Bài 11. Điện trở. Định luật Ohm",
+  "examMinutes": 10,
+  "theoryHTML": "\n      <h3 class=\"font-bold text-lg text-blue-800\">I. Định luật Ohm</h3>\n      <p class=\"text-sm\">Cường độ dòng điện chạy qua dây dẫn tỉ lệ thuận với hiệu điện thế đặt vào hai đầu dây và tỉ lệ nghịch với điện trở của dây: $I = \\frac{U}{R}$</p>\n      <ul class=\"list-disc pl-5 space-y-1 text-sm mt-1\">\n        <li>$I$: Cường độ dòng điện (Ampe - A); $U$: Hiệu điện thế (Vôn - V); $R$: Điện trở (Ôm - $\\Omega$).</li>\n      </ul>\n      <h3 class=\"font-bold text-lg text-blue-800 mt-3\">II. Điện trở của dây dẫn</h3>\n      <p class=\"text-sm\">Phụ thuộc vào chiều dài $l$, tiết diện $S$ và vật liệu làm dây (điện trở suất $\\rho$): $R = \\rho \\frac{l}{S}$.</p>\n    ",
+  "questions": [
+    {
+      "type": "mcq",
+      "question": "Biểu thức nào sau đây diễn tả đúng nội dung Định luật Ohm?",
+      "options": [
+        "I = U / R",
+        "I = U · R",
+        "R = I / U",
+        "U = I / R"
+      ],
+      "answer": 0,
+      "explanation": "Định luật Ohm: I = U / R."
+    },
+    {
+      "type": "mcq",
+      "question": "Nếu tăng chiều dài của một dây dẫn đồng chất, tiết diện đều lên 3 lần thì điện trở của dây dẫn đó sẽ thay đổi như thế nào?",
+      "options": [
+        "Tăng lên 3 lần",
+        "Giảm đi 3 lần",
+        "Không thay đổi",
+        "Tăng lên 9 lần"
+      ],
+      "answer": 0,
+      "explanation": "Theo công thức R = ρ.l/S, điện trở tỉ lệ thuận với chiều dài l của dây dẫn."
+    },
+    {
+      "type": "tf",
+      "question": "Điện trở của một dây dẫn kim loại cố định không phụ thuộc vào hiệu điện thế đặt vào hai đầu dây dẫn đó.",
+      "answer": true,
+      "explanation": "Đúng. Khi U tăng bao nhiêu lần thì I cũng tăng bấy nhiêu lần nên tỉ số R = U/I luôn không đổi."
+    },
+    {
+      "type": "short",
+      "question": "Đặt hiệu điện thế 12 V vào hai đầu một điện trở 24 Ω. Cường độ dòng điện chạy qua điện trở bằng bao nhiêu Ampe?",
+      "answer": "0.5",
+      "unit": "A",
+      "explanation": "I = U / R = 12 / 24 = 0,5 A."
+    }
+  ]
+};
+  </script>
+
+  <script src="engine.js"></script>
+</body>
+</html>

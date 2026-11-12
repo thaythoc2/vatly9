@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 12. Đoạn mạch nối tiếp, song song - KHTN 9 THCS Ninh Hòa</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>body { font-family: 'Be Vietnam Pro', sans-serif; }</style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- Thanh điều hướng về Trang chủ -->
+  <header class="bg-blue-900 text-white shadow sticky top-0 z-30">
+    <div class="max-w-4xl mx-auto px-4 py-3.5 flex items-center justify-between gap-3">
+      <a href="index.html" class="bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 transition">
+        ← Trang chủ (17 bài)
+      </a>
+      <span id="lessonTopic" class="text-xs font-semibold bg-blue-700 px-3 py-1 rounded-full">Điện - Từ</span>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-6 flex-1 w-full">
+    <h1 id="lessonTitle" class="text-xl sm:text-2xl font-extrabold text-slate-900 mb-4">Bài 12. Đoạn mạch nối tiếp, song song</h1>
+
+    <!-- Nhập nhanh tên lớp -->
+    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 mb-5 flex flex-wrap gap-2.5 items-center justify-between">
+      <div class="flex flex-wrap gap-2 flex-1">
+        <input id="stuName" type="text" placeholder="Họ và tên học sinh..." class="border border-slate-300 rounded-xl px-3 py-1.5 text-sm flex-1 min-w-[180px]">
+        <select id="stuClass" class="border border-slate-300 rounded-xl px-3 py-1.5 text-sm bg-white">
+          <option value="">-- Lớp --</option>
+          <option value="9/1">9/1</option><option value="9/2">9/2</option>
+          <option value="9/3">9/3</option><option value="9/4">9/4</option>
+          <option value="9/5">9/5</option><option value="9/6">9/6</option>
+          <option value="9/7">9/7</option><option value="9/8">9/8</option>
+        </select>
+      </div>
+      <div class="flex gap-2">
+        <button id="btnTabTheory" onclick="switchTab('theory')" class="px-4 py-2 rounded-xl font-bold text-sm bg-white text-slate-600 border border-slate-200">📖 Lý thuyết</button>
+        <button id="btnTabQuiz" onclick="switchTab('quiz')" class="px-4 py-2 rounded-xl font-bold text-sm bg-blue-700 text-white shadow">✍️ Luyện tập & Kiểm tra</button>
+      </div>
+    </div>
+
+    <!-- Tab 1: Tóm tắt lý thuyết -->
+    <section id="tabTheory" class="hidden bg-white rounded-2xl p-6 border border-slate-200 shadow-sm leading-relaxed space-y-3">
+      <div id="theoryContent"></div>
+      <div class="pt-4 border-t">
+        <button onclick="switchTab('quiz')" class="bg-blue-700 hover:bg-blue-800 text-white px-5 py-2.5 rounded-xl font-bold text-sm">
+          Chuyển sang làm bài tập →
+        </button>
+      </div>
+    </section>
+
+    <!-- Tab 2: Luyện tập & Kiểm tra -->
+    <section id="tabQuiz">
+      <div id="resultBanner" class="hidden bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-2xl p-5 mb-5 shadow-md">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <div class="text-xs uppercase font-bold opacity-90">Kết quả bài làm</div>
+            <div id="scoreDisplay" class="text-3xl font-extrabold mt-0.5">10 / 10 điểm</div>
+            <div id="detailDisplay" class="text-sm mt-1 opacity-95"></div>
+            <div id="syncStatus" class="text-xs mt-1.5 font-semibold bg-black/20 inline-block px-2.5 py-1 rounded-lg"></div>
+          </div>
+          <button onclick="startQuiz(currentMode)" class="bg-white text-emerald-800 hover:bg-emerald-50 px-4 py-2 rounded-xl font-bold text-sm shadow">
+            🔄 Làm đề mới (Xáo câu)
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-white p-3.5 rounded-2xl border border-slate-200 mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold text-slate-500">Chế độ:</span>
+          <button id="btnModePractice" onclick="startQuiz('practice')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white">Luyện tập (Xem giải ngay)</button>
+          <button id="btnModeExam" onclick="startQuiz('exam')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600">Kiểm tra (Tính giờ)</button>
+        </div>
+        <div id="timerBox" class="hidden text-sm font-extrabold text-rose-600 bg-rose-50 px-3 py-1 rounded-lg border border-rose-200">
+          ⏱️ Còn lại: <span id="timerText">10:00</span>
+        </div>
+      </div>
+
+      <div id="questionList" class="space-y-4"></div>
+
+      <div class="mt-6 text-center">
+        <button id="submitBtn" onclick="submitQuiz(false)" class="bg-blue-700 hover:bg-blue-800 text-white px-8 py-3.5 rounded-2xl font-extrabold text-base shadow-lg transition">
+          📩 NỘP BÀI & CHẤM ĐIỂM
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- DỮ LIỆU RIÊNG CỦA BÀI HỌC (Thầy chỉnh sửa / thêm câu hỏi tại đây)     -->
+  <!-- ===================================================================== -->
+  <script>
+    const LESSON_DATA = {
+  "id": 12,
+  "topic": "Điện - Từ",
+  "title": "Bài 12. Đoạn mạch nối tiếp, song song",
+  "examMinutes": 10,
+  "theoryHTML": "\n      <h3 class=\"font-bold text-lg text-blue-800\">I. Đoạn mạch nối tiếp ($R_1$ nt $R_2$)</h3>\n      <ul class=\"list-disc pl-5 space-y-1 text-sm\">\n        <li>Cường độ dòng điện: $I = I_1 = I_2$</li>\n        <li>Hiệu điện thế: $U = U_1 + U_2$</li>\n        <li>Điện trở tương đương: $R_{tđ} = R_1 + R_2$</li>\n      </ul>\n      <h3 class=\"font-bold text-lg text-blue-800 mt-3\">II. Đoạn mạch song song ($R_1 // R_2$)</h3>\n      <ul class=\"list-disc pl-5 space-y-1 text-sm\">\n        <li>Hiệu điện thế: $U = U_1 = U_2$</li>\n        <li>Cường độ dòng điện: $I = I_1 + I_2$</li>\n        <li>Điện trở tương đương: $\\frac{1}{R_{tđ}} = \\frac{1}{R_1} + \\frac{1}{R_2} \\Rightarrow R_{tđ} = \\frac{R_1 R_2}{R_1 + R_2}$</li>\n      </ul>\n    ",
+  "questions": [
+    {
+      "type": "mcq",
+      "question": "Hai điện trở R₁ và R₂ mắc nối tiếp với nhau. Công thức tính điện trở tương đương của đoạn mạch là:",
+      "options": [
+        "R_tđ = R₁ + R₂",
+        "R_tđ = (R₁.R₂)/(R₁ + R₂)",
+        "R_tđ = |R₁ - R₂|",
+        "1/R_tđ = 1/R₁ + 1/R₂"
+      ],
+      "answer": 0,
+      "explanation": "Trong đoạn mạch mắc nối tiếp, điện trở tương đương bằng tổng các điện trở thành phần: Rtđ = R₁ + R₂."
+    },
+    {
+      "type": "mcq",
+      "question": "Trong đoạn mạch gồm hai bóng đèn mắc song song vào nguồn điện, đại lượng nào sau đây bằng nhau trên cả hai đèn?",
+      "options": [
+        "Hiệu điện thế (U = U₁ = U₂)",
+        "Cường độ dòng điện (I = I₁ = I₂)",
+        "Điện trở (R = R₁ = R₂)",
+        "Công suất tiêu thụ (P = P₁ = P₂)"
+      ],
+      "answer": 0,
+      "explanation": "Đoạn mạch mắc song song có hiệu điện thế trên các nhánh bằng nhau: U = U₁ = U₂."
+    },
+    {
+      "type": "tf",
+      "question": "Điện trở tương đương của đoạn mạch mắc song song luôn nhỏ hơn mỗi điện trở thành phần.",
+      "answer": true,
+      "explanation": "Đúng. Vì 1/Rtđ = 1/R₁ + 1/R₂ > 1/R₁ nên Rtđ < R₁ và Rtđ < R₂."
+    },
+    {
+      "type": "short",
+      "question": "Hai điện trở R₁ = 6 Ω và R₂ = 3 Ω được mắc song song với nhau. Điện trở tương đương của đoạn mạch bằng bao nhiêu Ω?",
+      "answer": "2",
+      "unit": "Ω",
+      "explanation": "Rtđ = (6 × 3) / (6 + 3) = 18 / 9 = 2 Ω."
+    }
+  ]
+};
+  </script>
+
+  <script src="engine.js"></script>
+</body>
+</html>

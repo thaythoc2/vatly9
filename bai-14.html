@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 14. Cảm ứng điện từ. Nguyên tắc tạo ra dòng điện xoay chiều - KHTN 9 THCS Ninh Hòa</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>body { font-family: 'Be Vietnam Pro', sans-serif; }</style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- Thanh điều hướng về Trang chủ -->
+  <header class="bg-blue-900 text-white shadow sticky top-0 z-30">
+    <div class="max-w-4xl mx-auto px-4 py-3.5 flex items-center justify-between gap-3">
+      <a href="index.html" class="bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 transition">
+        ← Trang chủ (17 bài)
+      </a>
+      <span id="lessonTopic" class="text-xs font-semibold bg-blue-700 px-3 py-1 rounded-full">Điện - Từ</span>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-6 flex-1 w-full">
+    <h1 id="lessonTitle" class="text-xl sm:text-2xl font-extrabold text-slate-900 mb-4">Bài 14. Cảm ứng điện từ. Nguyên tắc tạo ra dòng điện xoay chiều</h1>
+
+    <!-- Nhập nhanh tên lớp -->
+    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 mb-5 flex flex-wrap gap-2.5 items-center justify-between">
+      <div class="flex flex-wrap gap-2 flex-1">
+        <input id="stuName" type="text" placeholder="Họ và tên học sinh..." class="border border-slate-300 rounded-xl px-3 py-1.5 text-sm flex-1 min-w-[180px]">
+        <select id="stuClass" class="border border-slate-300 rounded-xl px-3 py-1.5 text-sm bg-white">
+          <option value="">-- Lớp --</option>
+          <option value="9/1">9/1</option><option value="9/2">9/2</option>
+          <option value="9/3">9/3</option><option value="9/4">9/4</option>
+          <option value="9/5">9/5</option><option value="9/6">9/6</option>
+          <option value="9/7">9/7</option><option value="9/8">9/8</option>
+        </select>
+      </div>
+      <div class="flex gap-2">
+        <button id="btnTabTheory" onclick="switchTab('theory')" class="px-4 py-2 rounded-xl font-bold text-sm bg-white text-slate-600 border border-slate-200">📖 Lý thuyết</button>
+        <button id="btnTabQuiz" onclick="switchTab('quiz')" class="px-4 py-2 rounded-xl font-bold text-sm bg-blue-700 text-white shadow">✍️ Luyện tập & Kiểm tra</button>
+      </div>
+    </div>
+
+    <!-- Tab 1: Tóm tắt lý thuyết -->
+    <section id="tabTheory" class="hidden bg-white rounded-2xl p-6 border border-slate-200 shadow-sm leading-relaxed space-y-3">
+      <div id="theoryContent"></div>
+      <div class="pt-4 border-t">
+        <button onclick="switchTab('quiz')" class="bg-blue-700 hover:bg-blue-800 text-white px-5 py-2.5 rounded-xl font-bold text-sm">
+          Chuyển sang làm bài tập →
+        </button>
+      </div>
+    </section>
+
+    <!-- Tab 2: Luyện tập & Kiểm tra -->
+    <section id="tabQuiz">
+      <div id="resultBanner" class="hidden bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-2xl p-5 mb-5 shadow-md">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <div class="text-xs uppercase font-bold opacity-90">Kết quả bài làm</div>
+            <div id="scoreDisplay" class="text-3xl font-extrabold mt-0.5">10 / 10 điểm</div>
+            <div id="detailDisplay" class="text-sm mt-1 opacity-95"></div>
+            <div id="syncStatus" class="text-xs mt-1.5 font-semibold bg-black/20 inline-block px-2.5 py-1 rounded-lg"></div>
+          </div>
+          <button onclick="startQuiz(currentMode)" class="bg-white text-emerald-800 hover:bg-emerald-50 px-4 py-2 rounded-xl font-bold text-sm shadow">
+            🔄 Làm đề mới (Xáo câu)
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-white p-3.5 rounded-2xl border border-slate-200 mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold text-slate-500">Chế độ:</span>
+          <button id="btnModePractice" onclick="startQuiz('practice')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white">Luyện tập (Xem giải ngay)</button>
+          <button id="btnModeExam" onclick="startQuiz('exam')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600">Kiểm tra (Tính giờ)</button>
+        </div>
+        <div id="timerBox" class="hidden text-sm font-extrabold text-rose-600 bg-rose-50 px-3 py-1 rounded-lg border border-rose-200">
+          ⏱️ Còn lại: <span id="timerText">10:00</span>
+        </div>
+      </div>
+
+      <div id="questionList" class="space-y-4"></div>
+
+      <div class="mt-6 text-center">
+        <button id="submitBtn" onclick="submitQuiz(false)" class="bg-blue-700 hover:bg-blue-800 text-white px-8 py-3.5 rounded-2xl font-extrabold text-base shadow-lg transition">
+          📩 NỘP BÀI & CHẤM ĐIỂM
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- DỮ LIỆU RIÊNG CỦA BÀI HỌC (Thầy chỉnh sửa / thêm câu hỏi tại đây)     -->
+  <!-- ===================================================================== -->
+  <script>
+    const LESSON_DATA = {
+  "id": 14,
+  "topic": "Điện - Từ",
+  "title": "Bài 14. Cảm ứng điện từ. Nguyên tắc tạo ra dòng điện xoay chiều",
+  "examMinutes": 10,
+  "theoryHTML": "\n      <h3 class=\"font-bold text-lg text-blue-800\">I. Hiện tượng cảm ứng điện từ</h3>\n      <ul class=\"list-disc pl-5 space-y-1 text-sm\">\n        <li>Khi số đường sức từ xuyên qua tiết diện của cuộn dây dẫn kín <strong>biến thiên</strong> (tăng lên hoặc giảm đi), trong cuộn dây đó xuất hiện dòng điện gọi là <strong>dòng điện cảm ứng</strong>.</li>\n        <li>Hiện tượng này gọi là hiện tượng cảm ứng điện từ (do Michael Faraday tìm ra).</li>\n      </ul>\n      <h3 class=\"font-bold text-lg text-blue-800 mt-3\">II. Nguyên tắc tạo ra dòng điện xoay chiều</h3>\n      <p class=\"text-sm\">Cho cuộn dây dẫn kín quay đều trong từ trường của nam châm (hoặc cho nam châm quay trước cuộn dây dẫn kín) thì số đường sức từ xuyên qua tiết diện cuộn dây luân phiên tăng giảm, tạo ra <strong>dòng điện cảm ứng xoay chiều</strong>.</p>\n    ",
+  "questions": [
+    {
+      "type": "mcq",
+      "question": "Điều kiện để xuất hiện dòng điện cảm ứng trong một cuộn dây dẫn kín là gì?",
+      "options": [
+        "Số đường sức từ xuyên qua tiết diện cuộn dây dẫn kín biến thiên",
+        "Đặt cuộn dây dẫn đứng yên cạnh một nam châm đứng yên",
+        "Nối cuộn dây dẫn với một chiếc ampe kế",
+        "Quấn cuộn dây dẫn bằng nhiều vòng dây đồng"
+      ],
+      "answer": 0,
+      "explanation": "Dòng điện cảm ứng chỉ xuất hiện khi có sự biến thiên số đường sức từ xuyên qua tiết diện cuộn dây kín."
+    },
+    {
+      "type": "mcq",
+      "question": "Dòng điện xoay chiều khác dòng điện một chiều ở đặc điểm cơ bản nào?",
+      "options": [
+        "Chiều và cường độ dòng điện luân phiên thay đổi theo thời gian",
+        "Chiều dòng điện luôn không đổi",
+        "Chỉ chạy qua được dây dẫn bằng đồng",
+        "Không gây ra tác dụng nhiệt"
+      ],
+      "answer": 0,
+      "explanation": "Dòng điện xoay chiều là dòng điện cảm ứng có chiều luân phiên thay đổi."
+    },
+    {
+      "type": "tf",
+      "question": "Trong máy phát điện xoay chiều, hai bộ phận chính bắt buộc phải có là nam châm (tạo từ trường) và cuộn dây dẫn.",
+      "answer": true,
+      "explanation": "Đúng. Máy phát điện xoay chiều gồm phần cảm (nam châm) và phần ứng (cuộn dây dẫn), một bộ phận đứng yên (stato) và một bộ phận quay (rôto)."
+    },
+    {
+      "type": "short",
+      "question": "Lưới điện xoay chiều dân dụng ở Việt Nam có tần số 50 Hz. Trong 1 giây, dòng điện xoay chiều đổi chiều bao nhiêu lần?",
+      "answer": "100",
+      "unit": "lần",
+      "explanation": "Mỗi chu kì dòng điện đổi chiều 2 lần. Với tần số f = 50 Hz (50 chu kì/giây), dòng điện đổi chiều 50 × 2 = 100 lần."
+    }
+  ]
+};
+  </script>
+
+  <script src="engine.js"></script>
+</body>
+</html>

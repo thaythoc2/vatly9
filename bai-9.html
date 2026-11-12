@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài 9. Thực hành đo tiêu cự của thấu kính hội tụ - KHTN 9 THCS Ninh Hòa</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>body { font-family: 'Be Vietnam Pro', sans-serif; }</style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- Thanh điều hướng về Trang chủ -->
+  <header class="bg-blue-900 text-white shadow sticky top-0 z-30">
+    <div class="max-w-4xl mx-auto px-4 py-3.5 flex items-center justify-between gap-3">
+      <a href="index.html" class="bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 transition">
+        ← Trang chủ (17 bài)
+      </a>
+      <span id="lessonTopic" class="text-xs font-semibold bg-blue-700 px-3 py-1 rounded-full">Quang học</span>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-6 flex-1 w-full">
+    <h1 id="lessonTitle" class="text-xl sm:text-2xl font-extrabold text-slate-900 mb-4">Bài 9. Thực hành đo tiêu cự của thấu kính hội tụ</h1>
+
+    <!-- Nhập nhanh tên lớp -->
+    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 mb-5 flex flex-wrap gap-2.5 items-center justify-between">
+      <div class="flex flex-wrap gap-2 flex-1">
+        <input id="stuName" type="text" placeholder="Họ và tên học sinh..." class="border border-slate-300 rounded-xl px-3 py-1.5 text-sm flex-1 min-w-[180px]">
+        <select id="stuClass" class="border border-slate-300 rounded-xl px-3 py-1.5 text-sm bg-white">
+          <option value="">-- Lớp --</option>
+          <option value="9/1">9/1</option><option value="9/2">9/2</option>
+          <option value="9/3">9/3</option><option value="9/4">9/4</option>
+          <option value="9/5">9/5</option><option value="9/6">9/6</option>
+          <option value="9/7">9/7</option><option value="9/8">9/8</option>
+        </select>
+      </div>
+      <div class="flex gap-2">
+        <button id="btnTabTheory" onclick="switchTab('theory')" class="px-4 py-2 rounded-xl font-bold text-sm bg-white text-slate-600 border border-slate-200">📖 Lý thuyết</button>
+        <button id="btnTabQuiz" onclick="switchTab('quiz')" class="px-4 py-2 rounded-xl font-bold text-sm bg-blue-700 text-white shadow">✍️ Luyện tập & Kiểm tra</button>
+      </div>
+    </div>
+
+    <!-- Tab 1: Tóm tắt lý thuyết -->
+    <section id="tabTheory" class="hidden bg-white rounded-2xl p-6 border border-slate-200 shadow-sm leading-relaxed space-y-3">
+      <div id="theoryContent"></div>
+      <div class="pt-4 border-t">
+        <button onclick="switchTab('quiz')" class="bg-blue-700 hover:bg-blue-800 text-white px-5 py-2.5 rounded-xl font-bold text-sm">
+          Chuyển sang làm bài tập →
+        </button>
+      </div>
+    </section>
+
+    <!-- Tab 2: Luyện tập & Kiểm tra -->
+    <section id="tabQuiz">
+      <div id="resultBanner" class="hidden bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-2xl p-5 mb-5 shadow-md">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <div class="text-xs uppercase font-bold opacity-90">Kết quả bài làm</div>
+            <div id="scoreDisplay" class="text-3xl font-extrabold mt-0.5">10 / 10 điểm</div>
+            <div id="detailDisplay" class="text-sm mt-1 opacity-95"></div>
+            <div id="syncStatus" class="text-xs mt-1.5 font-semibold bg-black/20 inline-block px-2.5 py-1 rounded-lg"></div>
+          </div>
+          <button onclick="startQuiz(currentMode)" class="bg-white text-emerald-800 hover:bg-emerald-50 px-4 py-2 rounded-xl font-bold text-sm shadow">
+            🔄 Làm đề mới (Xáo câu)
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-white p-3.5 rounded-2xl border border-slate-200 mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold text-slate-500">Chế độ:</span>
+          <button id="btnModePractice" onclick="startQuiz('practice')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white">Luyện tập (Xem giải ngay)</button>
+          <button id="btnModeExam" onclick="startQuiz('exam')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600">Kiểm tra (Tính giờ)</button>
+        </div>
+        <div id="timerBox" class="hidden text-sm font-extrabold text-rose-600 bg-rose-50 px-3 py-1 rounded-lg border border-rose-200">
+          ⏱️ Còn lại: <span id="timerText">10:00</span>
+        </div>
+      </div>
+
+      <div id="questionList" class="space-y-4"></div>
+
+      <div class="mt-6 text-center">
+        <button id="submitBtn" onclick="submitQuiz(false)" class="bg-blue-700 hover:bg-blue-800 text-white px-8 py-3.5 rounded-2xl font-extrabold text-base shadow-lg transition">
+          📩 NỘP BÀI & CHẤM ĐIỂM
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- DỮ LIỆU RIÊNG CỦA BÀI HỌC (Thầy chỉnh sửa / thêm câu hỏi tại đây)     -->
+  <!-- ===================================================================== -->
+  <script>
+    const LESSON_DATA = {
+  "id": 9,
+  "topic": "Quang học",
+  "title": "Bài 9. Thực hành đo tiêu cự của thấu kính hội tụ",
+  "examMinutes": 10,
+  "theoryHTML": "\n      <h3 class=\"font-bold text-lg text-blue-800\">I. Nguyên tắc đo tiêu cự bằng phương pháp Silbermann</h3>\n      <ul class=\"list-disc pl-5 space-y-1 text-sm\">\n        <li>Đặt vật sáng phẳng (hình chữ F) và màn hứng ảnh đối xứng qua thấu kính hội tụ sao cho khoảng cách từ vật đến thấu kính bằng khoảng cách từ ảnh rõ nét trên màn đến thấu kính: $d = d' = 2f$.</li>\n        <li>Khi đó ảnh thu được trên màn là <strong>ảnh thật, ngược chiều và cao bằng vật</strong>.</li>\n        <li>Khoảng cách giữa vật và màn lúc này là $L = d + d' = 4f \\Rightarrow f = \\frac{L}{4}$.</li>\n      </ul>\n    ",
+  "questions": [
+    {
+      "type": "mcq",
+      "question": "Trong bài thực hành đo tiêu cự thấu kính hội tụ, khi dịch chuyển vật và màn sao cho ảnh rõ nét trên màn có kích thước bằng vật thì tiêu cự f được tính theo khoảng cách L từ vật đến màn bằng công thức nào?",
+      "options": [
+        "f = L / 4",
+        "f = L / 2",
+        "f = L",
+        "f = 2L"
+      ],
+      "answer": 0,
+      "explanation": "Khi ảnh thật cao bằng vật thì d = d' = 2f. Khoảng cách vật - màn là L = d + d' = 4f => f = L/4."
+    },
+    {
+      "type": "mcq",
+      "question": "Ảnh thu được trên màn chắn trong thí nghiệm đo tiêu cự thấu kính hội tụ có tính chất gì?",
+      "options": [
+        "Ảnh thật, ngược chiều với vật",
+        "Ảnh ảo, cùng chiều với vật",
+        "Ảnh thật, cùng chiều với vật",
+        "Ảnh ảo, ngược chiều với vật"
+      ],
+      "answer": 0,
+      "explanation": "Chỉ có ảnh thật mới hứng được trên màn chắn, và đối với thấu kính hội tụ ảnh thật luôn ngược chiều với vật."
+    },
+    {
+      "type": "tf",
+      "question": "Khi đặt vật sáng ở rất xa thấu kính hội tụ (như Mặt Trời), ảnh rõ nét của vật hiện lên ngay tại tiêu diện (cách thấu kính một khoảng đúng bằng tiêu cự f).",
+      "answer": true,
+      "explanation": "Đúng. Chùm sáng từ vật ở rất xa coi như song song với trục chính nên hội tụ tại tiêu điểm F, cách quang tâm O một đoạn f."
+    },
+    {
+      "type": "short",
+      "question": "Trong thí nghiệm đo tiêu cự, khi thu được ảnh thật rõ nét cao bằng vật thì khoảng cách giữa vật sáng và màn hứng ảnh đo được là 60 cm. Tiêu cự của thấu kính bằng bao nhiêu cm?",
+      "answer": "15",
+      "unit": "cm",
+      "explanation": "f = L / 4 = 60 / 4 = 15 cm."
+    }
+  ]
+};
+  </script>
+
+  <script src="engine.js"></script>
+</body>
+</html>

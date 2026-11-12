@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KHTN 9 (Vật Lý) - Trường THCS Ninh Hòa</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Be Vietnam Pro', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-gradient-to-r from-blue-900 via-blue-800 to-indigo-900 text-white shadow-lg sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex flex-wrap items-center justify-between gap-3">
+      <div>
+        <span class="text-xs uppercase tracking-wider bg-blue-700/80 px-2.5 py-0.5 rounded-full font-semibold">Trường THCS Ninh Hòa</span>
+        <h1 class="text-xl md:text-2xl font-extrabold mt-1">KHTN 9 – Phân Môn Vật Lý (KNTT)</h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="openScoreModal()" class="bg-white/15 hover:bg-white/25 px-3.5 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-1.5">
+          📊 Lịch sử điểm & GV
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-6 flex-1 w-full">
+    <!-- Thông tin học sinh -->
+    <section class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 mb-6">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 class="font-bold text-slate-800 text-base">👤 Thông tin học sinh (Lưu tự động cho tất cả các bài)</h2>
+          <p class="text-xs text-slate-500 mt-0.5">Nhập họ tên và lớp một lần trước khi bấm vào các bài học bên dưới.</p>
+        </div>
+        <div class="flex flex-wrap sm:flex-nowrap gap-3">
+          <input id="stuName" type="text" placeholder="Họ và tên học sinh..."
+            class="border border-slate-300 rounded-xl px-3.5 py-2 text-sm w-full sm:w-64 focus:ring-2 focus:ring-blue-500 outline-none">
+          <select id="stuClass" class="border border-slate-300 rounded-xl px-3.5 py-2 text-sm bg-white focus:ring-2 focus:ring-blue-500 outline-none">
+            <option value="">-- Chọn lớp --</option>
+            <option value="9/1">Lớp 9/1</option>
+            <option value="9/2">Lớp 9/2</option>
+            <option value="9/3">Lớp 9/3</option>
+            <option value="9/4">Lớp 9/4</option>
+            <option value="9/5">Lớp 9/5</option>
+            <option value="9/6">Lớp 9/6</option>
+            <option value="9/7">Lớp 9/7</option>
+            <option value="9/8">Lớp 9/8</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bộ lọc chủ đề & Tìm kiếm -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-5">
+      <div class="flex flex-wrap gap-2" id="topicFilters">
+        <button data-topic="ALL" class="filter-btn bg-blue-700 text-white px-3.5 py-1.5 rounded-full text-xs font-semibold">Tất cả (17 bài)</button>
+        <button data-topic="Cơ học" class="filter-btn bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 px-3.5 py-1.5 rounded-full text-xs font-semibold">Mở đầu & Cơ học</button>
+        <button data-topic="Quang học" class="filter-btn bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 px-3.5 py-1.5 rounded-full text-xs font-semibold">Quang học</button>
+        <button data-topic="Điện - Từ" class="filter-btn bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 px-3.5 py-1.5 rounded-full text-xs font-semibold">Điện & Điện từ</button>
+        <button data-topic="Năng lượng" class="filter-btn bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 px-3.5 py-1.5 rounded-full text-xs font-semibold">Năng lượng</button>
+      </div>
+      <input id="searchInput" type="text" placeholder="🔍 Tìm tên bài học..."
+        class="border border-slate-300 bg-white rounded-xl px-3.5 py-1.5 text-sm w-full sm:w-60 focus:ring-2 focus:ring-blue-500 outline-none">
+    </div>
+
+    <!-- Danh sách 17 bài học (Link tới từng file bai-X.html) -->
+    <div id="lessonGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+  </main>
+
+  <footer class="text-center text-xs text-slate-500 py-5 border-t border-slate-200 bg-white mt-8">
+    Tổ Khoa học tự nhiên và Công nghệ – Trường THCS Ninh Hòa • Bộ sách Kết nối tri thức với cuộc sống
+  </footer>
+
+  <!-- Modal Lịch sử điểm -->
+  <div id="scoreModal" class="fixed inset-0 bg-slate-900/60 hidden items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl max-w-3xl w-full p-6 shadow-2xl max-h-[85vh] flex flex-col">
+      <div class="flex justify-between items-center border-b pb-3 mb-4">
+        <h3 class="font-bold text-lg text-slate-800">📊 Bảng điểm đã lưu trên máy này</h3>
+        <button onclick="closeScoreModal()" class="text-slate-400 hover:text-slate-700 text-xl font-bold">&times;</button>
+      </div>
+      <div class="overflow-auto flex-1">
+        <table class="w-full text-left border-collapse text-sm">
+          <thead>
+            <tr class="bg-slate-100 text-slate-700">
+              <th class="p-2.5 border">Họ tên</th>
+              <th class="p-2.5 border">Lớp</th>
+              <th class="p-2.5 border">Bài học</th>
+              <th class="p-2.5 border">Chế độ</th>
+              <th class="p-2.5 border">Điểm</th>
+              <th class="p-2.5 border">Thời gian</th>
+            </tr>
+          </thead>
+          <tbody id="scoreTableBody"></tbody>
+        </table>
+      </div>
+      <div class="mt-4 pt-3 border-t flex justify-between items-center">
+        <button onclick="exportCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-semibold">
+          ⬇️ Xuất file Excel (.CSV)
+        </button>
+        <button onclick="closeScoreModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 px-4 py-2 rounded-xl text-sm font-semibold">
+          Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Danh sách 17 bài học chuẩn SGK KHTN 9 (KNTT) - trỏ trực tiếp tới từng file con
+    const LESSONS = [
+      { id: 1, file: 'bai-1.html', topic: 'Cơ học', title: 'Bài 1. Nhận biết một số dụng cụ, hóa chất. Thuyết trình một vấn đề khoa học' },
+      { id: 2, file: 'bai-2.html', topic: 'Cơ học', title: 'Bài 2. Động năng. Thế năng' },
+      { id: 3, file: 'bai-3.html', topic: 'Cơ học', title: 'Bài 3. Cơ năng' },
+      { id: 4, file: 'bai-4.html', topic: 'Cơ học', title: 'Bài 4. Công và công suất' },
+      { id: 5, file: 'bai-5.html', topic: 'Quang học', title: 'Bài 5. Khúc xạ ánh sáng' },
+      { id: 6, file: 'bai-6.html', topic: 'Quang học', title: 'Bài 6. Phản xạ toàn phần' },
+      { id: 7, file: 'bai-7.html', topic: 'Quang học', title: 'Bài 7. Lăng kính' },
+      { id: 8, file: 'bai-8.html', topic: 'Quang học', title: 'Bài 8. Thấu kính' },
+      { id: 9, file: 'bai-9.html', topic: 'Quang học', title: 'Bài 9. Thực hành đo tiêu cự của thấu kính hội tụ' },
+      { id: 10, file: 'bai-10.html', topic: 'Quang học', title: 'Bài 10. Kính lúp. Bài tập thấu kính' },
+      { id: 11, file: 'bai-11.html', topic: 'Điện - Từ', title: 'Bài 11. Điện trở. Định luật Ohm' },
+      { id: 12, file: 'bai-12.html', topic: 'Điện - Từ', title: 'Bài 12. Đoạn mạch nối tiếp, song song' },
+      { id: 13, file: 'bai-13.html', topic: 'Điện - Từ', title: 'Bài 13. Năng lượng của dòng điện và công suất điện' },
+      { id: 14, file: 'bai-14.html', topic: 'Điện - Từ', title: 'Bài 14. Cảm ứng điện từ. Nguyên tắc tạo ra dòng điện xoay chiều' },
+      { id: 15, file: 'bai-15.html', topic: 'Điện - Từ', title: 'Bài 15. Tác dụng của dòng điện xoay chiều' },
+      { id: 16, file: 'bai-16.html', topic: 'Năng lượng', title: 'Bài 16. Vòng năng lượng trên Trái Đất. Năng lượng hóa thạch' },
+      { id: 17, file: 'bai-17.html', topic: 'Năng lượng', title: 'Bài 17. Một số dạng năng lượng tái tạo' }
+    ];
+
+    // Lưu & nạp thông tin học sinh dùng chung toàn bộ website
+    const stuNameInput = document.getElementById('stuName');
+    const stuClassSelect = document.getElementById('stuClass');
+    const savedProfile = JSON.parse(localStorage.getItem('vl9_profile') || '{}');
+    if (savedProfile.name) stuNameInput.value = savedProfile.name;
+    if (savedProfile.className) stuClassSelect.value = savedProfile.className;
+
+    function saveProfile() {
+      localStorage.setItem('vl9_profile', JSON.stringify({
+        name: stuNameInput.value.trim(),
+        className: stuClassSelect.value
+      }));
+    }
+    stuNameInput.addEventListener('input', saveProfile);
+    stuClassSelect.addEventListener('change', saveProfile);
+
+    let currentTopic = 'ALL';
+    function renderLessons() {
+      const keyword = document.getElementById('searchInput').value.toLowerCase();
+      const history = JSON.parse(localStorage.getItem('vl9_scores') || '[]');
+      const grid = document.getElementById('lessonGrid');
+      grid.innerHTML = '';
+
+      LESSONS.filter(l => {
+        const matchTopic = currentTopic === 'ALL' || l.topic === currentTopic;
+        const matchKey = l.title.toLowerCase().includes(keyword);
+        return matchTopic && matchKey;
+      }).forEach(lesson => {
+        const bestScore = history
+          .filter(h => h.lessonId === lesson.id)
+          .reduce((max, cur) => Math.max(max, parseFloat(cur.score)), -1);
+
+        const badge = bestScore >= 0
+          ? `<span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-0.5 rounded-full">Cao nhất: ${bestScore}đ</span>`
+          : `<span class="bg-slate-100 text-slate-500 text-xs font-medium px-2.5 py-0.5 rounded-full">Chưa làm</span>`;
+
+        const card = document.createElement('a');
+        card.href = lesson.file;
+        card.className = "group bg-white rounded-2xl p-5 border border-slate-200 hover:border-blue-500 hover:shadow-md transition flex flex-col justify-between";
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-2.5">
+              <span class="text-xs font-bold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-md">${lesson.topic}</span>
+              ${badge}
+            </div>
+            <h3 class="font-bold text-slate-800 group-hover:text-blue-700 transition leading-snug">${lesson.title}</h3>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-blue-600">
+            <span>Vào học & Làm bài</span>
+            <span class="group-hover:translate-x-1 transition-transform">→</span>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => {
+          b.classList.remove('bg-blue-700', 'text-white');
+          b.classList.add('bg-white', 'text-slate-600', 'border', 'border-slate-200');
+        });
+        btn.classList.remove('bg-white', 'text-slate-600', 'border', 'border-slate-200');
+        btn.classList.add('bg-blue-700', 'text-white');
+        currentTopic = btn.dataset.topic;
+        renderLessons();
+      });
+    });
+
+    document.getElementById('searchInput').addEventListener('input', renderLessons);
+    renderLessons();
+
+    // Xử lý Modal Lịch sử điểm
+    function openScoreModal() {
+      const history = JSON.parse(localStorage.getItem('vl9_scores') || '[]');
+      const tbody = document.getElementById('scoreTableBody');
+      tbody.innerHTML = history.length === 0
+        ? `<tr><td colspan="6" class="p-4 text-center text-slate-500">Chưa có dữ liệu làm bài nào.</td></tr>`
+        : history.slice().reverse().map(r => `
+            <tr class="border-b hover:bg-slate-50">
+              <td class="p-2.5 border font-medium">${r.name}</td>
+              <td class="p-2.5 border">${r.className}</td>
+              <td class="p-2.5 border">${r.lesson}</td>
+              <td class="p-2.5 border">${r.mode}</td>
+              <td class="p-2.5 border font-bold text-blue-700">${r.score}</td>
+              <td class="p-2.5 border text-xs text-slate-500">${r.time}</td>
+            </tr>
+          `).join('');
+      document.getElementById('scoreModal').classList.remove('hidden');
+      document.getElementById('scoreModal').classList.add('flex');
+    }
+
+    function closeScoreModal() {
+      document.getElementById('scoreModal').classList.add('hidden');
+      document.getElementById('scoreModal').classList.remove('flex');
+    }
+
+    function exportCSV() {
+      const history = JSON.parse(localStorage.getItem('vl9_scores') || '[]');
+      if (!history.length) return alert('Chưa có điểm để xuất!');
+      let csv = '\uFEFFHọ tên,Lớp,Bài học,Chế độ,Điểm,Số câu đúng,Thời gian nộp\n';
+      history.forEach(r => {
+        csv += `"${r.name}","${r.className}","${r.lesson}","${r.mode}",${r.score},"${r.correct}/${r.total}","${r.time}"\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'Diem_VatLy9_NinhHoa.csv';
+      link.click();
+    }
+  </script>
+</body>
+</html>

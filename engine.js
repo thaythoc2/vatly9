@@ -8,7 +8,7 @@ let activeQuestions = [];
 let userAnswers = {};
 let isSubmitted = false;
 let timerInterval = null;
-let secondsLeft = 900;
+let elapsedSeconds = 0; // Đếm tăng thời gian làm bài từ 00:00
 
 document.addEventListener('DOMContentLoaded', () => {
   document.title = LESSON_DATA.title + ' - KHTN 9 THCS Ninh Hòa';
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function syncProfile() {
   const clsInput = document.getElementById('stuClass');
-  clsInput.value = clsInput.value.toUpperCase(); // Tự động viết hoa tên lớp (vd: 9a1 -> 9A1)
+  clsInput.value = clsInput.value.toUpperCase();
   localStorage.setItem('vl9_profile', JSON.stringify({
     name: document.getElementById('stuName').value.trim(),
     className: clsInput.value.trim()
@@ -64,6 +64,12 @@ function shuffleArray(arr) {
   return copy;
 }
 
+function formatDuration(totalSec) {
+  const m = String(Math.floor(totalSec / 60)).padStart(2, '0');
+  const s = String(totalSec % 60).padStart(2, '0');
+  return `${m}:${s}`;
+}
+
 function startQuiz(mode) {
   currentMode = mode;
   isSubmitted = false;
@@ -81,7 +87,7 @@ function startQuiz(mode) {
   document.getElementById('submitBtn').classList.remove('hidden');
 
   if (mode === 'practice') {
-    // CHẾ ĐỘ LUYỆN TẬP: Giữ nguyên thứ tự đề mục SGK từ Mục I -> Mục II -> Mục III
+    // CHẾ ĐỘ LUYỆN TẬP: Xếp tuần tự theo từng đề mục SGK (Mục I -> Mục II -> Mục III)
     const orderedBySection = [];
     const seenSections = [];
 
@@ -107,7 +113,7 @@ function startQuiz(mode) {
 
     activeQuestions = orderedBySection;
   } else {
-    // CHẾ ĐỘ KIỂM TRA: Xáo trộn ngẫu nhiên các câu hỏi và xáo vị trí 4 phương án A, B, C, D
+    // CHẾ ĐỘ KIỂM TRA: Xáo trộn ngẫu nhiên câu hỏi và xáo vị trí 4 phương án A, B, C, D
     const mcqs = shuffleArray(LESSON_DATA.questions.filter(q => q.type === 'mcq')).map(q => {
       const indexedOpts = q.options.map((text, i) => ({ text, isCorrect: i === q.answer }));
       const shuffled = shuffleArray(indexedOpts);
@@ -123,31 +129,24 @@ function startQuiz(mode) {
     activeQuestions = [...mcqs, ...tfGroups, ...shorts];
   }
 
+  // Đếm tăng thời gian từ 00:00 (hiện rõ khi ở chế độ Kiểm tra, đồng thời vẫn ngầm đo cả ở Luyện tập)
+  elapsedSeconds = 0;
   const timerEl = document.getElementById('timerBox');
   if (mode === 'exam') {
-    secondsLeft = (LESSON_DATA.examMinutes || 15) * 60;
     timerEl.classList.remove('hidden');
-    updateTimerDisplay();
-    timerInterval = setInterval(() => {
-      secondsLeft--;
-      updateTimerDisplay();
-      if (secondsLeft <= 0) {
-        clearInterval(timerInterval);
-        submitQuiz(true);
-      }
-    }, 1000);
+    timerEl.innerHTML = `⏱️ Thời gian làm bài: <span id="timerText">00:00</span>`;
   } else {
     timerEl.classList.add('hidden');
   }
 
+  timerInterval = setInterval(() => {
+    elapsedSeconds++;
+    const timerText = document.getElementById('timerText');
+    if (timerText) timerText.textContent = formatDuration(elapsedSeconds);
+  }, 1000);
+
   renderQuestions();
   if (window.MathJax) MathJax.typesetPromise();
-}
-
-function updateTimerDisplay() {
-  const m = String(Math.floor(secondsLeft / 60)).padStart(2, '0');
-  const s = String(secondsLeft % 60).padStart(2, '0');
-  document.getElementById('timerText').textContent = `${m}:${s}`;
 }
 
 function renderQuestions() {
@@ -156,7 +155,6 @@ function renderQuestions() {
   let lastRenderedSection = '';
 
   activeQuestions.forEach((q, idx) => {
-    // Ở chế độ Luyện tập: Chèn tiêu đề phân cách mỗi khi sang đề mục SGK mới (Mục I, Mục II, Mục III)
     if (currentMode === 'practice' && q.section && q.section !== lastRenderedSection) {
       lastRenderedSection = q.section;
       const secHeader = document.createElement('div');
@@ -301,12 +299,12 @@ function checkSingleQuestion(qIdx) {
   explainEl.classList.remove('hidden');
 }
 
-function submitQuiz(autoTimeUp = false) {
+function submitQuiz() {
   if (isSubmitted) return;
   const name = document.getElementById('stuName').value.trim();
   const className = document.getElementById('stuClass').value.trim();
 
-  if (!autoTimeUp && (!name || !className)) {
+  if (!name || !className) {
     alert('Em vui lòng nhập đầy đủ Họ tên và Lớp (ví dụ: 9A1, 9D3...) ở phía trên trước khi nộp bài!');
     document.getElementById('stuName').focus();
     return;
@@ -315,6 +313,8 @@ function submitQuiz(autoTimeUp = false) {
   isSubmitted = true;
   clearInterval(timerInterval);
   document.getElementById('submitBtn').classList.add('hidden');
+
+  const durationText = `${Math.floor(elapsedSeconds / 60)} phút ${elapsedSeconds % 60} giây`;
 
   let earnedPoints = 0;
   let fullCorrectCount = 0;
@@ -335,17 +335,18 @@ function submitQuiz(autoTimeUp = false) {
   const banner = document.getElementById('resultBanner');
   banner.classList.remove('hidden');
   document.getElementById('scoreDisplay').textContent = `${score10} / 10 điểm`;
-  document.getElementById('detailDisplay').textContent = `Hoàn thành trọn vẹn ${fullCorrectCount}/${total} câu • Chế độ: ${currentMode === 'exam' ? 'Kiểm tra' : 'Luyện tập'}`;
+  document.getElementById('detailDisplay').textContent = `Hoàn thành trọn vẹn ${fullCorrectCount}/${total} câu • Thời gian làm: ${durationText} • Chế độ: ${currentMode === 'exam' ? 'Kiểm tra' : 'Luyện tập'}`;
 
   const record = {
     lessonId: LESSON_DATA.id,
     lesson: LESSON_DATA.title,
-    name: name || 'Học sinh ẩn danh',
-    className: className || 'Chưa nhập lớp',
+    name: name,
+    className: className,
     mode: currentMode === 'exam' ? 'Kiểm tra' : 'Luyện tập',
     score: score10,
     correct: fullCorrectCount,
     total: total,
+    duration: durationText,
     time: new Date().toLocaleString('vi-VN')
   };
 
@@ -362,7 +363,7 @@ function submitQuiz(autoTimeUp = false) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(record)
     }).then(() => {
-      syncStatus.textContent = '✅ Đã gửi điểm thành công lên Google Sheets của giáo viên!';
+      syncStatus.textContent = '✅ Đã gửi điểm & thời gian làm bài lên Google Sheets!';
     }).catch(() => {
       syncStatus.textContent = '⚠️ Đã lưu điểm trên máy (Kiểm tra lại kết nối mạng).';
     });

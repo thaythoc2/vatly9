@@ -38,17 +38,8 @@
         <div class="flex flex-wrap sm:flex-nowrap gap-3">
           <input id="stuName" type="text" placeholder="Họ và tên học sinh..."
             class="border border-slate-300 rounded-xl px-3.5 py-2 text-sm w-full sm:w-64 focus:ring-2 focus:ring-blue-500 outline-none">
-          <select id="stuClass" class="border border-slate-300 rounded-xl px-3.5 py-2 text-sm bg-white focus:ring-2 focus:ring-blue-500 outline-none">
-            <option value="">-- Chọn lớp --</option>
-            <option value="9/1">Lớp 9/1</option>
-            <option value="9/2">Lớp 9/2</option>
-            <option value="9/3">Lớp 9/3</option>
-            <option value="9/4">Lớp 9/4</option>
-            <option value="9/5">Lớp 9/5</option>
-            <option value="9/6">Lớp 9/6</option>
-            <option value="9/7">Lớp 9/7</option>
-            <option value="9/8">Lớp 9/8</option>
-          </select>
+          <input id="stuClass" type="text" placeholder="Lớp (vd: 9A1, 9D3...)"
+            class="border border-slate-300 rounded-xl px-3.5 py-2 text-sm w-full sm:w-44 uppercase font-semibold focus:ring-2 focus:ring-blue-500 outline-none">
         </div>
       </div>
     </section>
@@ -143,7 +134,7 @@
       }));
     }
     stuNameInput.addEventListener('input', saveProfile);
-    stuClassSelect.addEventListener('change', saveProfile);
+    stuClassSelect.addEventListener('input', () => { stuClassSelect.value = stuClassSelect.value.toUpperCase(); saveProfile(); });
 
     let currentTopic = 'ALL';
     function renderLessons() {

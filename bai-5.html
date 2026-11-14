@@ -78,7 +78,7 @@
           <button id="btnModeExam" onclick="startQuiz('exam')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600">Kiểm tra (Tính giờ)</button>
         </div>
         <div id="timerBox" class="hidden text-sm font-extrabold text-rose-600 bg-rose-50 px-3 py-1 rounded-lg border border-rose-200">
-          ⏱️ Còn lại: <span id="timerText">10:00</span>
+          ⏱️ Còn lại: <span id="timerText">15:00</span>
         </div>
       </div>
 
@@ -93,55 +93,308 @@
   </main>
 
   <!-- ===================================================================== -->
-  <!-- DỮ LIỆU RIÊNG CỦA BÀI HỌC (Thầy chỉnh sửa / thêm câu hỏi tại đây)     -->
+  <!-- DỮ LIỆU BÀI 5: KHÚC XẠ ÁNH SÁNG (12 TN + 3 Đ/S + 8 TLN 4 kí tự số)   -->
   <!-- ===================================================================== -->
   <script>
     const LESSON_DATA = {
-  "id": 5,
-  "topic": "Quang học",
-  "title": "Bài 5. Khúc xạ ánh sáng",
-  "examMinutes": 10,
-  "theoryHTML": "\n      <h3 class=\"font-bold text-lg text-blue-800\">I. Hiện tượng khúc xạ ánh sáng</h3>\n      <p class=\"text-sm\">Là hiện tượng tia sáng truyền từ môi trường trong suốt này sang môi trường trong suốt khác bị gãy khúc tại mặt phân cách giữa hai môi trường.</p>\n      <h3 class=\"font-bold text-lg text-blue-800 mt-3\">II. Định luật khúc xạ ánh sáng & Chiết suất</h3>\n      <ul class=\"list-disc pl-5 space-y-1 text-sm\">\n        <li>Tia khúc xạ nằm trong mặt phẳng tới và ở bên kia pháp tuyến so với tia tới.</li>\n        <li>Với hai môi trường trong suốt nhất định, tỉ số giữa sin góc tới ($\\sin i$) và sin góc khúc xạ ($\\sin r$) luôn không đổi: $\\frac{\\sin i}{\\sin r} = \\frac{n_2}{n_1}$.</li>\n        <li>Chiết suất tuyệt đối của một môi trường: $n = \\frac{c}{v}$ (luôn lớn hơn 1, riêng chân không $n = 1$).</li>\n      </ul>\n    ",
-  "questions": [
-    {
-      "type": "mcq",
-      "question": "Khi tia sáng truyền từ không khí sang nước với góc tới i > 0, mối quan hệ giữa góc tới i và góc khúc xạ r là:",
-      "options": [
-        "r < i",
-        "r > i",
-        "r = i",
-        "r = 90°"
-      ],
-      "answer": 0,
-      "explanation": "Nước có chiết suất lớn hơn không khí (n₂ > n₁) nên tia khúc xạ lệch lại gần pháp tuyến hơn, suy ra r < i."
-    },
-    {
-      "type": "mcq",
-      "question": "Chiết suất tuyệt đối của một môi trường trong suốt được tính bằng công thức nào?",
-      "options": [
-        "n = c / v",
-        "n = v / c",
-        "n = c · v",
-        "n = c + v"
-      ],
-      "answer": 0,
-      "explanation": "Chiết suất tuyệt đối n = c/v, với c = 3.10⁸ m/s là tốc độ ánh sáng trong chân không và v là tốc độ ánh sáng trong môi trường đó."
-    },
-    {
-      "type": "tf",
-      "question": "Khi tia sáng chiếu vuông góc với mặt phân cách giữa hai môi trường trong suốt (góc tới i = 0°) thì tia sáng truyền thẳng không bị gãy khúc.",
-      "answer": true,
-      "explanation": "Đúng. Khi i = 0° thì sin(i) = 0 nên sin(r) = 0, góc khúc xạ r = 0°, tia sáng đi thẳng."
-    },
-    {
-      "type": "short",
-      "question": "Biết tốc độ ánh sáng trong chân không là 300 000 km/s, trong thủy tinh là 200 000 km/s. Chiết suất tuyệt đối của thủy tinh bằng bao nhiêu?",
-      "answer": "1.5",
-      "unit": "",
-      "explanation": "n = c / v = 300 000 / 200 000 = 1,5."
-    }
-  ]
-};
+      id: 5,
+      topic: 'Quang học',
+      title: 'Bài 5. Khúc xạ ánh sáng',
+      examMinutes: 15,
+      theoryHTML: `
+        <h3 class="font-bold text-lg text-blue-800">I. Hiện tượng khúc xạ ánh sáng</h3>
+        <ul class="list-disc pl-5 space-y-1 text-sm">
+          <li><strong>Định nghĩa:</strong> Là hiện tượng tia sáng bị gãy khúc (bị lệch khỏi phương truyền ban đầu) tại mặt phân cách khi truyền từ môi trường trong suốt này sang môi trường trong suốt khác.</li>
+          <li><strong>Quy ước:</strong> $I$ là điểm tới; $SI$ là tia tới; $IK$ là tia khúc xạ; $NN'$ vuông góc với mặt phân cách tại $I$ là pháp tuyến; $\\widehat{SIN} = i$ là góc tới; $\\widehat{KIN'} = r$ là góc khúc xạ.</li>
+        </ul>
+
+        <h3 class="font-bold text-lg text-blue-800 mt-4">II. Định luật khúc xạ ánh sáng</h3>
+        <ul class="list-disc pl-5 space-y-1 text-sm">
+          <li>Tia khúc xạ nằm trong mặt phẳng tới và ở phía bên kia pháp tuyến so với tia tới.</li>
+          <li>Với hai môi trường trong suốt nhất định, tỉ số giữa $\\sin$ góc tới ($\\sin i$) và $\\sin$ góc khúc xạ ($\\sin r$) luôn không đổi: $\\frac{\\sin i}{\\sin r} = \\text{hằng số}$.</li>
+        </ul>
+
+        <h3 class="font-bold text-lg text-blue-800 mt-4">III. Chiết suất của môi trường</h3>
+        <ul class="list-disc pl-5 space-y-1 text-sm">
+          <li><strong>Chiết suất tỉ đối ($n_{21}$):</strong> $\\frac{\\sin i}{\\sin r} = n_{21} = \\frac{n_2}{n_1}$. Nếu $n_{21} > 1$ thì $r < i$ (tia khúc xạ lệch gần pháp tuyến hơn); nếu $n_{21} < 1$ thì $r > i$ (tia khúc xạ lệch xa pháp tuyến hơn).</li>
+          <li><strong>Chiết suất tuyệt đối ($n$):</strong> $n = \\frac{c}{v}$ (với $c = 3\\cdot 10^8\\text{ m/s}$ là tốc độ ánh sáng trong chân không, $v$ là tốc độ ánh sáng trong môi trường). Chân không có $n = 1$, không khí $n \\approx 1,00029 \\approx 1$.</li>
+        </ul>
+      `,
+      questions: [
+        // =================================================================
+        // PHẦN 1: 12 CÂU TRẮC NGHIỆM 1 PHƯƠNG ÁN ĐÚNG (THEO 3 MỤC SGK)
+        // =================================================================
+        // --- Mục I: Hiện tượng khúc xạ ánh sáng (Câu 1 - 3) ---
+        {
+          type: 'mcq',
+          section: 'I. Hiện tượng khúc xạ ánh sáng',
+          question: 'Hiện tượng khúc xạ ánh sáng là hiện tượng tia sáng truyền từ môi trường trong suốt này sang môi trường trong suốt khác bị',
+          options: [
+            'gãy khúc (lệch khỏi phương truyền ban đầu) tại mặt phân cách giữa hai môi trường.',
+            'hắt trở lại hoàn toàn vào môi trường truyền tới tại mặt phân cách.',
+            'tách thành nhiều chùm sáng có màu sắc khác nhau khi đi qua mặt phân cách.',
+            'dừng lại và bị hấp thụ hoàn toàn ngay tại mặt phân cách giữa hai môi trường.'
+          ],
+          answer: 0,
+          explanation: 'Theo SGK, khúc xạ ánh sáng là hiện tượng tia sáng bị gãy khúc (lệch khỏi phương truyền ban đầu) tại mặt phân cách khi truyền từ môi trường trong suốt này sang môi trường trong suốt khác.'
+        },
+        {
+          type: 'mcq',
+          section: 'I. Hiện tượng khúc xạ ánh sáng',
+          question: 'Trong thí nghiệm khảo sát hiện tượng khúc xạ ánh sáng, pháp tuyến tại điểm tới I là đường thẳng',
+          options: [
+            'vuông góc với mặt phân cách giữa hai môi trường tại điểm tới I.',
+            'trùng với mặt phân cách giữa hai môi trường tại điểm tới I.',
+            'nằm dọc theo phương của tia tới SI.',
+            'tạo với mặt phân cách một góc nhọn 45° tại điểm tới I.'
+          ],
+          answer: 0,
+          explanation: 'Pháp tuyến NN\' là đường thẳng vuông góc với mặt phân cách giữa hai môi trường tại điểm tới I.'
+        },
+        {
+          type: 'mcq',
+          section: 'I. Hiện tượng khúc xạ ánh sáng',
+          question: 'Góc khúc xạ r là góc hợp bởi',
+          options: [
+            'tia khúc xạ và pháp tuyến tại điểm tới.',
+            'tia khúc xạ và mặt phân cách giữa hai môi trường.',
+            'tia khúc xạ và tia tới.',
+            'tia tới và pháp tuyến tại điểm tới.'
+          ],
+          answer: 0,
+          explanation: 'Trên Hình 5.2 SGK, góc khúc xạ r là góc KIN\' hợp bởi tia khúc xạ IK và pháp tuyến NN\'.'
+        },
+
+        // --- Mục II: Định luật khúc xạ ánh sáng (Câu 4 - 7) ---
+        {
+          type: 'mcq',
+          section: 'II. Định luật khúc xạ ánh sáng',
+          question: 'Theo định luật khúc xạ ánh sáng, tia khúc xạ nằm trong mặt phẳng tới và ở',
+          options: [
+            'phía bên kia pháp tuyến so với tia tới.',
+            'cùng một phía của pháp tuyến so với tia tới.',
+            'mặt phẳng vuông góc với mặt phẳng tới.',
+            'trên mặt phân cách giữa hai môi trường.'
+          ],
+          answer: 0,
+          explanation: 'Định luật khúc xạ ánh sáng: Tia khúc xạ nằm trong mặt phẳng tới và ở phía bên kia pháp tuyến so với tia tới.'
+        },
+        {
+          type: 'mcq',
+          section: 'II. Định luật khúc xạ ánh sáng',
+          question: 'Khi chiếu một tia sáng từ không khí vào nước với góc tới i > 0°, so sánh độ lớn giữa góc khúc xạ r và góc tới i ta luôn có:',
+          options: [
+            'r < i',
+            'r > i',
+            'r = i',
+            'r = 90°'
+          ],
+          answer: 0,
+          explanation: 'Qua Bảng 5.1 SGK, khi ánh sáng truyền từ không khí sang môi trường chiết quang hơn (thủy tinh, nước) thì góc khúc xạ luôn nhỏ hơn góc tới (r < i).'
+        },
+        {
+          type: 'mcq',
+          section: 'II. Định luật khúc xạ ánh sáng',
+          question: 'Khi chiếu một tia sáng đi từ trong nước ra ngoài không khí với góc tới i (nhỏ hơn góc tới hạn), tia khúc xạ ở ngoài không khí sẽ',
+          options: [
+            'lệch ra xa pháp tuyến hơn so với tia tới (r > i).',
+            'lệch lại gần pháp tuyến hơn so với tia tới (r < i).',
+            'truyền thẳng theo phương của tia tới (r = i).',
+            'trùng với pháp tuyến tại điểm tới (r = 0°).'
+          ],
+          answer: 0,
+          explanation: 'Khi ánh sáng truyền từ nước ra không khí (Hình 5.5 SGK), tia khúc xạ bị lệch xa pháp tuyến hơn nên góc khúc xạ r lớn hơn góc tới i.'
+        },
+        {
+          type: 'mcq',
+          section: 'II. Định luật khúc xạ ánh sáng',
+          question: 'Khi trong cốc không có nước ta không nhìn thấy đồng xu ở đáy cốc, nhưng giữ nguyên vị trí mắt và rót nước vào cốc thì lại nhìn thấy đồng xu là do',
+          options: [
+            'tia sáng từ đồng xu truyền từ nước ra không khí bị khúc xạ tại mặt nước rồi truyền tới mắt.',
+            'nước làm đồng xu nổi lên gần mặt thoáng hơn so với ban đầu.',
+            'tia sáng từ mắt người truyền thẳng xuống đáy cốc không bị gãy khúc.',
+            'hiện tượng phản xạ ánh sáng trên thành cốc thủy tinh.'
+          ],
+          answer: 0,
+          explanation: 'Tia sáng xuất phát từ đồng xu đi từ nước ra không khí bị khúc xạ lệch xa pháp tuyến (Hình 5.6 SGK), lọt vào mắt nên mắt nhìn thấy ảnh của đồng xu ở vị trí cao hơn.'
+        },
+
+        // --- Mục III: Chiết suất của môi trường (Câu 8 - 12) ---
+        {
+          type: 'mcq',
+          section: 'III. Chiết suất của môi trường',
+          question: 'Công thức xác định chiết suất tỉ đối n₂₁ của môi trường 2 (chứa tia khúc xạ) đối với môi trường 1 (chứa tia tới) là:',
+          options: [
+            'n₂₁ = sin i / sin r = n₂ / n₁',
+            'n₂₁ = sin r / sin i = n₁ / n₂',
+            'n₂₁ = i / r = n₂ / n₁',
+            'n₂₁ = sin i · sin r = n₁ · n₂'
+          ],
+          answer: 0,
+          explanation: 'Theo SGK mục III.1: sin i / sin r = n₂₁ = n₂ / n₁.'
+        },
+        {
+          type: 'mcq',
+          section: 'III. Chiết suất của môi trường',
+          question: 'Nếu chiết suất tỉ đối của môi trường 2 đối với môi trường 1 thỏa mãn điều kiện n₂₁ > 1 thì đường đi của tia sáng có đặc điểm:',
+          options: [
+            'r < i, tia khúc xạ bị lệch lại gần pháp tuyến hơn.',
+            'r > i, tia khúc xạ bị lệch xa pháp tuyến hơn.',
+            'r = i, tia sáng truyền thẳng qua mặt phân cách.',
+            'r = 0°, tia khúc xạ trùng với pháp tuyến.'
+          ],
+          answer: 0,
+          explanation: 'Theo SGK: Nếu n₂₁ > 1 thì sin i > sin r => r < i: Tia khúc xạ bị lệch lại gần pháp tuyến hơn.'
+        },
+        {
+          type: 'mcq',
+          section: 'III. Chiết suất của môi trường',
+          question: 'Chiết suất tuyệt đối n của một môi trường trong suốt được tính bằng công thức nào sau đây?',
+          options: [
+            'n = c / v',
+            'n = v / c',
+            'n = c · v',
+            'n = c - v'
+          ],
+          answer: 0,
+          explanation: 'Chiết suất tuyệt đối n = c / v, trong đó c = 3.10⁸ m/s là tốc độ ánh sáng trong chân không và v là tốc độ ánh sáng trong môi trường đó.'
+        },
+        {
+          type: 'mcq',
+          section: 'III. Chiết suất của môi trường',
+          question: 'Dựa vào Bảng 5.2 SGK (kim cương: 2,419; thủy tinh flint: 1,603; nước: 1,333; nước đá: 1,309), ánh sáng truyền với tốc độ nhỏ nhất trong môi trường nào?',
+          options: [
+            'Kim cương',
+            'Thủy tinh flint',
+            'Nước',
+            'Nước đá'
+          ],
+          answer: 0,
+          explanation: 'Vì v = c / n nên môi trường nào có chiết suất n lớn nhất (kim cương, n = 2,419) thì tốc độ truyền ánh sáng v trong môi trường đó nhỏ nhất.'
+        },
+        {
+          type: 'mcq',
+          section: 'III. Chiết suất của môi trường',
+          question: 'Chiết suất của chân không có giá trị bằng bao nhiêu?',
+          options: [
+            '1',
+            '1,333',
+            '1,500',
+            '3.10⁸'
+          ],
+          answer: 0,
+          explanation: 'Chiết suất của chân không bằng 1 (vì trong chân không v = c nên n = c/c = 1). Chiết suất không khí là 1,00029 nên thường lấy tròn là 1.'
+        },
+
+        // =================================================================
+        // PHẦN 2: 3 CÂU TRẮC NGHIỆM ĐÚNG / SAI (MỖI CÂU 4 Ý a, b, c, d)
+        // =================================================================
+        {
+          type: 'tf_group',
+          section: 'I. Hiện tượng khúc xạ ánh sáng',
+          question: 'Trong thí nghiệm 1 (Hình 5.1 và Hình 5.2 SGK), người ta chiếu một chùm sáng hẹp SI từ không khí tới tâm I của một bản bán trụ bằng thủy tinh đặt trên bảng chia độ. Xét tính đúng/sai của các phát biểu sau:',
+          items: [
+            { text: 'a) Tại điểm tới I trên mặt phân cách giữa không khí và thủy tinh, chùm tia sáng bị gãy khúc lệch khỏi phương truyền ban đầu.', answer: true },
+            { text: 'b) Đường thẳng NN\' vuông góc với mặt phẳng bản bán trụ tại điểm tới I được gọi là tia phản xạ.', answer: false },
+            { text: 'c) Góc tới i là góc hợp bởi tia tới SI và mặt phẳng của bản bán trụ thủy tinh.', answer: false },
+            { text: 'd) Khi chùm tia khúc xạ IK đi từ tâm I ra mặt cong của bản bán trụ thì nó đi vuông góc với mặt cong nên truyền thẳng ra ngoài không khí.', answer: true }
+          ],
+          explanation: 'a) Đúng. b) Sai, NN\' là pháp tuyến. c) Sai, góc tới i là góc hợp bởi tia tới SI và pháp tuyến NN\'. d) Đúng, mọi bán kính xuất phát từ tâm I đều vuông góc với mặt cong bán trụ nên góc tới tại mặt cong bằng 0°, tia sáng truyền thẳng.'
+        },
+        {
+          type: 'tf_group',
+          section: 'II. Định luật khúc xạ ánh sáng',
+          question: 'Một nhóm học sinh thực hiện Thí nghiệm 2 (Bảng 5.1 SGK) chiếu tia sáng từ không khí vào bản bán trụ thủy tinh với các góc tới khác nhau và thu được bảng số liệu: i = 0° (r = 0°); i = 20° (r = 13°); i = 40° (r = 25°); i = 60° (r = 35°). Xét các nhận xét dưới đây:',
+          items: [
+            { text: 'a) Khi góc tới i = 0° (tia sáng chiếu vuông góc với mặt phân cách) thì góc khúc xạ r = 0°, tia sáng truyền thẳng.', answer: true },
+            { text: 'b) Khi góc tới i tăng lên thì góc khúc xạ r cũng tăng lên nhưng luôn nhỏ hơn góc tới i.', answer: true },
+            { text: 'c) Tỉ số giữa góc tới và góc khúc xạ (i / r) luôn là một hằng số không đổi đối với mọi góc tới.', answer: false },
+            { text: 'd) Tỉ số giữa sin góc tới và sin góc khúc xạ (sin i / sin r) xấp xỉ không đổi và bằng khoảng 1,52.', answer: true }
+          ],
+          explanation: 'a) Đúng. b) Đúng. c) Sai, tỉ số i/r thay đổi (20/13 ≈ 1,54; 60/35 ≈ 1,71), chỉ có tỉ số sin i / sin r mới không đổi. d) Đúng, sin(20°)/sin(13°) ≈ 1,52; sin(40°)/sin(25°) ≈ 1,52; sin(60°)/sin(35°) ≈ 1,51.'
+        },
+        {
+          type: 'tf_group',
+          section: 'III. Chiết suất của môi trường',
+          question: 'Cho chiết suất tuyệt đối của một số môi trường ở 20°C theo Bảng 5.2 SGK: Không khí n ≈ 1; Nước n = 1,333; Muối ăn (NaCl) n = 1,544; Kim cương n = 2,419. Biết tốc độ ánh sáng trong chân không là c = 3.10⁸ m/s. Hãy xác định tính đúng/sai của các nhận định sau:',
+          items: [
+            { text: 'a) Chiết suất tuyệt đối của một môi trường trong suốt bất kì luôn có giá trị lớn hơn hoặc bằng 1.', answer: true },
+            { text: 'b) Khi chiếu tia sáng từ không khí vào nước, chiết suất tỉ đối của nước đối với không khí là n₂₁ = 1,333 > 1 nên tia khúc xạ lệch lại gần pháp tuyến hơn.', answer: true },
+            { text: 'c) Khi chiếu tia sáng từ tinh thể muối ăn (NaCl) sang nước, tia khúc xạ bị lệch lại gần pháp tuyến hơn so với tia tới.', answer: false },
+            { text: 'd) Tốc độ truyền ánh sáng trong nước lớn hơn tốc độ truyền ánh sáng trong kim cương.', answer: true }
+          ],
+          explanation: 'a) Đúng (vì v ≤ c nên n = c/v ≥ 1). b) Đúng. c) Sai, từ muối ăn (n₁ = 1,544) sang nước (n₂ = 1,333) có n₂₁ = 1,333/1,544 < 1 nên r > i, tia khúc xạ lệch xa pháp tuyến hơn. d) Đúng (v_nước ≈ 2,25.10⁸ m/s > v_kim cương ≈ 1,24.10⁸ m/s).'
+        },
+
+        // =================================================================
+        // PHẦN 3: 8 CÂU TRẢ LỜI NGẮN (ĐÁP ÁN 4 KÍ TỰ SỐ - CHỈ MỤC II & III)
+        // =================================================================
+        {
+          type: 'short',
+          section: 'II. Định luật khúc xạ ánh sáng',
+          question: 'Trong Bảng 5.1 SGK, khi chiếu tia sáng từ không khí vào thủy tinh với góc tới i = 20° thì đo được góc khúc xạ r = 13°. Tính tỉ số sin i / sin r (làm tròn đến 2 chữ số thập phân, gồm 4 kí tự).',
+          answer: '1,52',
+          unit: '',
+          explanation: 'sin(20°) / sin(13°) ≈ 0,3420 / 0,2250 ≈ 1,52 (4 kí tự: 1,52).'
+        },
+        {
+          type: 'short',
+          section: 'II. Định luật khúc xạ ánh sáng',
+          question: 'Trong Bảng 5.1 SGK, khi chiếu tia sáng từ không khí vào thủy tinh với góc tới i = 60° thì đo được góc khúc xạ r = 35°. Tính tỉ số sin i / sin r (làm tròn đến 2 chữ số thập phân, gồm 4 kí tự).',
+          answer: '1,51',
+          unit: '',
+          explanation: 'sin(60°) / sin(35°) ≈ 0,8660 / 0,5736 ≈ 1,51 (4 kí tự: 1,51).'
+        },
+        {
+          type: 'short',
+          section: 'III. Chiết suất của môi trường',
+          question: 'Giải bài tập mục III.2 SGK (trang 28): Chiếu tia sáng từ không khí (n₁ = 1) vào nước với góc tới i = 60° thì góc khúc xạ trong nước là r = 40°. Tính chiết suất của nước (làm tròn đến 2 chữ số thập phân, gồm 4 kí tự).',
+          answer: '1,35',
+          unit: '',
+          explanation: 'n = sin(60°) / sin(40°) ≈ 0,8660 / 0,6428 ≈ 1,35 (4 kí tự: 1,35).'
+        },
+        {
+          type: 'short',
+          section: 'III. Chiết suất của môi trường',
+          question: 'Chiếu một tia sáng từ không khí (n₁ = 1) vào thủy tinh có chiết suất n₂ = 1,50 với góc tới i = 45°. Tính góc khúc xạ r theo đơn vị độ (làm tròn đến 1 chữ số thập phân, gồm 4 kí tự).',
+          answer: '28,1',
+          unit: 'độ',
+          explanation: 'sin r = sin(45°) / 1,50 ≈ 0,7071 / 1,50 ≈ 0,4714 => r ≈ 28,1° (4 kí tự: 28,1).'
+        },
+        {
+          type: 'short',
+          section: 'III. Chiết suất của môi trường',
+          question: 'Chiếu một tia sáng từ nước có chiết suất n₁ = 1,333 ra ngoài không khí (n₂ = 1) với góc tới i = 30°. Tính góc khúc xạ r ngoài không khí theo đơn vị độ (làm tròn đến 1 chữ số thập phân, gồm 4 kí tự).',
+          answer: '41,8',
+          unit: 'độ',
+          explanation: 'n₁.sin i = n₂.sin r => sin r = 1,333 × sin(30°) = 0,6665 => r ≈ 41,8° (4 kí tự: 41,8).'
+        },
+        {
+          type: 'short',
+          section: 'III. Chiết suất của môi trường',
+          question: 'Dựa vào Bảng 5.2 SGK, chiết suất của thủy tinh flint là 1,603 và của nước là 1,333. Tính chiết suất tỉ đối của thủy tinh flint đối với nước (làm tròn đến 2 chữ số thập phân, gồm 4 kí tự).',
+          answer: '1,20',
+          unit: '',
+          explanation: 'n₂₁ = n_thủy tinh / n_nước = 1,603 / 1,333 ≈ 1,20 (4 kí tự: 1,20).'
+        },
+        {
+          type: 'short',
+          section: 'III. Chiết suất của môi trường',
+          question: 'Biết tốc độ ánh sáng trong chân không là c = 3.10⁸ m/s và chiết suất của nước theo Bảng 5.2 SGK là n = 1,333. Tốc độ ánh sáng truyền trong nước bằng bao nhiêu lần 10⁸ m/s (làm tròn đến 2 chữ số thập phân, gồm 4 kí tự)?',
+          answer: '2,25',
+          unit: '× 10⁸ m/s',
+          explanation: 'v = c / n = 3.10⁸ / 1,333 ≈ 2,25.10⁸ m/s (4 kí tự: 2,25).'
+        },
+        {
+          type: 'short',
+          section: 'III. Chiết suất của môi trường',
+          question: 'Biết tốc độ ánh sáng trong chân không là c = 3.10⁸ m/s và chiết suất của kim cương theo Bảng 5.2 SGK là n = 2,419. Tốc độ ánh sáng truyền trong kim cương bằng bao nhiêu lần 10⁸ m/s (làm tròn đến 2 chữ số thập phân, gồm 4 kí tự)?',
+          answer: '1,24',
+          unit: '× 10⁸ m/s',
+          explanation: 'v = c / n = 3.10⁸ / 2,419 ≈ 1,24.10⁸ m/s (4 kí tự: 1,24).'
+        }
+      ]
+    };
   </script>
 
   <script src="engine.js"></script>

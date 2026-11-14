@@ -1,37 +1,38 @@
 // =========================================================================
-// CẤU HÌNH GOOGLE SHEETS DUY NHẤT TẠI ĐÂY (Dán link Web App URL vào giữa dấu nháy)
-const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbzHHVpWBFOZdYUV7j-p3YjhiY1NAPBIVpVzBDB0aQuh3ByjI460FDPCQY8ub6qmvHbyuA/exec'; 
+// CẤU HÌNH GOOGLE SHEETS DUY NHẤT TẠI ĐÂY
+const GOOGLE_SHEET_URL = ''; 
 // =========================================================================
 
-let currentMode = 'practice'; // 'practice' | 'exam'
+let currentMode = 'practice';
 let activeQuestions = [];
 let userAnswers = {};
 let isSubmitted = false;
 let timerInterval = null;
-let secondsLeft = 600; // 10 phút làm bài kiểm tra
+let secondsLeft = 900;
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Hiển thị tiêu đề bài học từ biến LESSON_DATA trong từng trang con
   document.title = LESSON_DATA.title + ' - KHTN 9 THCS Ninh Hòa';
   document.getElementById('lessonTitle').textContent = LESSON_DATA.title;
   document.getElementById('lessonTopic').textContent = LESSON_DATA.topic;
   document.getElementById('theoryContent').innerHTML = LESSON_DATA.theoryHTML;
 
-  // Nạp thông tin học sinh đã nhập ở Trang chủ
+  // Nạp Họ tên & Lớp đã lưu trên máy học sinh
   const profile = JSON.parse(localStorage.getItem('vl9_profile') || '{}');
   if (profile.name) document.getElementById('stuName').value = profile.name;
   if (profile.className) document.getElementById('stuClass').value = profile.className;
 
   document.getElementById('stuName').addEventListener('input', syncProfile);
-  document.getElementById('stuClass').addEventListener('change', syncProfile);
+  document.getElementById('stuClass').addEventListener('input', syncProfile);
 
   startQuiz('practice');
 });
 
 function syncProfile() {
+  const clsInput = document.getElementById('stuClass');
+  clsInput.value = clsInput.value.toUpperCase(); // Tự động viết hoa tên lớp (vd: 9a1 -> 9A1)
   localStorage.setItem('vl9_profile', JSON.stringify({
     name: document.getElementById('stuName').value.trim(),
-    className: document.getElementById('stuClass').value
+    className: clsInput.value.trim()
   }));
 }
 
@@ -69,36 +70,62 @@ function startQuiz(mode) {
   userAnswers = {};
   clearInterval(timerInterval);
 
-  // Cập nhật nút chế độ
   document.getElementById('btnModePractice').className = mode === 'practice'
-    ? 'px-3.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white'
-    : 'px-3.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600';
+    ? 'px-3.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white shadow-sm'
+    : 'px-3.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200';
   document.getElementById('btnModeExam').className = mode === 'exam'
-    ? 'px-3.5 py-1.5 rounded-lg text-xs font-bold bg-rose-600 text-white'
-    : 'px-3.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600';
+    ? 'px-3.5 py-1.5 rounded-lg text-xs font-bold bg-rose-600 text-white shadow-sm'
+    : 'px-3.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200';
 
   document.getElementById('resultBanner').classList.add('hidden');
   document.getElementById('submitBtn').classList.remove('hidden');
 
-  // Xáo trộn câu hỏi và xáo trộn đáp án trắc nghiệm
-  activeQuestions = shuffleArray(LESSON_DATA.questions).map((q, idx) => {
-    if (q.type === 'mcq') {
+  if (mode === 'practice') {
+    // CHẾ ĐỘ LUYỆN TẬP: Giữ nguyên thứ tự đề mục SGK từ Mục I -> Mục II -> Mục III
+    const orderedBySection = [];
+    const seenSections = [];
+
+    LESSON_DATA.questions.forEach(q => {
+      const sec = q.section || 'Kiến thức chung';
+      if (!seenSections.includes(sec)) seenSections.push(sec);
+    });
+
+    seenSections.forEach(sec => {
+      const group = LESSON_DATA.questions.filter(q => (q.section || 'Kiến thức chung') === sec);
+      group.forEach(q => {
+        if (q.type === 'mcq') {
+          orderedBySection.push({
+            ...q,
+            shuffledOptions: [...q.options],
+            correctIndex: q.answer
+          });
+        } else {
+          orderedBySection.push({ ...q });
+        }
+      });
+    });
+
+    activeQuestions = orderedBySection;
+  } else {
+    // CHẾ ĐỘ KIỂM TRA: Xáo trộn ngẫu nhiên các câu hỏi và xáo vị trí 4 phương án A, B, C, D
+    const mcqs = shuffleArray(LESSON_DATA.questions.filter(q => q.type === 'mcq')).map(q => {
       const indexedOpts = q.options.map((text, i) => ({ text, isCorrect: i === q.answer }));
       const shuffled = shuffleArray(indexedOpts);
       return {
         ...q,
-        renderIndex: idx,
         shuffledOptions: shuffled.map(o => o.text),
         correctIndex: shuffled.findIndex(o => o.isCorrect)
       };
-    }
-    return { ...q, renderIndex: idx };
-  });
+    });
+    const tfGroups = shuffleArray(LESSON_DATA.questions.filter(q => q.type === 'tf_group' || q.type === 'tf'));
+    const shorts = shuffleArray(LESSON_DATA.questions.filter(q => q.type === 'short'));
 
-  // Bộ đếm giờ nếu là chế độ Kiểm tra
+    activeQuestions = [...mcqs, ...tfGroups, ...shorts];
+  }
+
   const timerEl = document.getElementById('timerBox');
   if (mode === 'exam') {
-    secondsLeft = (LESSON_DATA.examMinutes || 10) * 60;
+    secondsLeft = (LESSON_DATA.examMinutes || 15) * 60;
     timerEl.classList.remove('hidden');
     updateTimerDisplay();
     timerInterval = setInterval(() => {
@@ -114,6 +141,7 @@ function startQuiz(mode) {
   }
 
   renderQuestions();
+  if (window.MathJax) MathJax.typesetPromise();
 }
 
 function updateTimerDisplay() {
@@ -125,13 +153,24 @@ function updateTimerDisplay() {
 function renderQuestions() {
   const container = document.getElementById('questionList');
   container.innerHTML = '';
+  let lastRenderedSection = '';
 
   activeQuestions.forEach((q, idx) => {
+    // Ở chế độ Luyện tập: Chèn tiêu đề phân cách mỗi khi sang đề mục SGK mới (Mục I, Mục II, Mục III)
+    if (currentMode === 'practice' && q.section && q.section !== lastRenderedSection) {
+      lastRenderedSection = q.section;
+      const secHeader = document.createElement('div');
+      secHeader.className = 'bg-blue-50 border-l-4 border-blue-700 px-4 py-2.5 rounded-r-xl font-extrabold text-blue-900 text-sm sm:text-base mt-6 first:mt-0 shadow-xs';
+      secHeader.textContent = `📌 ${q.section}`;
+      container.appendChild(secHeader);
+    }
+
     const card = document.createElement('div');
     card.id = `q-card-${idx}`;
     card.className = 'bg-white rounded-2xl p-5 border border-slate-200 shadow-sm';
 
-    let typeBadge = q.type === 'mcq' ? 'Trắc nghiệm 4 lựa chọn' : (q.type === 'tf' ? 'Đúng / Sai' : 'Trả lời ngắn');
+    let typeBadge = q.type === 'mcq' ? 'Trắc nghiệm 1 lựa chọn' : (q.type === 'tf_group' ? 'Trắc nghiệm Đúng / Sai (4 ý)' : 'Trả lời ngắn (4 kí tự)');
+    let sectionTag = (currentMode === 'exam' && q.section) ? `<span class="text-xs text-slate-500 font-medium">${q.section}</span>` : '';
     let inputHTML = '';
 
     if (q.type === 'mcq') {
@@ -144,25 +183,35 @@ function renderQuestions() {
             <span>${opt}</span>
           </button>
         `).join('') + `</div>`;
-    } else if (q.type === 'tf') {
-      inputHTML = `<div class="flex gap-3 mt-3">
-        <button type="button" onclick="selectTF(${idx}, true)" id="tf-${idx}-true"
-          class="tf-btn-${idx} px-5 py-2.5 rounded-xl border border-slate-200 font-semibold text-sm hover:bg-blue-50">✅ Đúng</button>
-        <button type="button" onclick="selectTF(${idx}, false)" id="tf-${idx}-false"
-          class="tf-btn-${idx} px-5 py-2.5 rounded-xl border border-slate-200 font-semibold text-sm hover:bg-blue-50">❌ Sai</button>
-      </div>`;
+    } else if (q.type === 'tf_group') {
+      inputHTML = `<div class="mt-3 border border-slate-200 rounded-xl overflow-hidden divide-y divide-slate-200">` +
+        q.items.map((item, iIdx) => `
+          <div class="p-3 bg-slate-50/60 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+            <div class="text-sm text-slate-800 flex-1">${item.text}</div>
+            <div class="flex gap-2 shrink-0">
+              <button type="button" id="tfg-${idx}-${iIdx}-true" onclick="selectTFGroup(${idx}, ${iIdx}, true)"
+                class="px-3.5 py-1 rounded-lg border border-slate-300 bg-white text-slate-700 text-xs font-bold hover:bg-blue-50">Đúng</button>
+              <button type="button" id="tfg-${idx}-${iIdx}-false" onclick="selectTFGroup(${idx}, ${iIdx}, false)"
+                class="px-3.5 py-1 rounded-lg border border-slate-300 bg-white text-slate-700 text-xs font-bold hover:bg-blue-50">Sai</button>
+            </div>
+          </div>
+        `).join('') + `</div>`;
     } else if (q.type === 'short') {
-      inputHTML = `<div class="mt-3 flex items-center gap-2">
-        <input type="text" id="short-${idx}" oninput="inputShort(${idx}, this.value)"
-          placeholder="Nhập kết quả bằng số (ví dụ: 12,5 hoặc 12.5)..."
-          class="border border-slate-300 rounded-xl px-3.5 py-2 text-sm w-full sm:w-72 focus:ring-2 focus:ring-blue-500 outline-none">
+      inputHTML = `<div class="mt-3 flex flex-wrap items-center gap-2.5">
+        <input type="text" maxlength="4" id="short-${idx}" oninput="inputShort(${idx}, this.value)"
+          placeholder="4 kí tự..."
+          class="border-2 border-slate-300 rounded-xl px-3.5 py-2 text-base font-bold tracking-widest text-center w-36 focus:border-blue-600 outline-none">
         ${q.unit ? `<span class="text-sm font-semibold text-slate-600">${q.unit}</span>` : ''}
+        <span class="text-xs text-slate-400">(Nhập đúng 4 kí tự, vd: 1,52)</span>
       </div>`;
     }
 
     card.innerHTML = `
-      <div class="flex items-center justify-between gap-2 mb-2">
-        <span class="text-xs font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded">Câu ${idx + 1} • ${typeBadge}</span>
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+        <div class="flex items-center gap-2 flex-wrap">
+          <span class="text-xs font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded">Câu ${idx + 1} • ${typeBadge}</span>
+          ${sectionTag}
+        </div>
         <span id="status-${idx}" class="text-xs font-bold"></span>
       </div>
       <div class="text-slate-800 font-semibold text-base leading-relaxed">${q.question}</div>
@@ -183,14 +232,23 @@ function selectMCQ(qIdx, optIdx) {
   if (currentMode === 'practice') checkSingleQuestion(qIdx);
 }
 
-function selectTF(qIdx, val) {
+function selectTFGroup(qIdx, itemIdx, val) {
   if (isSubmitted) return;
-  userAnswers[qIdx] = val;
-  document.querySelectorAll(`.tf-btn-${qIdx}`).forEach(b => {
-    b.classList.remove('border-blue-600', 'bg-blue-50', 'ring-2', 'ring-blue-500');
+  if (!userAnswers[qIdx]) userAnswers[qIdx] = {};
+  userAnswers[qIdx][itemIdx] = val;
+
+  ['true', 'false'].forEach(v => {
+    const btn = document.getElementById(`tfg-${qIdx}-${itemIdx}-${v}`);
+    btn.classList.remove('bg-blue-600', 'text-white', 'border-blue-600');
+    btn.classList.add('bg-white', 'text-slate-700', 'border-slate-300');
   });
-  document.getElementById(`tf-${qIdx}-${val}`).classList.add('border-blue-600', 'bg-blue-50', 'ring-2', 'ring-blue-500');
-  if (currentMode === 'practice') checkSingleQuestion(qIdx);
+  const activeBtn = document.getElementById(`tfg-${qIdx}-${itemIdx}-${val}`);
+  activeBtn.classList.remove('bg-white', 'text-slate-700', 'border-slate-300');
+  activeBtn.classList.add('bg-blue-600', 'text-white', 'border-blue-600');
+
+  if (currentMode === 'practice' && Object.keys(userAnswers[qIdx]).length === activeQuestions[qIdx].items.length) {
+    checkSingleQuestion(qIdx);
+  }
 }
 
 function inputShort(qIdx, val) {
@@ -198,41 +256,58 @@ function inputShort(qIdx, val) {
   userAnswers[qIdx] = val.trim();
 }
 
-function evaluateQuestion(q, ans) {
-  if (ans === undefined || ans === '') return false;
-  if (q.type === 'mcq') return ans === q.correctIndex;
-  if (q.type === 'tf') return ans === q.answer;
-  if (q.type === 'short') {
-    const numUser = parseFloat(String(ans).replace(',', '.'));
-    const numAns = parseFloat(String(q.answer).replace(',', '.'));
-    if (!isNaN(numUser) && !isNaN(numAns)) {
-      return Math.abs(numUser - numAns) <= (q.tolerance || 0.05);
-    }
-    return String(ans).toLowerCase() === String(q.answer).toLowerCase();
+function scoreQuestionRatio(q, ans) {
+  if (ans === undefined || ans === '') return 0;
+  if (q.type === 'mcq') return ans === q.correctIndex ? 1 : 0;
+  if (q.type === 'tf_group') {
+    let rightItems = 0;
+    q.items.forEach((it, i) => {
+      if (ans[i] === it.answer) rightItems++;
+    });
+    if (rightItems === 4) return 1.0;
+    if (rightItems === 3) return 0.5;
+    if (rightItems === 2) return 0.25;
+    if (rightItems === 1) return 0.1;
+    return 0;
   }
-  return false;
+  if (q.type === 'short') {
+    const normUser = String(ans).replace('.', ',').trim();
+    const normAns = String(q.answer).replace('.', ',').trim();
+    return normUser === normAns ? 1 : 0;
+  }
+  return 0;
 }
 
 function checkSingleQuestion(qIdx) {
   const q = activeQuestions[qIdx];
-  const isRight = evaluateQuestion(q, userAnswers[qIdx]);
+  const ratio = scoreQuestionRatio(q, userAnswers[qIdx]);
   const statusEl = document.getElementById(`status-${qIdx}`);
   const explainEl = document.getElementById(`explain-${qIdx}`);
 
-  statusEl.textContent = isRight ? '✅ Chính xác!' : '❌ Chưa đúng';
-  statusEl.className = isRight ? 'text-xs font-bold text-emerald-600' : 'text-xs font-bold text-rose-600';
+  if (ratio === 1) {
+    statusEl.textContent = '✅ Chính xác hoàn toàn!';
+    statusEl.className = 'text-xs font-bold text-emerald-600';
+  } else if (ratio > 0) {
+    statusEl.textContent = `⚠️ Đạt ${Math.round(ratio * 100)}% điểm câu này`;
+    statusEl.className = 'text-xs font-bold text-amber-600';
+  } else {
+    statusEl.textContent = '❌ Chưa đúng';
+    statusEl.className = 'text-xs font-bold text-rose-600';
+  }
 
-  explainEl.innerHTML = `<strong>💡 Giải thích:</strong> ${q.explanation || 'Xem lại phần tóm tắt lý thuyết.'}`;
+  let ansNote = '';
+  if (q.type === 'short') ansNote = `<div class="mb-1 text-emerald-800 font-bold">Đáp án chuẩn (4 kí tự): ${q.answer}</div>`;
+  explainEl.innerHTML = `${ansNote}<strong>💡 Giải thích:</strong> ${q.explanation || ''}`;
   explainEl.classList.remove('hidden');
 }
 
 function submitQuiz(autoTimeUp = false) {
   if (isSubmitted) return;
   const name = document.getElementById('stuName').value.trim();
-  const className = document.getElementById('stuClass').value;
+  const className = document.getElementById('stuClass').value.trim();
 
   if (!autoTimeUp && (!name || !className)) {
-    alert('Em vui lòng nhập đầy đủ Họ tên và chọn Lớp ở phía trên trước khi nộp bài!');
+    alert('Em vui lòng nhập đầy đủ Họ tên và Lớp (ví dụ: 9A1, 9D3...) ở phía trên trước khi nộp bài!');
     document.getElementById('stuName').focus();
     return;
   }
@@ -241,34 +316,35 @@ function submitQuiz(autoTimeUp = false) {
   clearInterval(timerInterval);
   document.getElementById('submitBtn').classList.add('hidden');
 
-  let correctCount = 0;
+  let earnedPoints = 0;
+  let fullCorrectCount = 0;
   activeQuestions.forEach((q, idx) => {
-    const isRight = evaluateQuestion(q, userAnswers[idx]);
-    if (isRight) correctCount++;
+    const r = scoreQuestionRatio(q, userAnswers[idx]);
+    earnedPoints += r;
+    if (r === 1) fullCorrectCount++;
     checkSingleQuestion(idx);
 
     const card = document.getElementById(`q-card-${idx}`);
     card.classList.remove('border-slate-200');
-    card.classList.add(isRight ? 'border-emerald-400' : 'border-rose-300');
+    card.classList.add(r === 1 ? 'border-emerald-400' : (r > 0 ? 'border-amber-400' : 'border-rose-300'));
   });
 
   const total = activeQuestions.length;
-  const score = ((correctCount / total) * 10).toFixed(1);
+  const score10 = ((earnedPoints / total) * 10).toFixed(2);
 
   const banner = document.getElementById('resultBanner');
   banner.classList.remove('hidden');
-  document.getElementById('scoreDisplay').textContent = `${score} / 10 điểm`;
-  document.getElementById('detailDisplay').textContent = `Đúng ${correctCount}/${total} câu • Chế độ: ${currentMode === 'exam' ? 'Kiểm tra' : 'Luyện tập'}`;
+  document.getElementById('scoreDisplay').textContent = `${score10} / 10 điểm`;
+  document.getElementById('detailDisplay').textContent = `Hoàn thành trọn vẹn ${fullCorrectCount}/${total} câu • Chế độ: ${currentMode === 'exam' ? 'Kiểm tra' : 'Luyện tập'}`;
 
-  // Lưu vào localStorage để Trang chủ hiển thị điểm cao nhất
   const record = {
     lessonId: LESSON_DATA.id,
     lesson: LESSON_DATA.title,
     name: name || 'Học sinh ẩn danh',
-    className: className || 'Chưa chọn lớp',
+    className: className || 'Chưa nhập lớp',
     mode: currentMode === 'exam' ? 'Kiểm tra' : 'Luyện tập',
-    score: score,
-    correct: correctCount,
+    score: score10,
+    correct: fullCorrectCount,
     total: total,
     time: new Date().toLocaleString('vi-VN')
   };
@@ -277,7 +353,6 @@ function submitQuiz(autoTimeUp = false) {
   history.push(record);
   localStorage.setItem('vl9_scores', JSON.stringify(history));
 
-  // Tự động gửi điểm về Google Sheets nếu thầy đã dán link
   if (GOOGLE_SHEET_URL) {
     const syncStatus = document.getElementById('syncStatus');
     syncStatus.textContent = '⏳ Đang gửi điểm về bảng điểm của thầy...';

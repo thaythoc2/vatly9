@@ -31,10 +31,13 @@
     <div class="bg-white p-3.5 rounded-2xl border border-slate-200 mb-5 flex flex-wrap gap-2.5 items-center justify-between">
       <div class="flex flex-wrap gap-2 flex-1">
         <input id="stuName" type="text" placeholder="Họ và tên học sinh..." class="border border-slate-300 rounded-xl px-3 py-1.5 text-sm flex-1 min-w-[180px]">
-       <div class="flex flex-wrap gap-2 flex-1">
-        <input id="stuName" type="text" placeholder="Họ và tên học sinh..." class="border border-slate-300 rounded-xl px-3 py-1.5 text-sm flex-1 min-w-[180px] focus:ring-2 focus:ring-blue-500 outline-none">
-        <input id="stuClass" type="text" placeholder="Lớp (vd: 9A1, 9D3...)" class="border border-slate-300 rounded-xl px-3 py-1.5 text-sm w-36 uppercase font-semibold focus:ring-2 focus:ring-blue-500 outline-none">
-      </div>
+        <select id="stuClass" class="border border-slate-300 rounded-xl px-3 py-1.5 text-sm bg-white">
+          <option value="">-- Lớp --</option>
+          <option value="9/1">9/1</option><option value="9/2">9/2</option>
+          <option value="9/3">9/3</option><option value="9/4">9/4</option>
+          <option value="9/5">9/5</option><option value="9/6">9/6</option>
+          <option value="9/7">9/7</option><option value="9/8">9/8</option>
+        </select>
       </div>
       <div class="flex gap-2">
         <button id="btnTabTheory" onclick="switchTab('theory')" class="px-4 py-2 rounded-xl font-bold text-sm bg-white text-slate-600 border border-slate-200">📖 Lý thuyết</button>
@@ -127,12 +130,12 @@
           section: 'I. Hiện tượng khúc xạ ánh sáng',
           question: 'Hiện tượng khúc xạ ánh sáng là hiện tượng tia sáng truyền từ môi trường trong suốt này sang môi trường trong suốt khác bị',
           options: [
-            'hắt trở lại hoàn toàn vào môi trường truyền tới tại mặt phân cách.',
             'gãy khúc (lệch khỏi phương truyền ban đầu) tại mặt phân cách giữa hai môi trường.',
+            'hắt trở lại hoàn toàn vào môi trường truyền tới tại mặt phân cách.',
             'tách thành nhiều chùm sáng có màu sắc khác nhau khi đi qua mặt phân cách.',
             'dừng lại và bị hấp thụ hoàn toàn ngay tại mặt phân cách giữa hai môi trường.'
           ],
-          answer: 1,
+          answer: 0,
           explanation: 'Theo SGK, khúc xạ ánh sáng là hiện tượng tia sáng bị gãy khúc (lệch khỏi phương truyền ban đầu) tại mặt phân cách khi truyền từ môi trường trong suốt này sang môi trường trong suốt khác.'
         },
         {
@@ -140,13 +143,12 @@
           section: 'I. Hiện tượng khúc xạ ánh sáng',
           question: 'Trong thí nghiệm khảo sát hiện tượng khúc xạ ánh sáng, pháp tuyến tại điểm tới I là đường thẳng',
           options: [
-            
+            'vuông góc với mặt phân cách giữa hai môi trường tại điểm tới I.',
             'trùng với mặt phân cách giữa hai môi trường tại điểm tới I.',
             'nằm dọc theo phương của tia tới SI.',
             'tạo với mặt phân cách một góc nhọn 45° tại điểm tới I.'
-            'vuông góc với mặt phân cách giữa hai môi trường tại điểm tới I.',
           ],
-          answer: 3,
+          answer: 0,
           explanation: 'Pháp tuyến NN\' là đường thẳng vuông góc với mặt phân cách giữa hai môi trường tại điểm tới I.'
         },
         {
@@ -359,7 +361,39 @@
           unit: 'độ',
           explanation: 'sin r = sin(45°) / 1,50 ≈ 0,7071 / 1,50 ≈ 0,4714 => r ≈ 28,1° (4 kí tự: 28,1).'
         },
-            ]
+        {
+          type: 'short',
+          section: 'III. Chiết suất của môi trường',
+          question: 'Chiếu một tia sáng từ nước có chiết suất n₁ = 1,333 ra ngoài không khí (n₂ = 1) với góc tới i = 30°. Tính góc khúc xạ r ngoài không khí theo đơn vị độ (làm tròn đến 1 chữ số thập phân, gồm 4 kí tự).',
+          answer: '41,8',
+          unit: 'độ',
+          explanation: 'n₁.sin i = n₂.sin r => sin r = 1,333 × sin(30°) = 0,6665 => r ≈ 41,8° (4 kí tự: 41,8).'
+        },
+        {
+          type: 'short',
+          section: 'III. Chiết suất của môi trường',
+          question: 'Dựa vào Bảng 5.2 SGK, chiết suất của thủy tinh flint là 1,603 và của nước là 1,333. Tính chiết suất tỉ đối của thủy tinh flint đối với nước (làm tròn đến 2 chữ số thập phân, gồm 4 kí tự).',
+          answer: '1,20',
+          unit: '',
+          explanation: 'n₂₁ = n_thủy tinh / n_nước = 1,603 / 1,333 ≈ 1,20 (4 kí tự: 1,20).'
+        },
+        {
+          type: 'short',
+          section: 'III. Chiết suất của môi trường',
+          question: 'Biết tốc độ ánh sáng trong chân không là c = 3.10⁸ m/s và chiết suất của nước theo Bảng 5.2 SGK là n = 1,333. Tốc độ ánh sáng truyền trong nước bằng bao nhiêu lần 10⁸ m/s (làm tròn đến 2 chữ số thập phân, gồm 4 kí tự)?',
+          answer: '2,25',
+          unit: '× 10⁸ m/s',
+          explanation: 'v = c / n = 3.10⁸ / 1,333 ≈ 2,25.10⁸ m/s (4 kí tự: 2,25).'
+        },
+        {
+          type: 'short',
+          section: 'III. Chiết suất của môi trường',
+          question: 'Biết tốc độ ánh sáng trong chân không là c = 3.10⁸ m/s và chiết suất của kim cương theo Bảng 5.2 SGK là n = 2,419. Tốc độ ánh sáng truyền trong kim cương bằng bao nhiêu lần 10⁸ m/s (làm tròn đến 2 chữ số thập phân, gồm 4 kí tự)?',
+          answer: '1,24',
+          unit: '× 10⁸ m/s',
+          explanation: 'v = c / n = 3.10⁸ / 2,419 ≈ 1,24.10⁸ m/s (4 kí tự: 1,24).'
+        }
+      ]
     };
   </script>
 

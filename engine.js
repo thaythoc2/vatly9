@@ -1,6 +1,6 @@
 // =========================================================================
 // CẤU HÌNH GOOGLE SHEETS DUY NHẤT TẠI ĐÂY
-const GOOGLE_SHEET_URL = ''; 
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbzHHVpWBFOZdYUV7j-p3YjhiY1NAPBIVpVzBDB0aQuh3ByjI460FDPCQY8ub6qmvHbyuA/exec'; 
 // =========================================================================
 
 let currentMode = 'practice';
@@ -8,7 +8,7 @@ let activeQuestions = [];
 let userAnswers = {};
 let isSubmitted = false;
 let timerInterval = null;
-let elapsedSeconds = 0; // Đếm tăng thời gian làm bài từ 00:00
+let elapsedSeconds = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
   document.title = LESSON_DATA.title + ' - KHTN 9 THCS Ninh Hòa';
@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('lessonTopic').textContent = LESSON_DATA.topic;
   document.getElementById('theoryContent').innerHTML = LESSON_DATA.theoryHTML;
 
-  // Nạp Họ tên & Lớp đã lưu trên máy học sinh
   const profile = JSON.parse(localStorage.getItem('vl9_profile') || '{}');
   if (profile.name) document.getElementById('stuName').value = profile.name;
   if (profile.className) document.getElementById('stuClass').value = profile.className;
@@ -87,7 +86,6 @@ function startQuiz(mode) {
   document.getElementById('submitBtn').classList.remove('hidden');
 
   if (mode === 'practice') {
-    // CHẾ ĐỘ LUYỆN TẬP: Xếp tuần tự theo từng đề mục SGK (Mục I -> Mục II -> Mục III)
     const orderedBySection = [];
     const seenSections = [];
 
@@ -113,7 +111,6 @@ function startQuiz(mode) {
 
     activeQuestions = orderedBySection;
   } else {
-    // CHẾ ĐỘ KIỂM TRA: Xáo trộn ngẫu nhiên câu hỏi và xáo vị trí 4 phương án A, B, C, D
     const mcqs = shuffleArray(LESSON_DATA.questions.filter(q => q.type === 'mcq')).map(q => {
       const indexedOpts = q.options.map((text, i) => ({ text, isCorrect: i === q.answer }));
       const shuffled = shuffleArray(indexedOpts);
@@ -129,7 +126,6 @@ function startQuiz(mode) {
     activeQuestions = [...mcqs, ...tfGroups, ...shorts];
   }
 
-  // Đếm tăng thời gian từ 00:00 (hiện rõ khi ở chế độ Kiểm tra, đồng thời vẫn ngầm đo cả ở Luyện tập)
   elapsedSeconds = 0;
   const timerEl = document.getElementById('timerBox');
   if (mode === 'exam') {
@@ -195,12 +191,18 @@ function renderQuestions() {
           </div>
         `).join('') + `</div>`;
     } else if (q.type === 'short') {
+      // THÊM NÚT KIỂM TRA CHO CÂU TRẢ LỜI NGẮN (CHỈ HIỆN Ở CHẾ ĐỘ LUYỆN TẬP)
+      let checkBtnHTML = currentMode === 'practice' 
+        ? `<button type="button" onclick="checkSingleQuestion(${idx})" class="bg-indigo-100 text-indigo-800 hover:bg-indigo-200 border border-indigo-200 px-4 py-2 rounded-xl text-sm font-bold transition shadow-sm">Kiểm tra kết quả</button>` 
+        : '';
+
       inputHTML = `<div class="mt-3 flex flex-wrap items-center gap-2.5">
         <input type="text" maxlength="4" id="short-${idx}" oninput="inputShort(${idx}, this.value)"
           placeholder="4 kí tự..."
           class="border-2 border-slate-300 rounded-xl px-3.5 py-2 text-base font-bold tracking-widest text-center w-36 focus:border-blue-600 outline-none">
-        ${q.unit ? `<span class="text-sm font-semibold text-slate-600">${q.unit}</span>` : ''}
-        <span class="text-xs text-slate-400">(Nhập đúng 4 kí tự, vd: 1,52)</span>
+        ${q.unit ? `<span class="text-sm font-semibold text-slate-600 mr-1">${q.unit}</span>` : ''}
+        ${checkBtnHTML}
+        <div class="w-full text-xs text-slate-400 mt-1">(Nhập đúng 4 kí tự số. VD: 1,52)</div>
       </div>`;
     }
 
@@ -281,6 +283,12 @@ function checkSingleQuestion(qIdx) {
   const ratio = scoreQuestionRatio(q, userAnswers[qIdx]);
   const statusEl = document.getElementById(`status-${qIdx}`);
   const explainEl = document.getElementById(`explain-${qIdx}`);
+
+  if (q.type === 'short' && (!userAnswers[qIdx] || userAnswers[qIdx] === '')) {
+    statusEl.textContent = '⚠️ Hãy nhập số trước khi kiểm tra!';
+    statusEl.className = 'text-xs font-bold text-amber-600';
+    return;
+  }
 
   if (ratio === 1) {
     statusEl.textContent = '✅ Chính xác hoàn toàn!';

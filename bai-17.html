@@ -6,15 +6,10 @@
   <title>Bài 17. Một số dạng năng lượng tái tạo - KHTN 9 THCS Ninh Hòa</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script>
-    window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
-  </script>
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>body { font-family: 'Be Vietnam Pro', sans-serif; }</style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
 
-  <!-- Thanh điều hướng về Trang chủ -->
   <header class="bg-blue-900 text-white shadow sticky top-0 z-30">
     <div class="max-w-4xl mx-auto px-4 py-3.5 flex items-center justify-between gap-3">
       <a href="index.html" class="bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 transition">
@@ -27,17 +22,10 @@
   <main class="max-w-4xl mx-auto px-4 py-6 flex-1 w-full">
     <h1 id="lessonTitle" class="text-xl sm:text-2xl font-extrabold text-slate-900 mb-4">Bài 17. Một số dạng năng lượng tái tạo</h1>
 
-    <!-- Nhập nhanh tên lớp -->
     <div class="bg-white p-3.5 rounded-2xl border border-slate-200 mb-5 flex flex-wrap gap-2.5 items-center justify-between">
       <div class="flex flex-wrap gap-2 flex-1">
-        <input id="stuName" type="text" placeholder="Họ và tên học sinh..." class="border border-slate-300 rounded-xl px-3 py-1.5 text-sm flex-1 min-w-[180px]">
-        <select id="stuClass" class="border border-slate-300 rounded-xl px-3 py-1.5 text-sm bg-white">
-          <option value="">-- Lớp --</option>
-          <option value="9/1">9/1</option><option value="9/2">9/2</option>
-          <option value="9/3">9/3</option><option value="9/4">9/4</option>
-          <option value="9/5">9/5</option><option value="9/6">9/6</option>
-          <option value="9/7">9/7</option><option value="9/8">9/8</option>
-        </select>
+        <input id="stuName" type="text" placeholder="Họ và tên học sinh..." class="border border-slate-300 rounded-xl px-3 py-1.5 text-sm flex-1 min-w-[180px] focus:ring-2 focus:ring-blue-500 outline-none">
+        <input id="stuClass" type="text" placeholder="Lớp (vd: 9A1, 9D3...)" class="border border-slate-300 rounded-xl px-3 py-1.5 text-sm w-36 uppercase font-semibold focus:ring-2 focus:ring-blue-500 outline-none">
       </div>
       <div class="flex gap-2">
         <button id="btnTabTheory" onclick="switchTab('theory')" class="px-4 py-2 rounded-xl font-bold text-sm bg-white text-slate-600 border border-slate-200">📖 Lý thuyết</button>
@@ -45,7 +33,6 @@
       </div>
     </div>
 
-    <!-- Tab 1: Tóm tắt lý thuyết -->
     <section id="tabTheory" class="hidden bg-white rounded-2xl p-6 border border-slate-200 shadow-sm leading-relaxed space-y-3">
       <div id="theoryContent"></div>
       <div class="pt-4 border-t">
@@ -55,7 +42,6 @@
       </div>
     </section>
 
-    <!-- Tab 2: Luyện tập & Kiểm tra -->
     <section id="tabQuiz">
       <div id="resultBanner" class="hidden bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-2xl p-5 mb-5 shadow-md">
         <div class="flex flex-wrap items-center justify-between gap-4">
@@ -66,7 +52,7 @@
             <div id="syncStatus" class="text-xs mt-1.5 font-semibold bg-black/20 inline-block px-2.5 py-1 rounded-lg"></div>
           </div>
           <button onclick="startQuiz(currentMode)" class="bg-white text-emerald-800 hover:bg-emerald-50 px-4 py-2 rounded-xl font-bold text-sm shadow">
-            🔄 Làm đề mới (Xáo câu)
+            🔄 Làm lại (Đề mới)
           </button>
         </div>
       </div>
@@ -74,74 +60,468 @@
       <div class="bg-white p-3.5 rounded-2xl border border-slate-200 mb-4 flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-2">
           <span class="text-xs font-bold text-slate-500">Chế độ:</span>
-          <button id="btnModePractice" onclick="startQuiz('practice')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white">Luyện tập (Xem giải ngay)</button>
-          <button id="btnModeExam" onclick="startQuiz('exam')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600">Kiểm tra (Tính giờ)</button>
+          <button id="btnModePractice" onclick="startQuiz('practice')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white">Luyện tập (Theo mục SGK)</button>
+          <button id="btnModeExam" onclick="startQuiz('exam')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600">Kiểm tra (Xáo câu & tính giờ)</button>
         </div>
         <div id="timerBox" class="hidden text-sm font-extrabold text-rose-600 bg-rose-50 px-3 py-1 rounded-lg border border-rose-200">
-          ⏱️ Còn lại: <span id="timerText">10:00</span>
+          ⏱️ Thời gian làm bài: <span id="timerText">00:00</span>
         </div>
       </div>
 
       <div id="questionList" class="space-y-4"></div>
 
       <div class="mt-6 text-center">
-        <button id="submitBtn" onclick="submitQuiz(false)" class="bg-blue-700 hover:bg-blue-800 text-white px-8 py-3.5 rounded-2xl font-extrabold text-base shadow-lg transition">
+        <button id="submitBtn" onclick="submitQuiz()" class="bg-blue-700 hover:bg-blue-800 text-white px-8 py-3.5 rounded-2xl font-extrabold text-base shadow-lg transition">
           📩 NỘP BÀI & CHẤM ĐIỂM
         </button>
       </div>
     </section>
   </main>
 
-  <!-- ===================================================================== -->
-  <!-- DỮ LIỆU RIÊNG CỦA BÀI HỌC (Thầy chỉnh sửa / thêm câu hỏi tại đây)     -->
-  <!-- ===================================================================== -->
   <script>
     const LESSON_DATA = {
-  "id": 17,
-  "topic": "Năng lượng",
-  "title": "Bài 17. Một số dạng năng lượng tái tạo",
-  "examMinutes": 10,
-  "theoryHTML": "\n      <h3 class=\"font-bold text-lg text-blue-800\">I. Khái niệm năng lượng tái tạo</h3>\n      <p class=\"text-sm\">Là năng lượng từ những nguồn liên tục được bổ sung trong tự nhiên, coi như vô hạn và ít gây ô nhiễm môi trường.</p>\n      <h3 class=\"font-bold text-lg text-blue-800 mt-3\">II. Một số dạng năng lượng tái tạo tiêu biểu</h3>\n      <ul class=\"list-disc pl-5 space-y-1.5 text-sm\">\n        <li><strong>Năng lượng Mặt Trời:</strong> Pin mặt trời (quang năng → điện năng), bình nước nóng năng lượng mặt trời (quang năng → nhiệt năng). Phụ thuộc thời tiết, ngày/đêm.</li>\n        <li><strong>Năng lượng gió:</strong> Tua-bin gió biến động năng của gió thành điện năng. Phụ thuộc tốc độ gió.</li>\n        <li><strong>Năng lượng sóng biển & dòng sông (thủy điện):</strong> Biến cơ năng của dòng nước/sóng thành điện năng.</li>\n        <li><strong>Năng lượng sinh khối (Biomass):</strong> Từ phụ phẩm nông nghiệp, khí sinh học biogas.</li>\n      </ul>\n    ",
-  "questions": [
-    {
-      "type": "mcq",
-      "question": "Tấm pin mặt trời (pin quang điện) thực hiện sự chuyển hóa năng lượng nào sau đây?",
-      "options": [
-        "Quang năng chuyển hóa trực tiếp thành điện năng",
-        "Nhiệt năng chuyển hóa thành cơ năng",
-        "Hóa năng chuyển hóa thành điện năng",
-        "Cơ năng chuyển hóa thành quang năng"
-      ],
-      "answer": 0,
-      "explanation": "Pin mặt trời hấp thụ ánh sáng (quang năng) và chuyển hóa trực tiếp thành dòng điện một chiều (điện năng)."
-    },
-    {
-      "type": "mcq",
-      "question": "Hạn chế lớn nhất của điện mặt trời và điện gió khi hòa vào lưới điện quốc gia là gì?",
-      "options": [
-        "Công suất phát điện không ổn định, phụ thuộc nhiều vào thời tiết và thời gian trong ngày",
-        "Gây phát thải khí nhà kính rất lớn",
-        "Nguồn nhiên liệu đầu vào sắp bị cạn kiệt",
-        "Không thể biến đổi thành điện năng"
-      ],
-      "answer": 0,
-      "explanation": "Điện mặt trời chỉ phát ban ngày khi có nắng; điện gió phụ thuộc vào tốc độ gió từng thời điểm nên tính ổn định thấp."
-    },
-    {
-      "type": "tf",
-      "question": "Năng lượng gió, năng lượng mặt trời và năng lượng sóng biển đều là các nguồn năng lượng tái tạo thân thiện với môi trường.",
-      "answer": true,
-      "explanation": "Đúng. Các nguồn này được tự nhiên bổ sung liên tục và không phát thải khí CO₂ trong quá trình vận hành."
-    },
-    {
-      "type": "short",
-      "question": "Một hệ thống điện mặt trời áp mái công suất 5 kW hoạt động hiệu quả trung bình 4 giờ nắng đỉnh mỗi ngày. Trong 1 ngày hệ thống tạo ra bao nhiêu kWh điện?",
-      "answer": "20",
-      "unit": "kWh",
-      "explanation": "Điện năng tạo ra: W = P × t = 5 kW × 4 h = 20 kWh."
-    }
-  ]
-};
+      id: 17,
+      topic: 'Năng lượng',
+      title: 'Bài 17. Một số dạng năng lượng tái tạo',
+      theoryHTML: `
+        <h3 class="font-bold text-lg text-blue-800">I. Năng lượng tái tạo</h3>
+        <p class="text-sm">Là năng lượng đến từ các nguồn năng lượng có sẵn trong thiên nhiên, liên tục được bổ sung thông qua các quá trình tự nhiên (mặt trời, gió, dòng chảy, sinh khối, địa nhiệt...)[cite: 3].</p>
+        
+        <h3 class="font-bold text-lg text-blue-800 mt-3">II. Ưu nhược điểm của một số dạng năng lượng tái tạo</h3>
+        <ul class="list-disc pl-5 space-y-1 text-sm">
+          <li><strong>Mặt trời:</strong> Có sẵn, không ồn, không khí thải. Nhược điểm: Chi phí cao, rác thải điện tử sau 25 năm, tốn diện tích, ô nhiễm ánh sáng[cite: 3].</li>
+          <li><strong>Gió:</strong> Gió ngoài khơi mạnh/ổn định, không khí thải. Nhược điểm: Giá đầu tư cao, tiếng ồn, nhiễu sóng phát thanh, ảnh hưởng chim/dơi[cite: 3].</li>
+          <li><strong>Sóng biển:</strong> Do gió tạo ra. Nhược điểm: Cần không gian rộng, ảnh hưởng giao thông biển, phụ thuộc mùa vụ và thiên tai[cite: 3].</li>
+          <li><strong>Dòng sông:</strong> Ít khí thải hơn hóa thạch, tích nước quay tua-bin. Nhược điểm: Động vật khó di cư lên thượng nguồn, gây áp lực địa tầng/động đất, suy giảm rừng, phải di dân[cite: 3].</li>
+        </ul>
+
+        <h3 class="font-bold text-lg text-blue-800 mt-3">III. Sử dụng hiệu quả năng lượng và bảo vệ môi trường</h3>
+        <p class="text-sm">Dùng ít năng lượng hơn cho cùng một công việc (ví dụ dùng đèn LED thay sợi đốt). Giảm hao phí giúp giảm tiêu thụ nhiên liệu hóa thạch, giảm khí nhà kính CO2, bảo vệ môi trường sinh thái[cite: 3].</p>
+      `,
+      questions: [
+        // ==========================================
+        // MỤC I. NĂNG LƯỢNG TÁI TẠO (4 Trắc nghiệm)
+        // ==========================================
+        {
+          type: 'mcq', section: 'I. Năng lượng tái tạo',
+          question: 'Năng lượng tái tạo được định nghĩa là gì?',
+          options: [
+            'Năng lượng đến từ các nguồn có sẵn trong thiên nhiên, liên tục được bổ sung qua quá trình tự nhiên.',
+            'Năng lượng được khai thác từ các hầm mỏ dưới lòng đất sâu.',
+            'Năng lượng chỉ có thể tạo ra được bằng các phản ứng hóa học trong phòng thí nghiệm.',
+            'Năng lượng sinh ra do việc đốt cháy các loại nhiên liệu hóa thạch.'
+          ],
+          answer: 0,
+          explanation: 'Năng lượng tái tạo là năng lượng đến từ các nguồn năng lượng có sẵn trong thiên nhiên, liên tục được bổ sung thông qua các quá trình tự nhiên[cite: 3].'
+        },
+        {
+          type: 'mcq', section: 'I. Năng lượng tái tạo',
+          question: 'Nguồn năng lượng nào dưới đây KHÔNG phải là năng lượng tái tạo?',
+          options: [
+            'Năng lượng mặt trời.',
+            'Năng lượng than mỏ (than đá).',
+            'Năng lượng từ sóng biển.',
+            'Năng lượng sinh khối.'
+          ],
+          answer: 1,
+          explanation: 'Than mỏ là năng lượng hóa thạch, sẽ cạn kiệt và gây ô nhiễm khi đốt cháy, không phải năng lượng tái tạo[cite: 3].'
+        },
+        {
+          type: 'mcq', section: 'I. Năng lượng tái tạo',
+          question: 'Dạng năng lượng tái tạo nào sau đây được khai thác từ sức nóng bên dưới bề mặt Trái Đất?',
+          options: [
+            'Năng lượng sinh khối.',
+            'Năng lượng dòng chảy.',
+            'Năng lượng nhiệt trong lòng Trái Đất (địa nhiệt).',
+            'Năng lượng gió.'
+          ],
+          answer: 2,
+          explanation: 'Năng lượng nhiệt trong lòng Trái Đất (địa nhiệt) là một nguồn năng lượng tái tạo (Hình 17.1e)[cite: 3].'
+        },
+        {
+          type: 'mcq', section: 'I. Năng lượng tái tạo',
+          question: 'Vì sao trên toàn cầu hiện nay cần phải tăng cường sử dụng năng lượng tái tạo?',
+          options: [
+            'Vì chúng dễ dàng đóng gói và vận chuyển đi xa hơn các loại năng lượng khác.',
+            'Vì việc chế tạo các thiết bị thu năng lượng tái tạo không tốn bất kỳ chi phí nào.',
+            'Vì năng lượng tái tạo tạo ra rất nhiều khí thải CO2 giúp cây quang hợp.',
+            'Vì chúng giúp giảm phát thải khí gây hiệu ứng nhà kính và ít gây biến đổi khí hậu.'
+          ],
+          answer: 3,
+          explanation: 'Tăng cường sử dụng năng lượng tái tạo giúp thay thế nhiên liệu hóa thạch, từ đó giảm ô nhiễm môi trường và khí nhà kính[cite: 3].'
+        },
+
+        // ==========================================
+        // MỤC II.1 NĂNG LƯỢNG MẶT TRỜI (4 TN + 2 Đ/S)
+        // ==========================================
+        {
+          type: 'mcq', section: 'II.1 Năng lượng mặt trời',
+          question: 'Một trong những ưu điểm lớn nhất của việc sử dụng năng lượng mặt trời là gì?',
+          options: [
+            'Không gây ra tiếng ồn, không phát thải các chất gây ô nhiễm không khí.',
+            'Giá thành sản xuất và lắp đặt các tấm pin mặt trời rất rẻ.',
+            'Hệ thống thu nhiệt mặt trời luôn có hiệu suất chuyển hóa năng lượng cực kỳ cao.',
+            'Quá trình tiêu hủy pin mặt trời cũ rất thân thiện với môi trường.'
+          ],
+          answer: 0,
+          explanation: 'Khi sử dụng năng lượng mặt trời không gây ra tiếng ồn, không phát thải các chất gây ô nhiễm không khí hay khí gây hiệu ứng nhà kính[cite: 3].'
+        },
+        {
+          type: 'mcq', section: 'II.1 Năng lượng mặt trời',
+          question: 'Tuổi thọ sử dụng trung bình của các tấm pin mặt trời hiện nay khoảng bao nhiêu năm?',
+          options: [
+            '10 năm.',
+            '25 năm.',
+            '50 năm.',
+            '100 năm.'
+          ],
+          answer: 1,
+          explanation: 'Trung bình 25 năm sau khi hết hạn sử dụng, tấm pin mặt trời sẽ trở thành rác thải điện tử[cite: 3].'
+        },
+        {
+          type: 'mcq', section: 'II.1 Năng lượng mặt trời',
+          question: 'Nhược điểm của các nhà máy điện mặt trời đối với hệ sinh thái mặt đất là gì?',
+          options: [
+            'Thu hút quá nhiều động vật hoang dã đến sinh sống.',
+            'Gây sạt lở đất nghiêm trọng do đào bới sâu.',
+            'Chiếm diện tích lớn, che phủ mặt đất làm ảnh hưởng đến quá trình quang hợp của thực vật.',
+            'Tạo ra các dòng nước nhiễm mặn phá hủy thảm thực vật xung quanh.'
+          ],
+          answer: 2,
+          explanation: 'Nhà máy điện mặt trời chiếm diện tích lớn, che phủ làm ảnh hưởng đến hệ sinh thái và quá trình quang hợp của thực vật[cite: 3].'
+        },
+        {
+          type: 'mcq', section: 'II.1 Năng lượng mặt trời',
+          question: 'Ở nước ta, cường độ bức xạ mặt trời cao nhất tập trung chủ yếu ở những khu vực nào?',
+          options: [
+            'Các tỉnh miền núi phía Bắc.',
+            'Khu vực đồng bằng sông Hồng.',
+            'Khu vực Bắc Trung Bộ.',
+            'Các tỉnh Tây Nguyên và Nam Bộ.'
+          ],
+          answer: 3,
+          explanation: 'Cường độ bức xạ cao nhất tập trung ở các tỉnh Tây Nguyên và Nam bộ (Đắk Lắk, Gia Lai, Khánh Hòa...)[cite: 3].'
+        },
+        {
+          type: 'tf_group', section: 'II.1 Năng lượng mặt trời',
+          question: 'Xét tính đúng/sai của các nhận định sau về ứng dụng năng lượng mặt trời:',
+          items: [
+            { text: 'a) Năng lượng mặt trời có thể dùng trực tiếp để chiếu sáng, sấy nông sản hoặc làm muối.', answer: true },
+            { text: 'b) Việc sử dụng pin mặt trời để thắp sáng tạo ra rất nhiều khí CO2 thải ra môi trường.', answer: false },
+            { text: 'c) Năng lượng mặt trời có thể chuyển hóa trực tiếp thành năng lượng điện nhờ pin mặt trời.', answer: true },
+            { text: 'd) Hiện nay, hệ thống hấp thụ nhiệt mặt trời đã đạt được hiệu suất chuyển hóa năng lượng tuyệt đối 100%.', answer: false }
+          ],
+          explanation: 'a) Đúng. b) Sai, sử dụng pin mặt trời không phát thải khí nhà kính. c) Đúng. d) Sai, hệ thống thu nhiệt mặt trời vẫn có hiệu suất chuyển hóa thấp[cite: 3].'
+        },
+        {
+          type: 'tf_group', section: 'II.1 Năng lượng mặt trời',
+          question: 'Khi phân tích các nhược điểm của điện mặt trời, các ý kiến sau đây đúng hay sai?',
+          items: [
+            { text: 'a) Các tấm pin mặt trời sau khi hết hạn sẽ trở thành rác thải điện tử, chất thải rắn khó phân huỷ.', answer: true },
+            { text: 'b) Nguồn năng lượng mặt trời sẽ nhanh chóng cạn kiệt trong tương lai gần nếu bị khai thác quá mức.', answer: false },
+            { text: 'c) Lắp đặt quá nhiều hệ thống thu nhiệt mặt trời trong thành phố có thể gây phản xạ mạnh, tạo ô nhiễm ánh sáng.', answer: true },
+            { text: 'd) Xây dựng nhà máy điện mặt trời hoàn toàn không cần tốn diện tích đất hay mặt nước.', answer: false }
+          ],
+          explanation: 'a) Đúng. b) Sai, NL mặt trời luôn có sẵn, khó cạn kiệt. c) Đúng, gây phản xạ mạnh ánh sáng vào ban ngày. d) Sai, nhà máy điện mặt trời chiếm diện tích rất lớn[cite: 3].'
+        },
+
+        // ==========================================
+        // MỤC II.2 NĂNG LƯỢNG TỪ GIÓ (4 TN + 2 Đ/S)
+        // ==========================================
+        {
+          type: 'mcq', section: 'II.2 Năng lượng từ gió',
+          question: 'So với trên đất liền, năng lượng gió ngoài đại dương có đặc điểm gì?',
+          options: [
+            'Tốc độ gió thường ổn định hơn và mạnh hơn.',
+            'Luôn đổi chiều liên tục không thể dự đoán.',
+            'Tốc độ gió rất yếu và hầu như không có gió.',
+            'Chỉ xuất hiện vào ban đêm.'
+          ],
+          answer: 0,
+          explanation: 'Tốc độ gió trên đại dương thường ổn định hơn và mạnh hơn so với tốc độ gió trên đất liền, là nguồn năng lượng có triển vọng lớn[cite: 3].'
+        },
+        {
+          type: 'mcq', section: 'II.2 Năng lượng từ gió',
+          question: 'Mặt tiêu cực của các tua-bin điện gió đối với sinh vật là gì?',
+          options: [
+            'Tiết ra chất độc hóa học làm suy giảm thảm thực vật.',
+            'Có thể ảnh hưởng đến vùng hoạt động của các loài chim (đặc biệt là chim di cư) và dơi.',
+            'Hút hết không khí xung quanh làm chim không bay được.',
+            'Thay đổi từ trường của Trái Đất ảnh hưởng đến sinh sản của rùa biển.'
+          ],
+          answer: 1,
+          explanation: 'Tua-bin điện gió có thể làm nhiễu tín hiệu phát thanh, ảnh hưởng đến vùng hoạt động của chim di cư và dơi[cite: 3].'
+        },
+        {
+          type: 'mcq', section: 'II.2 Năng lượng từ gió',
+          question: 'Tại sao việc khai thác năng lượng từ gió được xem là một trong những giải pháp quan trọng nhằm giảm biến đổi khí hậu?',
+          options: [
+            'Vì nó có thể hút khí CO2 từ môi trường vào trong tua-bin.',
+            'Vì chi phí lắp đặt tua-bin gió hiện nay rẻ hơn tất cả các công nghệ khác.',
+            'Vì quá trình sử dụng năng lượng gió không phát thải các chất gây ô nhiễm không khí hay khí nhà kính.',
+            'Vì năng lượng gió có thể tạo ra mưa nhân tạo dập tắt cháy rừng.'
+          ],
+          answer: 2,
+          explanation: 'Do không phát thải các chất ô nhiễm và khí nhà kính nên điện gió giúp giảm biến đổi khí hậu toàn cầu[cite: 3].'
+        },
+        {
+          type: 'mcq', section: 'II.2 Năng lượng từ gió',
+          question: 'Ý nào dưới đây KHÔNG phải là nhược điểm của các nhà máy điện gió?',
+          options: [
+            'Hiệu suất chuyển đổi năng lượng còn thấp.',
+            'Giá thành đầu tư ban đầu cao.',
+            'Phát ra tiếng ồn gây ảnh hưởng đến sinh vật.',
+            'Tạo ra chất thải phóng xạ cực kỳ nguy hiểm.'
+          ],
+          answer: 3,
+          explanation: 'Điện gió có hiệu suất thấp, giá cao, gây ồn và nhiễu sóng, nhưng không tạo ra chất thải phóng xạ (đó là nhược điểm của điện hạt nhân)[cite: 3].'
+        },
+        {
+          type: 'tf_group', section: 'II.2 Năng lượng từ gió',
+          question: 'Một học sinh phát biểu về đặc điểm của năng lượng điện gió như sau. Xác định tính đúng/sai của từng ý:',
+          items: [
+            { text: 'a) Hoạt động của các tua-bin điện gió có thể làm nhiễu tín hiệu phát thanh trong khu vực.', answer: true },
+            { text: 'b) Việc xây dựng các trang trại điện gió ngoài khơi không tốn nhiều chi phí đầu tư ban đầu.', answer: false },
+            { text: 'c) Cánh quạt của các nhà máy điện gió phát ra tiếng ồn gây ảnh hưởng đến môi trường sống xung quanh.', answer: true },
+            { text: 'd) Khi hoạt động, tua-bin gió phát thải lượng lớn khí carbon dioxide làm nóng lên toàn cầu.', answer: false }
+          ],
+          explanation: 'a) Đúng. b) Sai, giá thành đầu tư ban đầu điện gió rất cao. c) Đúng. d) Sai, điện gió không phát thải khí gây hiệu ứng nhà kính[cite: 3].'
+        },
+        {
+          type: 'tf_group', section: 'II.2 Năng lượng từ gió',
+          question: 'Về tiềm năng khai thác năng lượng từ gió, các khẳng định sau đúng hay sai?',
+          items: [
+            { text: 'a) Năng lượng gió là một nguồn năng lượng tái tạo luôn có sẵn trong tự nhiên.', answer: true },
+            { text: 'b) Điện gió hiện là công nghệ có hiệu suất chuyển đổi năng lượng cao nhất trong các loại năng lượng.', answer: false },
+            { text: 'c) Hiện nay, Việt Nam có nhiều khu vực biển có tiềm năng năng lượng gió nhưng chưa được khai thác triệt để.', answer: true },
+            { text: 'd) Tua-bin gió trên đất liền tuyệt đối an toàn và không gây cản trở môi trường sống của bất kì loài sinh vật nào.', answer: false }
+          ],
+          explanation: 'a) Đúng. b) Sai, hiệu suất chuyển đổi của điện gió còn thấp. c) Đúng. d) Sai, tua-bin ảnh hưởng đến các loài chim và dơi[cite: 3].'
+        },
+
+        // ==========================================
+        // MỤC II.3 NĂNG LƯỢNG TỪ SÓNG BIỂN (4 TN + 2 Đ/S)
+        // ==========================================
+        {
+          type: 'mcq', section: 'II.3 Năng lượng từ sóng biển',
+          question: 'Sóng biển được hình thành chủ yếu do tác động của yếu tố tự nhiên nào?',
+          options: [
+            'Lực hấp dẫn của Mặt Trăng.',
+            'Sự chênh lệch nhiệt độ dưới đáy biển.',
+            'Gió thổi trên mặt đại dương.',
+            'Động đất ngầm dưới đáy biển.'
+          ],
+          answer: 2,
+          explanation: 'Sóng biển được hình thành chủ yếu do tác động của gió. Tốc độ gió càng lớn và thời gian gió thổi càng lâu thì sóng biển càng lớn[cite: 3].'
+        },
+        {
+          type: 'mcq', section: 'II.3 Năng lượng từ sóng biển',
+          question: 'Đặc điểm nổi bật của công nghệ Attenuator khi khai thác điện sóng biển so với công nghệ Point Absorber là gì?',
+          options: [
+            'Bắt buộc phải khoan gắn sâu vào vỏ Trái Đất.',
+            'Chỉ cần đặt các thiết bị nổi trên mặt biển, không cần gắn với đáy biển.',
+            'Chỉ hoạt động được khi sóng biển đứng yên hoàn toàn.',
+            'Chuyển hóa bức xạ mặt trời trên mặt nước thành điện năng.'
+          ],
+          answer: 1,
+          explanation: 'Công nghệ Attenuator chỉ cần đặt các thiết bị nổi trên mặt biển, trong khi Point Absorber và Oscillating water surge cần gắn với đáy biển gây khó thi công[cite: 3].'
+        },
+        {
+          type: 'mcq', section: 'II.3 Năng lượng từ sóng biển',
+          question: 'Theo Cục Khí tượng Thủy văn, khoảng thời gian khai thác năng lượng từ sóng biển thuận lợi nhất trong năm ở nước ta là?',
+          options: [
+            'Mùa xuân do lượng mưa nhiều.',
+            'Mùa hạ do có nắng gắt nung nóng nước biển.',
+            'Mùa đông do gió mùa đông bắc tạo ra vùng năng lượng sóng khá mạnh.',
+            'Mùa thu do bão lớn hình thành liên tục.'
+          ],
+          answer: 2,
+          explanation: 'Thời gian khai thác năng lượng sóng biển thuận lợi nhất trong năm là mùa đông do gió mùa đông bắc tạo ra vùng năng lượng sóng mạnh[cite: 3].'
+        },
+        {
+          type: 'mcq', section: 'II.3 Năng lượng từ sóng biển',
+          question: 'Nhược điểm chính của việc lắp đặt hệ thống máy phát điện từ sóng biển công suất lớn là gì?',
+          options: [
+            'Gây ô nhiễm không khí cục bộ.',
+            'Sản sinh lượng rác thải điện tử mỗi tháng rất lớn.',
+            'Phải tiêu tốn một lượng lớn nhiên liệu hóa thạch để mồi máy.',
+            'Cần không gian rộng, gây ảnh hưởng đến giao thông đường biển và hệ sinh thái.'
+          ],
+          answer: 3,
+          explanation: 'Để có công suất lớn cần nhiều máy phát đặt trong không gian rộng, gây ảnh hưởng giao thông đường biển, hệ sinh thái, giá thành cao và phụ thuộc mùa[cite: 3].'
+        },
+        {
+          type: 'tf_group', section: 'II.3 Năng lượng từ sóng biển',
+          question: 'Khi so sánh các công nghệ khai thác năng lượng sóng biển, hãy xác định tính đúng/sai của các ý sau:',
+          items: [
+            { text: 'a) Công nghệ Point Absorber gồm phao đơn cần gắn với đáy biển tạo chuyển động lên xuống theo phương thẳng đứng.', answer: true },
+            { text: 'b) Công nghệ Attenuator đòi hỏi thi công phức tạp vì bắt buộc phải gắn cố định các trụ xuống đáy biển.', answer: false },
+            { text: 'c) Công nghệ Oscillating water surge sử dụng thiết bị tạo ra dao động theo phương ngang để chạy máy phát điện.', answer: true },
+            { text: 'd) Tất cả các công nghệ sóng biển đều cho công suất điện ổn định quanh năm mà không phụ thuộc vào thời tiết.', answer: false }
+          ],
+          explanation: 'a) Đúng. b) Sai, Attenuator chỉ đặt thiết bị nổi trên mặt biển. c) Đúng. d) Sai, năng lượng sóng biển phụ thuộc rất lớn vào các mùa trong năm và thiên tai[cite: 3].'
+        },
+        {
+          type: 'tf_group', section: 'II.3 Năng lượng từ sóng biển',
+          question: 'Nhận xét về tiềm năng và đặc điểm năng lượng sóng biển ở Việt Nam:',
+          items: [
+            { text: 'a) Năng lượng từ sóng biển ở nước ta rất dồi dào, đặc biệt mạnh vào mùa đông trên vùng bắc và giữa Biển Đông.', answer: true },
+            { text: 'b) Vùng biển có tiềm năng năng lượng sóng lớn nhất ở Việt Nam là khu vực Vịnh Bắc Bộ.', answer: false },
+            { text: 'c) Việc khai thác năng lượng sóng phụ thuộc rất lớn vào các mùa và có thể bị ảnh hưởng bởi thiên tai.', answer: true },
+            { text: 'd) Chi phí xây dựng hệ thống khai thác điện sóng biển hiện nay rất rẻ, phù hợp với mọi quy mô nhỏ lẻ.', answer: false }
+          ],
+          explanation: 'a) Đúng. b) Sai, vùng bờ biển miền Trung từ Đà Nẵng đến Khánh Hòa mới có tiềm năng lớn nhất. c) Đúng. d) Sai, đòi hỏi giá thành đầu tư ban đầu cao[cite: 3].'
+        },
+
+        // ==========================================
+        // MỤC II.4 NĂNG LƯỢNG TỪ DÒNG SÔNG (4 TN + 2 Đ/S)
+        // ==========================================
+        {
+          type: 'mcq', section: 'II.4 Năng lượng từ dòng sông',
+          question: 'Để khai thác năng lượng từ sức chảy của dòng sông, con người thường xây dựng công trình nào?',
+          options: [
+            'Các nhà máy thuỷ điện.',
+            'Các giếng khoan địa nhiệt.',
+            'Các trạm bơm ly tâm công suất lớn.',
+            'Các bãi lọc nước sinh hoạt.'
+          ],
+          answer: 0,
+          explanation: 'Để khai thác năng lượng từ dòng sông, người ta xây dựng các nhà máy thủy điện nhằm chuyển hóa năng lượng này thành điện năng[cite: 3].'
+        },
+        {
+          type: 'mcq', section: 'II.4 Năng lượng từ dòng sông',
+          question: 'Dòng nước chảy trên sông được bổ sung thường xuyên chủ yếu từ nguồn nào?',
+          options: [
+            'Sự bốc hơi của nước biển đưa sâu vào đất liền.',
+            'Nguồn nước mưa, nước ngầm và nước băng tuyết tan.',
+            'Nước xả thải từ các khu công nghiệp.',
+            'Sự phun trào của các mạch nước nóng dưới đáy đại dương.'
+          ],
+          answer: 1,
+          explanation: 'Sông là dòng nước chảy thường xuyên, được các nguồn nước mưa, nước ngầm, nước băng tuyết tan bổ sung[cite: 3].'
+        },
+        {
+          type: 'mcq', section: 'II.4 Năng lượng từ dòng sông',
+          question: 'Một trong những tác động sinh thái tiêu cực khi xây đập ngăn sông làm thuỷ điện là gì?',
+          options: [
+            'Tạo ra quá nhiều khí CO2 trong quá trình máy phát điện quay.',
+            'Làm nước sông bị nhiễm mặn nghiêm trọng ở thượng nguồn.',
+            'Làm cho các loài động vật dưới nước không có khả năng di chuyển từ hạ nguồn lên thượng nguồn.',
+            'Gây ra hiện tượng thủng tầng ozone.'
+          ],
+          answer: 2,
+          explanation: 'Sử dụng đập tích trữ nước có nguy cơ cản trở di cư, làm động vật không có khả năng di chuyển từ hạ nguồn lên thượng nguồn[cite: 3].'
+        },
+        {
+          type: 'mcq', section: 'II.4 Năng lượng từ dòng sông',
+          question: 'Việc tích trữ một lượng nước khổng lồ trong các hồ chứa thuỷ điện lớn có thể dẫn đến rủi ro địa chất nào?',
+          options: [
+            'Làm núi lửa phun trào.',
+            'Gây xói mòn sa mạc hóa diện rộng.',
+            'Đất bị nhiễm phèn chua nặng nề.',
+            'Gây áp lực lớn lên địa chất, có thể dẫn đến nứt gãy địa tầng và gây động đất.'
+          ],
+          answer: 3,
+          explanation: 'Nước ngập gây áp lực lớn lên địa chất ở trong đập và thân đập, có thể gây nứt gãy địa tầng, động đất[cite: 3].'
+        },
+        {
+          type: 'tf_group', section: 'II.4 Năng lượng từ dòng sông',
+          question: 'Đánh giá các tác động môi trường và xã hội của việc xây dựng nhà máy thủy điện lớn:',
+          items: [
+            { text: 'a) Việc xây dựng đập nước lớn thường dẫn đến việc phải chặt phá rừng, làm suy giảm diện tích rừng.', answer: true },
+            { text: 'b) Thủy điện hoàn toàn không tác động đến chất lượng nước hay hệ sinh thái đa dạng sinh học của dòng sông.', answer: false },
+            { text: 'c) Cần phải di chuyển số lượng lớn dân cư ra khỏi vùng ngập lụt, làm thay đổi văn hoá và tập quán sinh sống của họ.', answer: true },
+            { text: 'd) Khi máy phát điện của nhà máy thủy điện hoạt động sẽ xả ra rất nhiều khí độc hại như SO2, CO.', answer: false }
+          ],
+          explanation: 'a) Đúng. b) Sai, thủy điện dẫn đến các vấn đề sinh thái, đa dạng sinh học và chất lượng nước. c) Đúng. d) Sai, thủy điện là điện sạch, không xả khí thải độc hại khi vận hành[cite: 3].'
+        },
+        {
+          type: 'tf_group', section: 'II.4 Năng lượng từ dòng sông',
+          question: 'Nhận xét về đặc điểm của năng lượng dòng sông tại Việt Nam:',
+          items: [
+            { text: 'a) Năng lượng từ dòng sông ít tác động tiêu cực đến môi trường không khí hơn so với việc đốt năng lượng hóa thạch.', answer: true },
+            { text: 'b) Việc đắp đập tạo hồ chứa nước làm mức nước ngập ở thượng nguồn và cạn ở hạ nguồn, thay đổi môi trường sống của sinh vật.', answer: true },
+            { text: 'c) Nước ta có địa hình bằng phẳng, ít mưa nên tiềm năng phát triển thủy điện là rất thấp.', answer: false },
+            { text: 'd) Nhà máy thủy điện hoạt động bằng cách dùng dòng chảy của nước để làm quay các tua-bin của máy phát điện.', answer: true }
+          ],
+          explanation: 'a) Đúng. b) Đúng. c) Sai, nước ta đồi núi cao, mưa nhiều, sông ngòi dày đặc nên tiềm năng thủy điện tương đối lớn. d) Đúng[cite: 3].'
+        },
+
+        // ==========================================
+        // MỤC III. SỬ DỤNG HIỆU QUẢ NĂNG LƯỢNG (4 TN + 2 Đ/S)
+        // ==========================================
+        {
+          type: 'mcq', section: 'III. Sử dụng hiệu quả năng lượng',
+          question: 'Việc "sử dụng hiệu quả năng lượng" được định nghĩa là:',
+          options: [
+            'Dùng ít năng lượng hơn để thực hiện cùng một công việc hoặc chức năng của thiết bị.',
+            'Sử dụng các thiết bị tiêu tốn nhiều điện năng để làm việc nhanh hơn.',
+            'Chỉ sử dụng năng lượng vào ban đêm để tiết kiệm chi phí.',
+            'Ngừng hoàn toàn việc sử dụng các thiết bị điện trong gia đình.'
+          ],
+          answer: 0,
+          explanation: 'Sử dụng hiệu quả năng lượng là việc dùng ít năng lượng hơn để thực hiện cùng một công việc hoặc cùng một chức năng của thiết bị, máy móc[cite: 3].'
+        },
+        {
+          type: 'mcq', section: 'III. Sử dụng hiệu quả năng lượng',
+          question: 'Mục tiêu chính của việc sử dụng hiệu quả năng lượng trong sản xuất và đời sống là gì?',
+          options: [
+            'Làm giảm tuổi thọ của thiết bị điện để liên tục thay mới.',
+            'Giảm năng lượng hao phí, giảm chi phí và giảm lượng phát thải khí gây ô nhiễm môi trường.',
+            'Đẩy mạnh việc khai thác cạn kiệt các mỏ than đá.',
+            'Giúp máy móc nóng lên nhanh hơn khi vận hành.'
+          ],
+          answer: 1,
+          explanation: 'Mục tiêu chính là thực hiện tiết kiệm năng lượng: giảm hao phí, giảm chi phí, giảm khai thác năng lượng hóa thạch, giảm lượng phát thải[cite: 3].'
+        },
+        {
+          type: 'mcq', section: 'III. Sử dụng hiệu quả năng lượng',
+          question: 'Hành động nào dưới đây KHÔNG phải là biện pháp sử dụng hiệu quả năng lượng?',
+          options: [
+            'Sử dụng phương tiện giao thông công cộng thay cho phương tiện cá nhân.',
+            'Tắt tivi và các bóng đèn khi rời khỏi phòng.',
+            'Để điều hòa ở mức 18°C kết hợp bật quạt liên tục vào những ngày mùa đông.',
+            'Thiết kế nhà cửa có nhiều cửa sổ để tận dụng ánh sáng và gió tự nhiên.'
+          ],
+          answer: 2,
+          explanation: 'Để điều hòa 18 độ C vào mùa đông là vô cùng lãng phí năng lượng, biện pháp đúng là chỉ bật khi cần và để trên 26 độ C vào mùa hè[cite: 3].'
+        },
+        {
+          type: 'mcq', section: 'III. Sử dụng hiệu quả năng lượng',
+          question: 'Vì sao việc tăng cường sử dụng phương tiện giao thông công cộng lại góp phần bảo vệ môi trường?',
+          options: [
+            'Vì xe buýt đi nhanh hơn xe máy nên tốn ít xăng hơn.',
+            'Vì các phương tiện công cộng luôn miễn phí.',
+            'Vì xe công cộng giúp chở được nhiều người cùng lúc, tiết kiệm nhiên liệu tổng thể và giảm thiểu khí thải trên đầu người.',
+            'Vì ngồi trên xe buýt không cần phải dùng điều hòa.'
+          ],
+          answer: 3,
+          explanation: 'Sử dụng phương tiện công cộng thay cá nhân góp phần tiết kiệm năng lượng nhiên liệu và giảm thiểu phát thải khí thải[cite: 3].'
+        },
+        {
+          type: 'tf_group', section: 'III. Sử dụng hiệu quả năng lượng',
+          question: 'Xác định các hành động thiết thực giúp tiết kiệm điện trong gia đình:',
+          items: [
+            { text: 'a) Kê bàn học, bàn làm việc gần cửa sổ để tận dụng ánh sáng mặt trời.', answer: true },
+            { text: 'b) Mở cửa tủ lạnh thật lâu mỗi khi lấy đồ để làm mát nhà bếp.', answer: false },
+            { text: 'c) Sử dụng bóng đèn LED thay thế cho đèn huỳnh quang hoặc đèn sợi đốt để chiếu sáng.', answer: true },
+            { text: 'd) Cài đặt máy điều hòa luôn ở mức dưới 20°C vào mùa hè cho phòng nhanh lạnh.', answer: false }
+          ],
+          explanation: 'a) Đúng. b) Sai, mở tủ lạnh lâu gây thất thoát nhiệt, tốn điện. c) Đúng. d) Sai, nên để điều hòa trên 26 độ C vào mùa hè[cite: 3].'
+        },
+        {
+          type: 'tf_group', section: 'III. Sử dụng hiệu quả năng lượng',
+          question: 'Mối liên hệ giữa sử dụng hiệu quả năng lượng và bảo vệ môi trường được thể hiện qua các ý nào sau đây?',
+          items: [
+            { text: 'a) Bảo vệ môi trường là việc phòng ngừa tác động xấu và cải thiện chất lượng môi trường.', answer: true },
+            { text: 'b) Chỉ có các nhà máy công nghiệp lớn mới cần sử dụng hiệu quả năng lượng, cá nhân không có tác dụng gì.', answer: false },
+            { text: 'c) Việc chọn sử dụng các sản phẩm có thể tái chế là một hành động bảo vệ môi trường.', answer: true },
+            { text: 'd) Việc thay thế điện than bằng năng lượng tái tạo sẽ làm tăng mạnh khí nhà kính lên bầu khí quyển.', answer: false }
+          ],
+          explanation: 'a) Đúng, theo định nghĩa SGK. b) Sai, mọi cá nhân tắt thiết bị điện khi không dùng cũng đóng góp lớn. c) Đúng. d) Sai, dùng NL tái tạo giúp giảm thiểu phát thải khí nhà kính[cite: 3].'
+        }
+      ]
+    };
   </script>
 
   <script src="engine.js"></script>

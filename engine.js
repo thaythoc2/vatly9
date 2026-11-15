@@ -191,7 +191,6 @@ function renderQuestions() {
           </div>
         `).join('') + `</div>`;
     } else if (q.type === 'short') {
-      // THÊM NÚT KIỂM TRA CHO CÂU TRẢ LỜI NGẮN (CHỈ HIỆN Ở CHẾ ĐỘ LUYỆN TẬP)
       let checkBtnHTML = currentMode === 'practice' 
         ? `<button type="button" onclick="checkSingleQuestion(${idx})" class="bg-indigo-100 text-indigo-800 hover:bg-indigo-200 border border-indigo-200 px-4 py-2 rounded-xl text-sm font-bold transition shadow-sm">Kiểm tra kết quả</button>` 
         : '';
@@ -305,6 +304,11 @@ function checkSingleQuestion(qIdx) {
   if (q.type === 'short') ansNote = `<div class="mb-1 text-emerald-800 font-bold">Đáp án chuẩn (4 kí tự): ${q.answer}</div>`;
   explainEl.innerHTML = `${ansNote}<strong>💡 Giải thích:</strong> ${q.explanation || ''}`;
   explainEl.classList.remove('hidden');
+
+  // Cập nhật lại giao diện để hiển thị công thức Toán học MathJax
+  if (window.MathJax) {
+    MathJax.typesetPromise([explainEl]);
+  }
 }
 
 function submitQuiz() {

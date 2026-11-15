@@ -14,7 +14,6 @@
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
 
-  <!-- Thanh điều hướng về Trang chủ -->
   <header class="bg-blue-900 text-white shadow sticky top-0 z-30">
     <div class="max-w-4xl mx-auto px-4 py-3.5 flex items-center justify-between gap-3">
       <a href="index.html" class="bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 transition">
@@ -27,17 +26,10 @@
   <main class="max-w-4xl mx-auto px-4 py-6 flex-1 w-full">
     <h1 id="lessonTitle" class="text-xl sm:text-2xl font-extrabold text-slate-900 mb-4">Bài 3. Cơ năng</h1>
 
-    <!-- Nhập nhanh tên lớp -->
     <div class="bg-white p-3.5 rounded-2xl border border-slate-200 mb-5 flex flex-wrap gap-2.5 items-center justify-between">
       <div class="flex flex-wrap gap-2 flex-1">
-        <input id="stuName" type="text" placeholder="Họ và tên học sinh..." class="border border-slate-300 rounded-xl px-3 py-1.5 text-sm flex-1 min-w-[180px]">
-        <select id="stuClass" class="border border-slate-300 rounded-xl px-3 py-1.5 text-sm bg-white">
-          <option value="">-- Lớp --</option>
-          <option value="9/1">9/1</option><option value="9/2">9/2</option>
-          <option value="9/3">9/3</option><option value="9/4">9/4</option>
-          <option value="9/5">9/5</option><option value="9/6">9/6</option>
-          <option value="9/7">9/7</option><option value="9/8">9/8</option>
-        </select>
+        <input id="stuName" type="text" placeholder="Họ và tên học sinh..." class="border border-slate-300 rounded-xl px-3 py-1.5 text-sm flex-1 min-w-[180px] focus:ring-2 focus:ring-blue-500 outline-none">
+        <input id="stuClass" type="text" placeholder="Lớp (vd: 9A1, 9D3...)" class="border border-slate-300 rounded-xl px-3 py-1.5 text-sm w-36 uppercase font-semibold focus:ring-2 focus:ring-blue-500 outline-none">
       </div>
       <div class="flex gap-2">
         <button id="btnTabTheory" onclick="switchTab('theory')" class="px-4 py-2 rounded-xl font-bold text-sm bg-white text-slate-600 border border-slate-200">📖 Lý thuyết</button>
@@ -45,7 +37,6 @@
       </div>
     </div>
 
-    <!-- Tab 1: Tóm tắt lý thuyết -->
     <section id="tabTheory" class="hidden bg-white rounded-2xl p-6 border border-slate-200 shadow-sm leading-relaxed space-y-3">
       <div id="theoryContent"></div>
       <div class="pt-4 border-t">
@@ -55,7 +46,6 @@
       </div>
     </section>
 
-    <!-- Tab 2: Luyện tập & Kiểm tra -->
     <section id="tabQuiz">
       <div id="resultBanner" class="hidden bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-2xl p-5 mb-5 shadow-md">
         <div class="flex flex-wrap items-center justify-between gap-4">
@@ -66,7 +56,7 @@
             <div id="syncStatus" class="text-xs mt-1.5 font-semibold bg-black/20 inline-block px-2.5 py-1 rounded-lg"></div>
           </div>
           <button onclick="startQuiz(currentMode)" class="bg-white text-emerald-800 hover:bg-emerald-50 px-4 py-2 rounded-xl font-bold text-sm shadow">
-            🔄 Làm đề mới (Xáo câu)
+            🔄 Làm lại (Đề mới)
           </button>
         </div>
       </div>
@@ -74,74 +64,223 @@
       <div class="bg-white p-3.5 rounded-2xl border border-slate-200 mb-4 flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-2">
           <span class="text-xs font-bold text-slate-500">Chế độ:</span>
-          <button id="btnModePractice" onclick="startQuiz('practice')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white">Luyện tập (Xem giải ngay)</button>
-          <button id="btnModeExam" onclick="startQuiz('exam')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600">Kiểm tra (Tính giờ)</button>
+          <button id="btnModePractice" onclick="startQuiz('practice')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white">Luyện tập (Theo mục SGK)</button>
+          <button id="btnModeExam" onclick="startQuiz('exam')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600">Kiểm tra (Xáo câu & tính giờ)</button>
         </div>
         <div id="timerBox" class="hidden text-sm font-extrabold text-rose-600 bg-rose-50 px-3 py-1 rounded-lg border border-rose-200">
-          ⏱️ Còn lại: <span id="timerText">10:00</span>
+          ⏱️ Thời gian làm bài: <span id="timerText">00:00</span>
         </div>
       </div>
 
       <div id="questionList" class="space-y-4"></div>
 
       <div class="mt-6 text-center">
-        <button id="submitBtn" onclick="submitQuiz(false)" class="bg-blue-700 hover:bg-blue-800 text-white px-8 py-3.5 rounded-2xl font-extrabold text-base shadow-lg transition">
+        <button id="submitBtn" onclick="submitQuiz()" class="bg-blue-700 hover:bg-blue-800 text-white px-8 py-3.5 rounded-2xl font-extrabold text-base shadow-lg transition">
           📩 NỘP BÀI & CHẤM ĐIỂM
         </button>
       </div>
     </section>
   </main>
 
-  <!-- ===================================================================== -->
-  <!-- DỮ LIỆU RIÊNG CỦA BÀI HỌC (Thầy chỉnh sửa / thêm câu hỏi tại đây)     -->
-  <!-- ===================================================================== -->
   <script>
     const LESSON_DATA = {
-  "id": 3,
-  "topic": "Cơ học",
-  "title": "Bài 3. Cơ năng",
-  "examMinutes": 10,
-  "theoryHTML": "\n      <h3 class=\"font-bold text-lg text-blue-800\">I. Khái niệm cơ năng</h3>\n      <p class=\"text-sm\">Tổng động năng và thế năng của vật được gọi là <strong>cơ năng</strong>: $W = W_đ + W_t = \\frac{1}{2}mv^2 + P \\cdot h$ (đơn vị: Jun - J).</p>\n      <h3 class=\"font-bold text-lg text-blue-800 mt-3\">II. Sự chuyển hóa và bảo toàn cơ năng</h3>\n      <ul class=\"list-disc pl-5 space-y-1 text-sm\">\n        <li>Động năng và thế năng có thể chuyển hóa qua lại lẫn nhau.</li>\n        <li>Nếu bỏ qua lực cản của không khí và lực ma sát, cơ năng của vật được <strong>bảo toàn</strong> (không đổi trong suốt quá trình chuyển động).</li>\n      </ul>\n    ",
-  "questions": [
-    {
-      "type": "mcq",
-      "question": "Cơ năng của một vật bằng đại lượng nào sau đây?",
-      "options": [
-        "Tổng động năng và thế năng của vật",
-        "Hiệu giữa động năng và thế năng",
-        "Tích của động năng và thế năng",
-        "Thương số giữa thế năng và động năng"
-      ],
-      "answer": 0,
-      "explanation": "Cơ năng W = Wđ + Wt."
-    },
-    {
-      "type": "mcq",
-      "question": "Khi thả một quả bóng rơi tự do từ trên cao xuống (bỏ qua sức cản không khí), năng lượng của quả bóng chuyển hóa như thế nào?",
-      "options": [
-        "Thế năng giảm, động năng tăng, cơ năng không đổi",
-        "Thế năng tăng, động năng giảm, cơ năng tăng",
-        "Cả động năng và thế năng đều giảm",
-        "Động năng và thế năng đều không đổi"
-      ],
-      "answer": 0,
-      "explanation": "Khi vật rơi, độ cao giảm nên thế năng giảm; tốc độ tăng nên động năng tăng; tổng cơ năng được bảo toàn."
-    },
-    {
-      "type": "tf",
-      "question": "Khi con lắc đơn dao động trong không khí có lực cản, cơ năng của con lắc giảm dần và chuyển hóa một phần thành nhiệt năng.",
-      "answer": true,
-      "explanation": "Đúng. Do công của lực cản không khí, một phần cơ năng chuyển hóa thành nhiệt năng làm nóng con lắc và môi trường."
-    },
-    {
-      "type": "short",
-      "question": "Một vật đang bay ở độ cao có thế năng 45 J và động năng 35 J. Cơ năng của vật bằng bao nhiêu Jun?",
-      "answer": "80",
-      "unit": "J",
-      "explanation": "W = Wđ + Wt = 35 + 45 = 80 J."
-    }
-  ]
-};
+      id: 3,
+      topic: 'Cơ học',
+      title: 'Bài 3. Cơ năng',
+      examMinutes: 15,
+      theoryHTML: `
+        <h3 class="font-bold text-lg text-blue-800">I. Cơ năng</h3>
+        <ul class="list-disc pl-5 space-y-1 text-sm">
+          <li><strong>Khái niệm:</strong> Tổng động năng và thế năng được gọi là cơ năng của vật[cite: 5].</li>
+          <li><strong>Công thức:</strong> $W_C = W_đ + W_t = \\frac{1}{2}mv^2 + Ph$<br>Trong đó: $W_C$ là cơ năng; $W_đ$ là động năng; $W_t$ là thế năng[cite: 5].</li>
+          <li><strong>Đơn vị:</strong> Cơ năng có đơn vị đo là jun (J)[cite: 5].</li>
+          <li><strong>Sự chuyển hóa:</strong> Động năng và thế năng có thể chuyển hoá qua lại lẫn nhau (Ví dụ: vật đang rơi, thế năng giảm dần, động năng tăng dần)[cite: 5].</li>
+        </ul>
+
+        <h3 class="font-bold text-lg text-blue-800 mt-4">II. Sự chuyển hoá năng lượng</h3>
+        <ul class="list-disc pl-5 space-y-1 text-sm">
+          <li><strong>Bảo toàn cơ năng:</strong> Nếu cơ năng của vật không chuyển hoá thành dạng năng lượng khác (bỏ qua lực cản) thì tổng động năng và thế năng của vật luôn không đổi, cơ năng được bảo toàn[cite: 5].</li>
+          <li><strong>Không bảo toàn cơ năng:</strong> Trong nhiều trường hợp, do tác dụng của lực ma sát, lực cản của môi trường, cơ năng có thể chuyển hoá thành nhiệt năng, khi đó cơ năng không được bảo toàn (nhưng năng lượng toàn phần vẫn được bảo toàn)[cite: 5].</li>
+        </ul>
+      `,
+      questions: [
+        // ==========================================
+        // MỤC I. CƠ NĂNG (4 TN, 2 Đ/S, 2 TLN)
+        // ==========================================
+        {
+          type: 'mcq', section: 'I. Cơ năng', level: 'Biết',
+          question: 'Cơ năng của một vật được định nghĩa là đại lượng bằng:',
+          options: [
+            'Tổng động năng và thế năng của vật.',
+            'Hiệu giữa thế năng và động năng của vật.',
+            'Tích của động năng và thế năng của vật.',
+            'Tổng trọng lượng và vận tốc chuyển động của vật.'
+          ],
+          answer: 0, // A
+          explanation: 'Tổng động năng và thế năng được gọi là cơ năng của vật[cite: 5].'
+        },
+        {
+          type: 'mcq', section: 'I. Cơ năng', level: 'Biết',
+          question: 'Đơn vị đo chuẩn của cơ năng trong hệ SI là gì?',
+          options: [
+            'Niutơn (N).',
+            'Jun (J).',
+            'Oát (W).',
+            'Mét trên giây (m/s).'
+          ],
+          answer: 1, // B
+          explanation: 'Đơn vị của cơ năng (cũng như động năng, thế năng) là jun (J)[cite: 5].'
+        },
+        {
+          type: 'mcq', section: 'I. Cơ năng', level: 'Hiểu',
+          question: 'Biểu thức nào sau đây dùng để tính giá trị cơ năng của một vật đang chuyển động ở độ cao h?',
+          options: [
+            '$W_C = m.v^2 + P.h$',
+            '$W_C = \\frac{1}{2}m.v + P.h$',
+            '$W_C = \\frac{1}{2}m.v^2 + P.h$',
+            '$W_C = \\frac{1}{2}P.v^2 + m.h$'
+          ],
+          answer: 2, // C
+          explanation: 'Công thức tính cơ năng: $W_C = W_đ + W_t = \\frac{1}{2}mv^2 + Ph$[cite: 5].'
+        },
+        {
+          type: 'mcq', section: 'I. Cơ năng', level: 'Hiểu',
+          question: 'Trong trò chơi tung hứng, khi xét giai đoạn quả bóng đang bay lên cao thì hiện tượng nào sau đây xảy ra?',
+          options: [
+            'Động năng tăng dần, thế năng giảm dần.',
+            'Cả động năng và thế năng đều tăng liên tục.',
+            'Cả động năng và thế năng đều giảm liên tục.',
+            'Động năng giảm dần, thế năng tăng dần.'
+          ],
+          answer: 3, // D
+          explanation: 'Khi vật chuyển động lên trên, độ cao tăng dần nên thế năng tăng dần; đồng thời tốc độ giảm dần nên động năng giảm dần[cite: 5].'
+        },
+        {
+          type: 'tf_group', section: 'I. Cơ năng', level: 'Biết',
+          question: 'Các nhận định cơ bản về động năng và thế năng của một vật:',
+          items: [
+            { text: 'a) Động năng và thế năng là hai dạng năng lượng không thể chuyển hoá qua lại lẫn nhau.', answer: false },
+            { text: 'b) Cơ năng của một vật luôn bằng tổng động năng và thế năng của nó tại cùng một thời điểm.', answer: true },
+            { text: 'c) Động năng của vật phụ thuộc vào vận tốc, còn thế năng phụ thuộc vào độ cao so với mốc.', answer: true },
+            { text: 'd) Đơn vị của động năng là Jun, nhưng đơn vị của thế năng lại là Niutơn.', answer: false }
+          ],
+          explanation: 'a) Sai, động năng và thế năng có thể chuyển hoá qua lại lẫn nhau. b) Đúng. c) Đúng. d) Sai, cả động năng, thế năng và cơ năng đều có đơn vị là Jun[cite: 5].'
+        },
+        {
+          type: 'tf_group', section: 'I. Cơ năng', level: 'Hiểu',
+          question: 'Một quả bóng được ném thẳng đứng lên cao từ mặt đất. Bỏ qua mọi sức cản không khí:',
+          items: [
+            { text: 'a) Khi quả bóng bay lên cao, cơ năng của nó tăng dần theo độ cao.', answer: false },
+            { text: 'b) Tại vị trí cao nhất, tốc độ bằng 0 nên động năng của quả bóng bằng 0, cơ năng đúng bằng thế năng.', answer: true },
+            { text: 'c) Khi quả bóng rơi xuống, thế năng của nó chuyển hoá dần thành động năng.', answer: true },
+            { text: 'd) Do vận tốc và độ cao thay đổi nên tổng động năng và thế năng luôn thay đổi liên tục.', answer: false }
+          ],
+          explanation: 'a) Sai, cơ năng được bảo toàn (không đổi) khi bỏ qua sức cản. b) Đúng. c) Đúng. d) Sai, tổng (tức cơ năng) luôn không đổi[cite: 5].'
+        },
+        {
+          type: 'short', section: 'I. Cơ năng', level: 'Vận dụng',
+          question: 'Một vật có khối lượng 1 kg đang chuyển động với tốc độ v = 3 m/s ở độ cao 0,6 m so với mặt đất. Lấy g = 10 m/s² nên P = 10 N. Tính cơ năng của vật (đơn vị: J).',
+          answer: '10,5',
+          unit: 'J',
+          explanation: 'Động năng: $W_đ = 0,5 \\cdot 1 \\cdot 3^2 = 4,5\\text{ J}$. Thế năng: $W_t = P \\cdot h = 10 \\cdot 0,6 = 6\\text{ J}$. Cơ năng: $W_C = 4,5 + 6 = 10,5\\text{ J}$.'
+        },
+        {
+          type: 'short', section: 'I. Cơ năng', level: 'Vận dụng',
+          question: 'Một con chim đang bay với tốc độ 4 m/s, khối lượng 0,5 kg (P = 5 N). Hiện tại chim có động năng là 4 J và đang ở độ cao 12,5 m. Tính cơ năng của con chim (đơn vị: J).',
+          answer: '66,5',
+          unit: 'J',
+          explanation: 'Thế năng: $W_t = P \\cdot h = 5 \\cdot 12,5 = 62,5\\text{ J}$. Động năng: $W_đ = 4\\text{ J}$. Cơ năng: $W_C = 62,5 + 4 = 66,5\\text{ J}$.'
+        },
+
+        // ==========================================
+        // MỤC II. SỰ CHUYỂN HÓA NĂNG LƯỢNG (4 TN, 2 Đ/S, 2 TLN)
+        // ==========================================
+        {
+          type: 'mcq', section: 'II. Sự chuyển hóa năng lượng', level: 'Biết',
+          question: 'Khi cơ năng của vật không chuyển hoá thành dạng năng lượng khác (bỏ qua mọi lực cản) thì',
+          options: [
+            'tổng động năng và thế năng của vật luôn không đổi.',
+            'động năng và thế năng của vật tại mọi vị trí đều bằng nhau.',
+            'tổng động năng và thế năng của vật luôn tăng lên.',
+            'động năng của vật luôn lớn hơn thế năng.'
+          ],
+          answer: 0, // A
+          explanation: 'Nếu cơ năng của vật không chuyển hoá thành dạng năng lượng khác thì tổng động năng và thế năng của vật luôn không đổi, cơ năng được bảo toàn[cite: 5].'
+        },
+        {
+          type: 'mcq', section: 'II. Sự chuyển hóa năng lượng', level: 'Biết',
+          question: 'Trong thực tế, do có lực ma sát và lực cản của môi trường, một phần cơ năng của vật thường chuyển hoá thành dạng năng lượng nào?',
+          options: [
+            'Điện năng.',
+            'Nhiệt năng.',
+            'Quang năng.',
+            'Hoá năng.'
+          ],
+          answer: 1, // B
+          explanation: 'Cơ năng có thể chuyển hoá thành nhiệt năng do lực ma sát, lực cản của môi trường. Khi đó cơ năng không bảo toàn[cite: 5].'
+        },
+        {
+          type: 'mcq', section: 'II. Sự chuyển hóa năng lượng', level: 'Hiểu',
+          question: 'Thả một vật nặng từ độ cao h xuống mặt đất. Bỏ qua sức cản không khí. Trong quá trình rơi, hiện tượng nào sau đây xảy ra?',
+          options: [
+            'Động năng chuyển hoá dần thành thế năng, cơ năng giảm.',
+            'Thế năng chuyển hoá dần thành động năng, cơ năng tăng.',
+            'Thế năng chuyển hoá dần thành động năng, cơ năng được bảo toàn.',
+            'Cơ năng chuyển hoá toàn bộ thành nhiệt năng.'
+          ],
+          answer: 2, // C
+          explanation: 'Khi rơi, độ cao giảm (thế năng giảm) và tốc độ tăng (động năng tăng), thế năng chuyển hoá thành động năng. Vì bỏ qua lực cản nên cơ năng bảo toàn[cite: 5].'
+        },
+        {
+          type: 'mcq', section: 'II. Sự chuyển hóa năng lượng', level: 'Hiểu',
+          question: 'Trong thí nghiệm con lắc đơn (Hình 3.2), khi con lắc đi từ vị trí biên A (cao nhất) qua vị trí cân bằng O (thấp nhất) thì:',
+          options: [
+            'Động năng giảm đi, thế năng tăng lên.',
+            'Thế năng và động năng đều giảm đi.',
+            'Động năng chuyển hoá dần thành thế năng.',
+            'Thế năng chuyển hoá dần thành động năng.'
+          ],
+          answer: 3, // D
+          explanation: 'Từ A đến O, độ cao giảm dần và tốc độ tăng dần, tức là thế năng chuyển hoá thành động năng[cite: 5].'
+        },
+        {
+          type: 'tf_group', section: 'II. Sự chuyển hóa năng lượng', level: 'Hiểu',
+          question: 'Khảo sát hoạt động của "Xe thế năng" (gồm quả nặng thả rơi làm quay trục bánh xe, kéo xe chạy trên mặt phẳng):',
+          items: [
+            { text: 'a) Trong quá trình quả nặng rơi, thế năng của quả nặng giảm dần.', answer: true },
+            { text: 'b) Toàn bộ thế năng của quả nặng chỉ chuyển hoá duy nhất thành động năng của xe.', answer: false },
+            { text: 'c) Nếu coi cơ năng bảo toàn, sự giảm thế năng của quả nặng sẽ chuyển thành động năng của cả xe và quả nặng.', answer: true },
+            { text: 'd) Trong thực tế, tốc độ của xe luôn nhỏ hơn giá trị tính toán lý thuyết do có một phần cơ năng hao phí thành nhiệt năng.', answer: true }
+          ],
+          explanation: 'a) Đúng. b) Sai, chuyển hoá thành động năng của xe, động năng của quả nặng đang rơi, và nhiệt năng (do ma sát). c) Đúng. d) Đúng, thực tế ma sát làm cơ năng không bảo toàn[cite: 5].'
+        },
+        {
+          type: 'tf_group', section: 'II. Sự chuyển hóa năng lượng', level: 'Vận dụng',
+          question: 'Ném một vật từ mặt đất theo hướng chếch lên trên (như quỹ đạo 2 Hình 3.3). Bỏ qua hoàn toàn sức cản không khí:',
+          items: [
+            { text: 'a) Tại điểm cao nhất của quỹ đạo, tốc độ của vật bằng 0 nên động năng bằng 0.', answer: false },
+            { text: 'b) Trong suốt quá trình bay, tổng động năng và thế năng của vật luôn có giá trị không thay đổi.', answer: true },
+            { text: 'c) Giai đoạn từ lúc ném đến lúc đạt đỉnh cao nhất, động năng giảm dần và thế năng tăng dần.', answer: true },
+            { text: 'd) Tại mọi vị trí trên quỹ đạo, thế năng của vật luôn lớn hơn động năng.', answer: false }
+          ],
+          explanation: 'a) Sai, ném xiên thì tại đỉnh vật vẫn có vận tốc theo phương ngang, động năng > 0. b) Đúng, cơ năng bảo toàn. c) Đúng. d) Sai, tuỳ thuộc vào vị trí và vận tốc[cite: 5].'
+        },
+        {
+          type: 'short', section: 'II. Sự chuyển hóa năng lượng', level: 'Vận dụng',
+          question: 'Một vật có trọng lượng P = 15 N được thả rơi từ độ cao 4,5 m xuống đất. Chọn gốc thế năng ở mặt đất. Tính thế năng ban đầu của vật (đơn vị: J).',
+          answer: '67,5',
+          unit: 'J',
+          explanation: 'Thế năng ban đầu: $W_t = P \\cdot h = 15 \\cdot 4,5 = 67,5\\text{ J}$.'
+        },
+        {
+          type: 'short', section: 'II. Sự chuyển hóa năng lượng', level: 'Vận dụng',
+          question: 'Một quả bóng nhỏ có khối lượng m = 1 kg đang bay ổn định với tốc độ v = 5 m/s. Tính giá trị động năng của quả bóng (đơn vị: J).',
+          answer: '12,5',
+          unit: 'J',
+          explanation: 'Động năng: $W_đ = 0,5 \\cdot m \\cdot v^2 = 0,5 \\cdot 1 \\cdot 5^2 = 12,5\\text{ J}$.'
+        }
+      ]
+    };
   </script>
 
   <script src="engine.js"></script>

@@ -14,7 +14,6 @@
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
 
-  <!-- Thanh điều hướng về Trang chủ -->
   <header class="bg-blue-900 text-white shadow sticky top-0 z-30">
     <div class="max-w-4xl mx-auto px-4 py-3.5 flex items-center justify-between gap-3">
       <a href="index.html" class="bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 transition">
@@ -27,17 +26,10 @@
   <main class="max-w-4xl mx-auto px-4 py-6 flex-1 w-full">
     <h1 id="lessonTitle" class="text-xl sm:text-2xl font-extrabold text-slate-900 mb-4">Bài 2. Động năng. Thế năng</h1>
 
-    <!-- Nhập nhanh tên lớp -->
     <div class="bg-white p-3.5 rounded-2xl border border-slate-200 mb-5 flex flex-wrap gap-2.5 items-center justify-between">
       <div class="flex flex-wrap gap-2 flex-1">
-        <input id="stuName" type="text" placeholder="Họ và tên học sinh..." class="border border-slate-300 rounded-xl px-3 py-1.5 text-sm flex-1 min-w-[180px]">
-        <select id="stuClass" class="border border-slate-300 rounded-xl px-3 py-1.5 text-sm bg-white">
-          <option value="">-- Lớp --</option>
-          <option value="9/1">9/1</option><option value="9/2">9/2</option>
-          <option value="9/3">9/3</option><option value="9/4">9/4</option>
-          <option value="9/5">9/5</option><option value="9/6">9/6</option>
-          <option value="9/7">9/7</option><option value="9/8">9/8</option>
-        </select>
+        <input id="stuName" type="text" placeholder="Họ và tên học sinh..." class="border border-slate-300 rounded-xl px-3 py-1.5 text-sm flex-1 min-w-[180px] focus:ring-2 focus:ring-blue-500 outline-none">
+        <input id="stuClass" type="text" placeholder="Lớp (vd: 9A1, 9D3...)" class="border border-slate-300 rounded-xl px-3 py-1.5 text-sm w-36 uppercase font-semibold focus:ring-2 focus:ring-blue-500 outline-none">
       </div>
       <div class="flex gap-2">
         <button id="btnTabTheory" onclick="switchTab('theory')" class="px-4 py-2 rounded-xl font-bold text-sm bg-white text-slate-600 border border-slate-200">📖 Lý thuyết</button>
@@ -45,7 +37,6 @@
       </div>
     </div>
 
-    <!-- Tab 1: Tóm tắt lý thuyết -->
     <section id="tabTheory" class="hidden bg-white rounded-2xl p-6 border border-slate-200 shadow-sm leading-relaxed space-y-3">
       <div id="theoryContent"></div>
       <div class="pt-4 border-t">
@@ -55,7 +46,6 @@
       </div>
     </section>
 
-    <!-- Tab 2: Luyện tập & Kiểm tra -->
     <section id="tabQuiz">
       <div id="resultBanner" class="hidden bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-2xl p-5 mb-5 shadow-md">
         <div class="flex flex-wrap items-center justify-between gap-4">
@@ -66,7 +56,7 @@
             <div id="syncStatus" class="text-xs mt-1.5 font-semibold bg-black/20 inline-block px-2.5 py-1 rounded-lg"></div>
           </div>
           <button onclick="startQuiz(currentMode)" class="bg-white text-emerald-800 hover:bg-emerald-50 px-4 py-2 rounded-xl font-bold text-sm shadow">
-            🔄 Làm đề mới (Xáo câu)
+            🔄 Làm lại (Đề mới)
           </button>
         </div>
       </div>
@@ -74,81 +64,298 @@
       <div class="bg-white p-3.5 rounded-2xl border border-slate-200 mb-4 flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-2">
           <span class="text-xs font-bold text-slate-500">Chế độ:</span>
-          <button id="btnModePractice" onclick="startQuiz('practice')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white">Luyện tập (Xem giải ngay)</button>
-          <button id="btnModeExam" onclick="startQuiz('exam')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600">Kiểm tra (Tính giờ)</button>
+          <button id="btnModePractice" onclick="startQuiz('practice')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white">Luyện tập (Theo mục SGK)</button>
+          <button id="btnModeExam" onclick="startQuiz('exam')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600">Kiểm tra (Xáo câu & tính giờ)</button>
         </div>
         <div id="timerBox" class="hidden text-sm font-extrabold text-rose-600 bg-rose-50 px-3 py-1 rounded-lg border border-rose-200">
-          ⏱️ Còn lại: <span id="timerText">10:00</span>
+          ⏱️ Thời gian làm bài: <span id="timerText">00:00</span>
         </div>
       </div>
 
       <div id="questionList" class="space-y-4"></div>
 
       <div class="mt-6 text-center">
-        <button id="submitBtn" onclick="submitQuiz(false)" class="bg-blue-700 hover:bg-blue-800 text-white px-8 py-3.5 rounded-2xl font-extrabold text-base shadow-lg transition">
+        <button id="submitBtn" onclick="submitQuiz()" class="bg-blue-700 hover:bg-blue-800 text-white px-8 py-3.5 rounded-2xl font-extrabold text-base shadow-lg transition">
           📩 NỘP BÀI & CHẤM ĐIỂM
         </button>
       </div>
     </section>
   </main>
 
-  <!-- ===================================================================== -->
-  <!-- DỮ LIỆU RIÊNG CỦA BÀI HỌC (Thầy chỉnh sửa / thêm câu hỏi tại đây)     -->
-  <!-- ===================================================================== -->
   <script>
     const LESSON_DATA = {
-  "id": 2,
-  "topic": "Cơ học",
-  "title": "Bài 2. Động năng. Thế năng",
-  "examMinutes": 10,
-  "theoryHTML": "\n      <h3 class=\"font-bold text-lg text-blue-800\">I. Động năng</h3>\n      <ul class=\"list-disc pl-5 space-y-1 text-sm\">\n        <li><strong>Khái niệm:</strong> Năng lượng vật có được do chuyển động gọi là động năng.</li>\n        <li><strong>Công thức:</strong> $W_đ = \\frac{1}{2}mv^2$ (trong đó $m$ là khối lượng tính bằng kg, $v$ là tốc độ tính bằng m/s, $W_đ$ là động năng tính bằng Jun - J).</li>\n      </ul>\n      <h3 class=\"font-bold text-lg text-blue-800 mt-3\">II. Thế năng trọng trường</h3>\n      <ul class=\"list-disc pl-5 space-y-1 text-sm\">\n        <li><strong>Khái niệm:</strong> Năng lượng vật có được khi ở trên cao so với mặt đất (hoặc mốc chọn trước) gọi là thế năng trọng trường.</li>\n        <li><strong>Công thức:</strong> $W_t = P \\cdot h = 10 \\cdot m \\cdot h$ (với $P$ là trọng lượng tính bằng N, $h$ là độ cao tính bằng m).</li>\n      </ul>\n    ",
-  "questions": [
-    {
-      "type": "mcq",
-      "question": "Động năng của một vật phụ thuộc vào những yếu tố nào?",
-      "options": [
-        "Khối lượng và tốc độ của vật",
-        "Khối lượng và độ cao của vật",
-        "Trọng lượng riêng và thể tích của vật",
-        "Kích thước và hình dạng của vật"
-      ],
-      "answer": 0,
-      "explanation": "Theo công thức Wđ = ½mv², động năng phụ thuộc vào khối lượng m và tốc độ v của vật."
-    },
-    {
-      "type": "mcq",
-      "question": "Nếu tốc độ của một ô tô tăng gấp đôi trong khi khối lượng không đổi thì động năng của ô tô sẽ thay đổi như thế nào?",
-      "options": [
-        "Tăng gấp 4 lần",
-        "Tăng gấp 2 lần",
-        "Không thay đổi",
-        "Giảm đi một nửa"
-      ],
-      "answer": 0,
-      "explanation": "Vì động năng tỉ lệ thuận với bình phương tốc độ (v²), nên khi v tăng 2 lần thì Wđ tăng 2² = 4 lần."
-    },
-    {
-      "type": "tf",
-      "question": "Một quả dừa ở trên cây có thế năng trọng trường so với mặt đất.",
-      "answer": true,
-      "explanation": "Đúng. Quả dừa đang ở độ cao h > 0 so với mặt đất nên có thế năng trọng trường Wt = P.h."
-    },
-    {
-      "type": "short",
-      "question": "Tính động năng của một viên bi có khối lượng 0,2 kg đang lăn với tốc độ 4 m/s (đơn vị Jun).",
-      "answer": "1.6",
-      "unit": "J",
-      "explanation": "Áp dụng công thức: Wđ = 0,5 × 0,2 × 4² = 1,6 J."
-    },
-    {
-      "type": "short",
-      "question": "Một vật nặng có trọng lượng 50 N được đặt ở độ cao 3 m so với mặt đất. Thế năng trọng trường của vật là bao nhiêu Jun?",
-      "answer": "150",
-      "unit": "J",
-      "explanation": "Wt = P × h = 50 × 3 = 150 J."
-    }
-  ]
-};
+      id: 2,
+      topic: 'Cơ học',
+      title: 'Bài 2. Động năng. Thế năng',
+      theoryHTML: `
+        <h3 class="font-bold text-lg text-blue-800">I. Động năng</h3>
+        <ul class="list-disc pl-5 space-y-1 text-sm">
+          <li><strong>Khái niệm:</strong> Năng lượng mà vật có được do chuyển động gọi là động năng. Động năng phụ thuộc vào khối lượng và tốc độ của vật.</li>
+          <li><strong>Công thức:</strong> $W_đ = \\frac{1}{2}mv^2$<br>Trong đó: $m$ là khối lượng (kg); $v$ là tốc độ (m/s); $W_đ$ là động năng (J).</li>
+        </ul>
+
+        <h3 class="font-bold text-lg text-blue-800 mt-4">II. Thế năng</h3>
+        <ul class="list-disc pl-5 space-y-1 text-sm">
+          <li><strong>Thế năng trọng trường:</strong> Là năng lượng của một vật khi nó ở một độ cao nhất định so với mặt đất (hoặc một vị trí được chọn làm gốc).</li>
+          <li><strong>Công thức:</strong> $W_t = P \\cdot h$<br>Trong đó: $P = 10m$ là trọng lượng (N); $h$ là độ cao so với gốc thế năng (m); $W_t$ là thế năng trọng trường (J).</li>
+          <li><strong>Lưu ý:</strong> Giá trị của thế năng phụ thuộc vào gốc chọn để tính độ cao (gốc thế năng).</li>
+          <li><strong>Các dạng khác:</strong> Thế năng đàn hồi (cây cung bị kéo căng), thế năng tĩnh điện.</li>
+        </ul>
+      `,
+      questions: [
+        // ==========================================
+        // MỤC I. ĐỘNG NĂNG (6 TN, 2 Đ/S, 4 TLN)
+        // ==========================================
+        {
+          type: 'mcq', section: 'I. Động năng', level: 'Biết',
+          question: 'Năng lượng mà vật có được do chuyển động được gọi là gì?',
+          options: [
+            'Động năng.',
+            'Thế năng.',
+            'Nhiệt năng.',
+            'Quang năng.'
+          ],
+          answer: 0, // A
+          explanation: 'Theo khái niệm SGK: Năng lượng mà vật có được do chuyển động gọi là động năng.'
+        },
+        {
+          type: 'mcq', section: 'I. Động năng', level: 'Biết',
+          question: 'Biểu thức tính động năng của một vật có khối lượng $m$ đang chuyển động với tốc độ $v$ là:',
+          options: [
+            '$W_đ = mv^2$',
+            '$W_đ = \\frac{1}{2}mv^2$',
+            '$W_đ = \\frac{1}{2}mv$',
+            '$W_đ = 2mv^2$'
+          ],
+          answer: 1, // B
+          explanation: 'Công thức tính động năng là $W_đ = \\frac{1}{2}mv^2$.'
+        },
+        {
+          type: 'mcq', section: 'I. Động năng', level: 'Biết',
+          question: 'Trong công thức tính động năng $W_đ = \\frac{1}{2}mv^2$, đơn vị đo chuẩn trong hệ SI của khối lượng $m$ và tốc độ $v$ lần lượt là:',
+          options: [
+            'g và m/s.',
+            'kg và km/h.',
+            'kg và m/s.',
+            'g và km/h.'
+          ],
+          answer: 2, // C
+          explanation: 'Để Wđ ra đơn vị Jun (J), m phải tính bằng kilôgam (kg) và v phải tính bằng mét trên giây (m/s).'
+        },
+        {
+          type: 'mcq', section: 'I. Động năng', level: 'Hiểu',
+          question: 'Động năng của một chiếc ô tô sẽ thay đổi như thế nào nếu tốc độ của xe tăng gấp đôi (giữ nguyên khối lượng)?',
+          options: [
+            'Tăng gấp 2 lần.',
+            'Giảm đi một nửa.',
+            'Không thay đổi.',
+            'Tăng gấp 4 lần.'
+          ],
+          answer: 3, // D
+          explanation: 'Vì động năng tỉ lệ thuận với bình phương tốc độ ($v^2$), nên khi $v$ tăng 2 lần thì động năng tăng $2^2 = 4$ lần.'
+        },
+        {
+          type: 'mcq', section: 'I. Động năng', level: 'Hiểu',
+          question: 'Hai vật có cùng khối lượng đang chuyển động. Vật thứ nhất có tốc độ $v$, vật thứ hai có tốc độ $2v$. So sánh động năng của chúng:',
+          options: [
+            'Vật 2 có động năng gấp 4 lần vật 1.',
+            'Vật 2 có động năng gấp 2 lần vật 1.',
+            'Hai vật có động năng bằng nhau.',
+            'Vật 1 có động năng lớn hơn.'
+          ],
+          answer: 0, // A
+          explanation: 'Do $m$ như nhau, vật 2 có vận tốc gấp đôi vật 1 nên động năng của vật 2 gấp $2^2 = 4$ lần động năng vật 1.'
+        },
+        {
+          type: 'mcq', section: 'I. Động năng', level: 'Vận dụng',
+          question: 'Quan sát Hình 2.2 SGK, trong số các vật đang chuyển động sau đây, vật nào thường có động năng lớn nhất?',
+          options: [
+            'Quả bóng đang bay tới rổ.',
+            'Máy bay đang bay trên bầu trời.',
+            'Ô tô đang di chuyển trên đường cao tốc.',
+            'Chiếc lá đang rụng.'
+          ],
+          answer: 1, // B
+          explanation: 'Máy bay có khối lượng rất lớn và tốc độ bay cực kì cao so với ô tô hay quả bóng, nên động năng của nó là lớn nhất.'
+        },
+        {
+          type: 'tf_group', section: 'I. Động năng', level: 'Hiểu',
+          question: 'Đánh giá tính đúng/sai của các phát biểu sau về động năng:',
+          items: [
+            { text: 'a) Động năng của một vật chỉ phụ thuộc vào tốc độ mà không phụ thuộc vào khối lượng của nó.', answer: false },
+            { text: 'b) Một chiếc búa có khối lượng càng lớn và chuyển động càng nhanh thì động năng của nó càng lớn.', answer: true },
+            { text: 'c) Động năng là một dạng năng lượng và có đơn vị đo chuẩn là jun (J).', answer: true },
+            { text: 'd) Khi xe ô tô hãm phanh, tốc độ giảm dần thì động năng của xe lại tăng dần.', answer: false }
+          ],
+          explanation: 'a) Sai, phụ thuộc cả m và v. b) Đúng. c) Đúng. d) Sai, v giảm thì động năng phải giảm.'
+        },
+        {
+          type: 'tf_group', section: 'I. Động năng', level: 'Vận dụng',
+          question: 'Khi chơi xích đu, xét chuyển động của người chơi từ vị trí cao nhất (biên) tới vị trí thấp nhất (cân bằng):',
+          items: [
+            { text: 'a) Tốc độ của người chơi tăng dần trong quá trình di chuyển này.', answer: true },
+            { text: 'b) Động năng của người chơi giảm dần khi tiến về vị trí thấp nhất.', answer: false },
+            { text: 'c) Tại vị trí thấp nhất, tốc độ đạt cực đại nên động năng đạt giá trị lớn nhất.', answer: true },
+            { text: 'd) Động năng của người chơi không thay đổi trong suốt quá trình đu xích đu.', answer: false }
+          ],
+          explanation: 'a) Đúng. b) Sai, tốc độ tăng nên động năng tăng. c) Đúng. d) Sai, động năng thay đổi liên tục theo tốc độ.'
+        },
+        {
+          type: 'short', section: 'I. Động năng', level: 'Vận dụng',
+          question: 'Tính động năng của một quả bóng đá có khối lượng m = 0,45 kg đang bay với tốc độ v = 10 m/s (đơn vị: J).',
+          answer: '22,5',
+          unit: 'J',
+          explanation: '$W_đ = 0,5 \\cdot 0,45 \\cdot 10^2 = 22,5\\text{ J}$.'
+        },
+        {
+          type: 'short', section: 'I. Động năng', level: 'Vận dụng',
+          question: 'Một hệ gồm xe máy và người lái có tổng khối lượng 200 kg đang chuyển động với tốc độ 4 m/s. Động năng của hệ bằng bao nhiêu jun?',
+          answer: '1600',
+          unit: 'J',
+          explanation: '$W_đ = 0,5 \\cdot 200 \\cdot 4^2 = 100 \\cdot 16 = 1600\\text{ J}$.'
+        },
+        {
+          type: 'short', section: 'I. Động năng', level: 'Vận dụng',
+          question: 'Một vật khối lượng 2 kg đang chuyển động và có động năng là 12,25 J. Tốc độ của vật là bao nhiêu m/s?',
+          answer: '3,50',
+          unit: 'm/s',
+          explanation: '$v = \\sqrt{\\frac{2 \\cdot W_đ}{m}} = \\sqrt{\\frac{2 \\cdot 12,25}{2}} = \\sqrt{12,25} = 3,5\\text{ m/s}$.'
+        },
+        {
+          type: 'short', section: 'I. Động năng', level: 'Vận dụng',
+          question: 'Động năng của một con linh dương đang chạy là 1280 J. Nếu tốc độ của nó đang là 8 m/s thì khối lượng của con linh dương là bao nhiêu kg?',
+          answer: '40,0',
+          unit: 'kg',
+          explanation: '$m = \\frac{2 \\cdot W_đ}{v^2} = \\frac{2 \\cdot 1280}{64} = \\frac{2560}{64} = 40\\text{ kg}$.'
+        },
+
+        // ==========================================
+        // MỤC II. THẾ NĂNG (6 TN, 2 Đ/S, 4 TLN)
+        // ==========================================
+        {
+          type: 'mcq', section: 'II. Thế năng', level: 'Biết',
+          question: 'Năng lượng của một vật khi nó ở một độ cao nhất định so với mặt đất (hoặc so với mốc tính độ cao) được gọi là:',
+          options: [
+            'Động năng.',
+            'Cơ năng.',
+            'Thế năng trọng trường.',
+            'Nhiệt năng.'
+          ],
+          answer: 2, // C
+          explanation: 'Thế năng trọng trường là năng lượng của vật khi nó ở một độ cao nhất định so với mốc tính độ cao.'
+        },
+        {
+          type: 'mcq', section: 'II. Thế năng', level: 'Biết',
+          question: 'Công thức tính thế năng trọng trường của một vật là:',
+          options: [
+            '$W_t = \\frac{1}{2}mv^2$',
+            '$W_t = P/h$',
+            '$W_t = \\frac{1}{2}Ph$',
+            '$W_t = P \\cdot h$'
+          ],
+          answer: 3, // D
+          explanation: 'Độ lớn của thế năng trọng trường được tính bằng công thức: $W_t = P.h$.'
+        },
+        {
+          type: 'mcq', section: 'II. Thế năng', level: 'Biết',
+          question: 'Trong công thức tính thế năng trọng trường $W_t = P \\cdot h$, đại lượng $h$ mang ý nghĩa gì?',
+          options: [
+            'Độ cao của vật so với vị trí chọn làm gốc thế năng.',
+            'Quãng đường vật đã chuyển động được theo phương ngang.',
+            'Độ sâu của vật khi lặn dưới đáy biển.',
+            'Khoảng cách từ vật đến tâm Trái Đất.'
+          ],
+          answer: 0, // A
+          explanation: 'Trong công thức, $h$ là độ cao của vật so với vị trí chọn làm gốc (gốc thế năng).'
+        },
+        {
+          type: 'mcq', section: 'II. Thế năng', level: 'Hiểu',
+          question: 'So sánh thế năng trọng trường của hai vật ở cùng một độ cao, biết khối lượng của vật thứ nhất gấp 3 lần khối lượng của vật thứ hai:',
+          options: [
+            'Vật 1 có thế năng bằng 1/3 thế năng vật 2.',
+            'Vật 1 có thế năng gấp 3 lần thế năng vật 2.',
+            'Hai vật có thế năng hoàn toàn bằng nhau.',
+            'Không thể so sánh được vì thiếu dữ kiện tốc độ.'
+          ],
+          answer: 1, // B
+          explanation: 'Do $h$ bằng nhau, thế năng $W_t = 10mh$ tỉ lệ thuận với khối lượng. Vật 1 nặng gấp 3 thì thế năng cũng gấp 3.'
+        },
+        {
+          type: 'mcq', section: 'II. Thế năng', level: 'Hiểu',
+          question: 'Trong các nhà máy thủy điện, người ta thường xây đập ngăn nước rất cao và đặt máy phát điện ở vị trí rất thấp so với mực nước hồ chứa nhằm mục đích gì?',
+          options: [
+            'Để dễ dàng bảo trì tua-bin máy phát điện.',
+            'Để giảm bớt áp lực nước lên hệ thống ống dẫn.',
+            'Để khai thác được tối đa thế năng trọng trường của nước.',
+            'Để nước chảy chậm hơn, tránh làm hỏng thiết bị.'
+          ],
+          answer: 2, // C
+          explanation: 'Vị trí máy phát càng thấp thì độ cao $h$ (so với mốc tại máy phát) càng lớn, thế năng dự trữ càng lớn, từ đó khai thác được tối đa năng lượng.'
+        },
+        {
+          type: 'mcq', section: 'II. Thế năng', level: 'Vận dụng',
+          question: 'Ngoài thế năng trọng trường, một cây cung đang bị kéo căng dự trữ năng lượng dưới dạng nào sau đây?',
+          options: [
+            'Động năng.',
+            'Thế năng tĩnh điện.',
+            'Nhiệt năng.',
+            'Thế năng đàn hồi.'
+          ],
+          answer: 3, // D
+          explanation: 'Thế năng đàn hồi xuất hiện khi một vật bị biến dạng đàn hồi, ví dụ như cây cung đang bị kéo căng (Hình 2.4 SGK).'
+        },
+        {
+          type: 'tf_group', section: 'II. Thế năng', level: 'Biết',
+          question: 'Đánh giá tính đúng/sai của các phát biểu về thế năng trọng trường:',
+          items: [
+            { text: 'a) Giá trị của thế năng trọng trường hoàn toàn không phụ thuộc vào việc chọn mốc tính độ cao.', answer: false },
+            { text: 'b) Nếu chọn mặt đất làm gốc thế năng, một vật nằm ngay trên mặt đất sẽ có thế năng bằng 0.', answer: true },
+            { text: 'c) Vật có khối lượng càng lớn và ở vị trí càng cao thì thế năng trọng trường của nó càng lớn.', answer: true },
+            { text: 'd) Đơn vị đo của thế năng trọng trường là Niutơn (N).', answer: false }
+          ],
+          explanation: 'a) Sai, thế năng phụ thuộc vào gốc thế năng. b) Đúng, vì h = 0. c) Đúng, Wt = 10mh. d) Sai, đơn vị là Jun (J).'
+        },
+        {
+          type: 'tf_group', section: 'II. Thế năng', level: 'Vận dụng',
+          question: 'Một công nhân vác bao xi măng đứng trên sân thượng tòa nhà cao 20 m so với mặt đất. Bao xi măng cách mặt sân thượng 1,4 m.',
+          items: [
+            { text: 'a) Nếu chọn gốc thế năng tại mặt sân thượng, độ cao h để tính thế năng của bao xi măng là 1,4 m.', answer: true },
+            { text: 'b) Nếu chọn gốc thế năng tại mặt đất, độ cao h để tính thế năng của bao xi măng là 21,4 m.', answer: true },
+            { text: 'c) Giá trị thế năng của bao xi măng trong hai trường hợp chọn mốc trên là hoàn toàn bằng nhau.', answer: false },
+            { text: 'd) Việc thay đổi mốc thế năng làm thay đổi bản chất khối lượng của bao xi măng.', answer: false }
+          ],
+          explanation: 'a) Đúng. b) Đúng (20 + 1,4 = 21,4m). c) Sai, do độ cao h so với mốc khác nhau nên Wt khác nhau. d) Sai, khối lượng vật không đổi.'
+        },
+        {
+          type: 'short', section: 'II. Thế năng', level: 'Vận dụng',
+          question: 'Một thùng hàng có khối lượng 150 kg (trọng lượng P = 1500 N) được cần cẩu nâng lên độ cao 6 m so với mặt đất. Chọn mặt đất làm gốc thế năng. Tính thế năng của thùng hàng (đơn vị: J).',
+          answer: '9000',
+          unit: 'J',
+          explanation: '$W_t = P \\cdot h = 1500 \\cdot 6 = 9000\\text{ J}$.'
+        },
+        {
+          type: 'short', section: 'II. Thế năng', level: 'Vận dụng',
+          question: 'Một vật nặng có trọng lượng 50 N đang có thế năng trọng trường là 850 J. Hỏi vật này đang ở độ cao bao nhiêu mét so với mốc thế năng?',
+          answer: '17,0',
+          unit: 'm',
+          explanation: '$h = \\frac{W_t}{P} = \\frac{850}{50} = 17\\text{ m}$.'
+        },
+        {
+          type: 'short', section: 'II. Thế năng', level: 'Vận dụng',
+          question: 'Một chiếc flycam có khối lượng 2,5 kg đang bay ngang ở độ cao 40 m so với mặt đất. Tính thế năng của flycam so với mặt đất. (Lấy g = 10 m/s², suy ra P = 25 N).',
+          answer: '1000',
+          unit: 'J',
+          explanation: '$W_t = P \\cdot h = 25 \\cdot 40 = 1000\\text{ J}$.'
+        },
+        {
+          type: 'short', section: 'II. Thế năng', level: 'Vận dụng',
+          question: 'Một quả bóng có trọng lượng 4,5 N ở độ cao h có thế năng là 11,25 J. Tính độ cao h (đơn vị: m).',
+          answer: '2,50',
+          unit: 'm',
+          explanation: '$h = \\frac{W_t}{P} = \\frac{11,25}{4,5} = 2,5\\text{ m}$.'
+        }
+      ]
+    };
   </script>
 
   <script src="engine.js"></script>

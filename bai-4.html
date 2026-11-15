@@ -3,9 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bài 17. Một số dạng năng lượng tái tạo - KHTN 9 THCS Ninh Hòa</title>
+  <title>Bài 4. Công và công suất - KHTN 9 THCS Ninh Hòa</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>body { font-family: 'Be Vietnam Pro', sans-serif; }</style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
@@ -15,12 +19,12 @@
       <a href="index.html" class="bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 transition">
         ← Trang chủ (17 bài)
       </a>
-      <span id="lessonTopic" class="text-xs font-semibold bg-blue-700 px-3 py-1 rounded-full">Năng lượng</span>
+      <span id="lessonTopic" class="text-xs font-semibold bg-blue-700 px-3 py-1 rounded-full">Cơ học</span>
     </div>
   </header>
 
   <main class="max-w-4xl mx-auto px-4 py-6 flex-1 w-full">
-    <h1 id="lessonTitle" class="text-xl sm:text-2xl font-extrabold text-slate-900 mb-4">Bài 17. Một số dạng năng lượng tái tạo</h1>
+    <h1 id="lessonTitle" class="text-xl sm:text-2xl font-extrabold text-slate-900 mb-4">Bài 4. Công và công suất</h1>
 
     <div class="bg-white p-3.5 rounded-2xl border border-slate-200 mb-5 flex flex-wrap gap-2.5 items-center justify-between">
       <div class="flex flex-wrap gap-2 flex-1">
@@ -78,450 +82,281 @@
     </section>
   </main>
 
-  <!-- ===================================================================== -->
-  <!-- DỮ LIỆU BÀI 17 (Bám sát ưu/nhược điểm, phân bổ đáp án A,B,C,D chuẩn) -->
-  <!-- ===================================================================== -->
   <script>
     const LESSON_DATA = {
-      id: 17,
-      topic: 'Năng lượng',
-      title: 'Bài 17. Một số dạng năng lượng tái tạo',
+      id: 4,
+      topic: 'Cơ học',
+      title: 'Bài 4. Công và công suất',
       theoryHTML: `
-        <h3 class="font-bold text-lg text-blue-800">I. Năng lượng tái tạo</h3>
-        <p class="text-sm">Là năng lượng đến từ các nguồn có sẵn trong thiên nhiên, liên tục được bổ sung thông qua các quá trình tự nhiên (mặt trời, gió, dòng chảy, sinh khối, địa nhiệt...)[cite: 3].</p>
-        
-        <h3 class="font-bold text-lg text-blue-800 mt-3">II. Ưu nhược điểm của một số dạng năng lượng tái tạo</h3>
+        <h3 class="font-bold text-lg text-blue-800">I. Công cơ học</h3>
+        <p class="text-sm mb-2">Công cơ học (gọi tắt là công) là số đo phần năng lượng được truyền từ vật này qua vật khác trong tương tác giữa các vật[cite: 4].</p>
         <ul class="list-disc pl-5 space-y-1 text-sm">
-          <li><strong>Mặt trời:</strong> Có sẵn, không ồn, không khí thải. Nhược điểm: Chi phí cao, rác thải điện tử sau 25 năm, tốn diện tích đất, ô nhiễm ánh sáng[cite: 3].</li>
-          <li><strong>Gió:</strong> Nguồn ổn định (đặc biệt ngoài khơi), không khí thải. Nhược điểm: Giá đầu tư cao, tiếng ồn, nhiễu sóng phát thanh, cản trở chim/dơi[cite: 3].</li>
-          <li><strong>Sóng biển:</strong> Có sẵn, không phát thải. Nhược điểm: Cần không gian biển rộng (ảnh hưởng giao thông/hệ sinh thái), chi phí cao, phụ thuộc mùa vụ và thiên tai[cite: 3].</li>
-          <li><strong>Dòng sông:</strong> Ít khí thải. Nhược điểm: Động vật khó di cư, gây áp lực lên địa tầng (nguy cơ động đất), suy giảm rừng, bắt buộc phải di dời dân cư khỏi vùng ngập[cite: 3].</li>
+          <li><strong>Định nghĩa:</strong> Công có giá trị bằng lực nhân với quãng đường dịch chuyển theo hướng của lực[cite: 4].</li>
+          <li><strong>Biểu thức:</strong> $A = F \\cdot s$<br>Trong đó: $F$ là lực tác dụng (N); $s$ là quãng đường dịch chuyển (m)[cite: 4].</li>
+          <li><strong>Đơn vị:</strong> Jun (J). $1\\text{ J} = 1\\text{ N} \\cdot 1\\text{ m} = 1\\text{ Nm}$[cite: 4].<br>Các bội số: $1\\text{ kJ} = 10^3\\text{ J}$; $1\\text{ MJ} = 10^6\\text{ J}$[cite: 4].<br>Đơn vị khác: $1\\text{ BTU} = 1055\\text{ J}$; $1\\text{ cal} = 4,186\\text{ J}$[cite: 4].</li>
+          <li><strong>Lưu ý:</strong> Nếu vật dịch chuyển theo phương vuông góc với phương của lực thì công của lực đó bằng 0[cite: 4].</li>
         </ul>
 
-        <h3 class="font-bold text-lg text-blue-800 mt-3">III. Sử dụng hiệu quả năng lượng và bảo vệ môi trường</h3>
-        <p class="text-sm">Sử dụng hiệu quả là dùng ít năng lượng hơn cho cùng một công việc. Điều này giúp giảm chi phí, giảm lượng nhiên liệu hóa thạch bị đốt cháy, từ đó giảm khí nhà kính và bảo vệ môi trường sinh thái[cite: 3].</p>
+        <h3 class="font-bold text-lg text-blue-800 mt-4">II. Công suất</h3>
+        <p class="text-sm mb-2">Đại lượng đặc trưng cho tốc độ thực hiện công được gọi là công suất[cite: 4].</p>
+        <ul class="list-disc pl-5 space-y-1 text-sm">
+          <li><strong>Biểu thức:</strong> $\\mathcal{P} = \\frac{A}{t}$<br>Trong đó: $A$ là công thực hiện được (J); $t$ là thời gian thực hiện công (s)[cite: 4].</li>
+          <li><strong>Đơn vị:</strong> Oát (W). $1\\text{ W} = \\frac{1\\text{ J}}{1\\text{ s}}$[cite: 4].<br>Các bội số: $1\\text{ kW} = 10^3\\text{ W}$; $1\\text{ MW} = 10^6\\text{ W}$; $1\\text{ GW} = 10^9\\text{ W}$[cite: 4].</li>
+          <li><strong>Đơn vị khác:</strong> Mã lực (HP) $1\\text{ HP} = 746\\text{ W}$[cite: 4]. Thiết bị làm lạnh/sưởi dùng $\\text{BTU/h}$ ($1\\text{ BTU/h} = 0,293\\text{ W}$)[cite: 4].</li>
+          <li>Công suất cũng mô tả tốc độ chuyển hoá năng lượng (VD: Bóng đèn 50W chuyển hóa 50J điện năng trong 1s thành quang năng, nhiệt năng)[cite: 4].</li>
+        </ul>
       `,
       questions: [
         // ==========================================
-        // MỤC I. NĂNG LƯỢNG TÁI TẠO (4 CÂU TN)
+        // MỤC I. CÔNG (6 TN, 2 Đ/S, 4 TLN)
         // ==========================================
         {
-          type: 'mcq', section: 'I. Năng lượng tái tạo',
-          question: 'Năng lượng tái tạo được định nghĩa là gì?',
+          type: 'mcq', section: 'I. Công', level: 'Biết',
+          question: 'Biểu thức xác định công A của một lực F không đổi làm vật dịch chuyển một quãng đường s theo hướng của lực là gì?',
           options: [
-            'Năng lượng đến từ các nguồn có sẵn trong thiên nhiên, liên tục được bổ sung qua quá trình tự nhiên.',
-            'Năng lượng sinh ra do việc đốt cháy các loại nhiên liệu hóa thạch dưới lòng đất.',
-            'Năng lượng chỉ có thể tạo ra được bằng các phản ứng hạt nhân trong nhà máy.',
-            'Năng lượng được khai thác từ các hầm mỏ sau hàng triệu năm kiến tạo.'
-          ],
-          answer: 0, // A
-          explanation: 'Năng lượng tái tạo là năng lượng đến từ các nguồn năng lượng có sẵn trong thiên nhiên, liên tục được bổ sung thông qua các quá trình tự nhiên[cite: 3].'
-        },
-        {
-          type: 'mcq', section: 'I. Năng lượng tái tạo',
-          question: 'Nguồn năng lượng nào dưới đây KHÔNG thuộc nhóm năng lượng tái tạo?',
-          options: [
-            'Năng lượng mặt trời.',
-            'Năng lượng từ than mỏ.',
-            'Năng lượng từ dòng chảy.',
-            'Năng lượng sinh khối.'
-          ],
-          answer: 1, // B
-          explanation: 'Than mỏ, dầu mỏ là năng lượng hóa thạch, không phải năng lượng tái tạo vì chúng sẽ cạn kiệt khi khai thác[cite: 3].'
-        },
-        {
-          type: 'mcq', section: 'I. Năng lượng tái tạo',
-          question: 'Dạng năng lượng tái tạo nào sau đây được khai thác trực tiếp từ sức nóng bên dưới bề mặt Trái Đất?',
-          options: [
-            'Năng lượng dòng chảy.',
-            'Năng lượng sinh khối.',
-            'Năng lượng nhiệt trong lòng Trái Đất (địa nhiệt).',
-            'Năng lượng mặt trời.'
+            'A = F/s',
+            'A = s/F',
+            'A = F.s',
+            'A = F.s²'
           ],
           answer: 2, // C
-          explanation: 'Năng lượng nhiệt trong lòng Trái Đất (địa nhiệt) là một dạng năng lượng tái tạo (Hình 17.1e SGK)[cite: 3].'
+          explanation: 'Công A của một lực F không đổi làm vật dịch chuyển một quãng đường s theo hướng của lực được xác định bởi biểu thức A = F.s[cite: 4].'
         },
         {
-          type: 'mcq', section: 'I. Năng lượng tái tạo',
-          question: 'Vì sao việc khai thác và sử dụng năng lượng hoá thạch (than, dầu mỏ) lại gây ô nhiễm môi trường?',
+          type: 'mcq', section: 'I. Công', level: 'Biết',
+          question: 'Đơn vị đo chuẩn của công cơ học trong hệ SI là gì?',
           options: [
-            'Vì chúng chiếm quá nhiều diện tích đất canh tác nông nghiệp.',
-            'Vì quá trình sử dụng tạo ra bức xạ nhiệt làm phản xạ ánh sáng.',
-            'Vì chúng làm nhiễu sóng phát thanh và cản trở đường bay của các loài chim.',
-            'Vì quá trình đốt cháy phát thải lượng lớn khí gây hiệu ứng nhà kính và biến đổi khí hậu.'
+            'Jun (J)',
+            'Niutơn (N)',
+            'Oát (W)',
+            'Mét (m)'
+          ],
+          answer: 0, // A
+          explanation: 'Đơn vị của công là jun, kí hiệu là J (1 J = 1 Nm)[cite: 4].'
+        },
+        {
+          type: 'mcq', section: 'I. Công', level: 'Biết',
+          question: 'Một người đẩy một xe hàng bằng một lực F, nhưng xe hàng vẫn đứng yên không nhúc nhích. Trong trường hợp này, công cơ học của người đó có giá trị bằng bao nhiêu?',
+          options: [
+            'Có giá trị âm.',
+            'Bằng 0.',
+            'Bằng vô cùng lớn.',
+            'Bằng giá trị của lực đẩy.'
+          ],
+          answer: 1, // B
+          explanation: 'Do xe đứng yên nên quãng đường dịch chuyển s = 0 m. Công A = F.s = F.0 = 0 J.'
+        },
+        {
+          type: 'mcq', section: 'I. Công', level: 'Hiểu',
+          question: 'Trong các trường hợp sau đây (như Hình 4.2), trường hợp nào KHÔNG có công cơ học được thực hiện?',
+          options: [
+            'Một người công nhân đang dùng ròng rọc đưa vật nặng lên cao.',
+            'Vận động viên đang dùng sức ném lao đi xa.',
+            'Một người đang dùng lực đẩy xe rùa chở gạch trên đường ngang.',
+            'Vận động viên đứng yên giữ quả tạ nặng 100 kg trên cao suốt 10 giây.'
           ],
           answer: 3, // D
-          explanation: 'Sử dụng năng lượng hóa thạch phát thải khí gây hiệu ứng nhà kính, gây biến đổi khí hậu và ô nhiễm môi trường không khí[cite: 3].'
+          explanation: 'Khi vận động viên đứng yên giữ tạ, lực nâng có tác dụng lên tạ nhưng quãng đường dịch chuyển s = 0, nên không có công cơ học thực hiện[cite: 4].'
+        },
+        {
+          type: 'mcq', section: 'I. Công', level: 'Hiểu',
+          question: 'Một bạn học sinh xách một chiếc cặp sách nặng đi đều trên đường nằm ngang. Công của lực xách (có phương thẳng đứng) trong trường hợp này bằng 0 là vì sao?',
+          options: [
+            'Vì phương của lực xách vuông góc với phương dịch chuyển của chiếc cặp.',
+            'Vì chiếc cặp quá nhẹ so với sức của bạn học sinh.',
+            'Vì học sinh đang chuyển động đều nên không có lực nào tác dụng.',
+            'Vì quãng đường dịch chuyển của chiếc cặp bằng 0.'
+          ],
+          answer: 0, // A
+          explanation: 'Nếu vật dịch chuyển theo phương vuông góc với phương của lực thì công của lực đó bằng 0[cite: 4]. Lực xách hướng lên, vật đi ngang nên góc là 90 độ.'
+        },
+        {
+          type: 'mcq', section: 'I. Công', level: 'Hiểu',
+          question: 'Người ta dùng một lực kéo không đổi 200 N để kéo một khúc gỗ trượt trên sàn. Công của lực kéo đã thực hiện để khúc gỗ đi được 5 m là',
+          options: [
+            '40 J',
+            '1000 J',
+            '205 J',
+            '10000 J'
+          ],
+          answer: 1, // B
+          explanation: 'Công A = F.s = 200 N × 5 m = 1000 J[cite: 4].'
+        },
+        {
+          type: 'tf_group', section: 'I. Công', level: 'Hiểu',
+          question: 'Xét một quả bóng rơi tự do từ trên cây xuống đất. Xác định tính đúng/sai của các phát biểu liên quan đến công trong hiện tượng này:',
+          items: [
+            { text: 'a) Lực thực hiện công kéo quả bóng rơi xuống là lực cản của không khí.', answer: false },
+            { text: 'b) Trong quá trình rơi, năng lượng được truyền cho quả bóng dưới hình thức thực hiện công.', answer: true },
+            { text: 'c) Công do trọng lực thực hiện làm tăng động năng của quả bóng khi chạm đất.', answer: true },
+            { text: 'd) Vì quả bóng tự rơi nên không có lực nào sinh công trong trường hợp này.', answer: false }
+          ],
+          explanation: 'a) Sai, lực sinh công kéo quả bóng xuống là trọng lực. b) Đúng, trọng lực thực hiện công truyền năng lượng cho quả bóng. c) Đúng, công của trọng lực làm tăng động năng của bóng. d) Sai, trọng lực tác dụng và sinh công[cite: 4].'
+        },
+        {
+          type: 'tf_group', section: 'I. Công', level: 'Vận dụng',
+          question: 'Về các đơn vị đo của công, hãy xác định các quy đổi sau đây là đúng hay sai:',
+          items: [
+            { text: 'a) 1 kilôjun (kJ) bằng 1 000 J.', answer: true },
+            { text: 'b) 1 calo (cal) tương đương với khoảng 4,186 J.', answer: true },
+            { text: 'c) 1 mêgajun (MJ) bằng 100 000 J.', answer: false },
+            { text: 'd) 1 BTU bằng 1 055 J.', answer: true }
+          ],
+          explanation: 'a) Đúng, 1 kJ = 10³ J. b) Đúng, 1 cal = 4,186 J. c) Sai, 1 MJ = 10⁶ J = 1 000 000 J. d) Đúng, 1 BTU = 1055 J[cite: 4].'
+        },
+        {
+          type: 'short', section: 'I. Công', level: 'Vận dụng',
+          question: 'Một xe nâng tác dụng lực hướng lên theo phương thẳng đứng có độ lớn 700 N để nâng thùng hàng từ mặt đất lên độ cao 2 m. Tính công của lực nâng (đơn vị: J).',
+          answer: '1400',
+          unit: 'J',
+          explanation: 'A = F.s = 700 N × 2 m = 1400 J[cite: 4].'
+        },
+        {
+          type: 'short', section: 'I. Công', level: 'Vận dụng',
+          question: 'Một con ngựa kéo xe di chuyển được quãng đường 50 m. Biết công do con ngựa sinh ra là 25000 J. Tính độ lớn lực kéo của con ngựa (đơn vị: N).',
+          answer: '500', // Đã chuyển thành chuỗi không chứa dấu chấm thập phân .0
+          unit: 'N',
+          explanation: 'Từ A = F.s => F = A / s = 25000 / 50 = 500 N.'
+        },
+        {
+          type: 'short', section: 'I. Công', level: 'Vận dụng',
+          question: 'Một máy điều hòa tiêu thụ 2 BTU năng lượng. Năng lượng này tương đương bao nhiêu Jun (J)? (Tính chính xác đến hàng đơn vị)',
+          answer: '2110',
+          unit: 'J',
+          explanation: '1 BTU = 1055 J => 2 BTU = 2 × 1055 = 2110 J[cite: 4].'
+        },
+        {
+          type: 'short', section: 'I. Công', level: 'Vận dụng',
+          question: 'Một phần ăn cung cấp 1,5 kcal năng lượng. Tính phần năng lượng này ra đơn vị Jun (J)? (Kết quả là số nguyên)',
+          answer: '6279',
+          unit: 'J',
+          explanation: '1 kcal = 1000 cal = 4186 J. Vậy 1,5 kcal = 1,5 × 4186 = 6279 J[cite: 4].'
         },
 
         // ==========================================
-        // MỤC II.1 NĂNG LƯỢNG MẶT TRỜI (4 TN + 2 Đ/S)
+        // MỤC II. CÔNG SUẤT (6 TN, 2 Đ/S, 4 TLN)
         // ==========================================
         {
-          type: 'mcq', section: 'II.1 Năng lượng mặt trời',
-          question: 'Nhược điểm của các nhà máy điện mặt trời quy mô lớn đối với thảm thực vật mặt đất là gì?',
+          type: 'mcq', section: 'II. Công suất', level: 'Biết',
+          question: 'Đại lượng nào sau đây đặc trưng cho tốc độ thực hiện công của người hay thiết bị sinh công?',
           options: [
-            'Chiếm diện tích lớn, che phủ mặt đất làm ảnh hưởng đến quá trình quang hợp của thực vật.',
-            'Hút hết không khí xung quanh làm thực vật không thể hô hấp.',
-            'Làm đất bị nhiễm phèn và ngập mặn nghiêm trọng.',
-            'Làm rễ cây bị nứt gãy do áp lực quá lớn lên nền địa chất.'
-          ],
-          answer: 0, // A
-          explanation: 'Nhà máy điện mặt trời chiếm diện tích lớn, mặt đất bị che phủ làm ảnh hưởng đến hệ sinh thái và quá trình quang hợp của thực vật[cite: 3].'
-        },
-        {
-          type: 'mcq', section: 'II.1 Năng lượng mặt trời',
-          question: 'Ưu điểm nổi bật của việc sử dụng năng lượng mặt trời đối với môi trường không khí là gì?',
-          options: [
-            'Tạo ra lượng ô-xy cực lớn cho thành phố.',
-            'Không gây ra tiếng ồn và không phát thải khí gây hiệu ứng nhà kính.',
-            'Hấp thụ toàn bộ bụi mịn và sương mù trong không khí.',
-            'Giúp cân bằng lại độ ẩm cho những vùng bị hạn hán kéo dài.'
-          ],
-          answer: 1, // B
-          explanation: 'Khi sử dụng năng lượng mặt trời không gây ra tiếng ồn, không phát thải các chất gây ô nhiễm không khí hay khí gây hiệu ứng nhà kính[cite: 3].'
-        },
-        {
-          type: 'mcq', section: 'II.1 Năng lượng mặt trời',
-          question: 'Một trong những nhược điểm về mặt môi trường nảy sinh sau khoảng 25 năm sử dụng các tấm pin mặt trời là gì?',
-          options: [
-            'Phát ra lượng bức xạ tia cực tím rất nguy hiểm.',
-            'Gây sụt lún nền móng của các toà nhà cao tầng.',
-            'Tạo ra rác thải điện tử và các chất thải rắn khó phân huỷ.',
-            'Bốc cháy tự phát gây ô nhiễm khói bụi.'
+            'Lực tác dụng.',
+            'Quãng đường dịch chuyển.',
+            'Công suất.',
+            'Thời gian thực hiện.'
           ],
           answer: 2, // C
-          explanation: 'Sau khoảng 25 năm hết hạn sử dụng, việc thay thế các tấm pin mặt trời sẽ tạo ra rác thải điện tử, chất thải rắn khó phân hủy[cite: 3].'
+          explanation: 'Đại lượng đặc trưng cho tốc độ thực hiện công được gọi là công suất[cite: 4].'
         },
         {
-          type: 'mcq', section: 'II.1 Năng lượng mặt trời',
-          question: 'Việc lắp đặt quá nhiều hệ thống thu nhiệt mặt trời trong các khu vực thành phố đông đúc có thể dẫn đến nhược điểm gì?',
+          type: 'mcq', section: 'II. Công suất', level: 'Biết',
+          question: 'Biểu thức tính công suất là gì?',
           options: [
-            'Làm nhiễu tín hiệu wifi và mạng điện thoại.',
-            'Làm giảm mạnh tốc độ gió trong khu dân cư.',
-            'Gây ùn tắc giao thông do tấm pin chiếm lề đường.',
-            'Phản xạ mạnh ánh sáng vào ban ngày gây ra tình trạng ô nhiễm ánh sáng.'
-          ],
-          answer: 3, // D
-          explanation: 'Lắp đặt quá nhiều hệ thống thu nhiệt mặt trời trong thành phố sẽ phản xạ mạnh ánh sáng vào ban ngày gây ô nhiễm ánh sáng[cite: 3].'
-        },
-        {
-          type: 'tf_group', section: 'II.1 Năng lượng mặt trời',
-          question: 'Đánh giá tính đúng/sai của các nhận định về ưu điểm và cách sử dụng năng lượng mặt trời:',
-          items: [
-            { text: 'a) Năng lượng mặt trời luôn có sẵn trong thiên nhiên và khó có khả năng bị cạn kiệt trong tương lai gần.', answer: true },
-            { text: 'b) Việc sử dụng pin mặt trời thắp sáng luôn xả ra một lượng nhỏ khí CO2 vào ban đêm.', answer: false },
-            { text: 'c) Năng lượng mặt trời có thể được dùng trực tiếp để chiếu sáng, sấy nông sản hoặc làm muối.', answer: true },
-            { text: 'd) Hiện nay, hệ thống hấp thụ nhiệt mặt trời đã đạt được hiệu suất chuyển hóa năng lượng 100%.', answer: false }
-          ],
-          explanation: 'a) Đúng. b) Sai, sử dụng năng lượng mặt trời không phát thải khí nhà kính. c) Đúng. d) Sai, hệ thống thu nhiệt mặt trời có hiệu suất chuyển hóa năng lượng thấp[cite: 3].'
-        },
-        {
-          type: 'tf_group', section: 'II.1 Năng lượng mặt trời',
-          question: 'Các phát biểu sau đây về nhược điểm của năng lượng mặt trời là đúng hay sai?',
-          items: [
-            { text: 'a) Các tấm pin mặt trời sau khi hết hạn sử dụng sẽ trở thành rác thải điện tử gây hại cho môi trường.', answer: true },
-            { text: 'b) Xây dựng nhà máy điện mặt trời hoàn toàn không tiêu tốn diện tích đất hay mặt nước.', answer: false },
-            { text: 'c) Giá thành sản xuất và lắp đặt các tấm pin mặt trời hiện nay vẫn còn tương đối cao.', answer: true },
-            { text: 'd) Nhà máy điện mặt trời phát ra tiếng ồn rất lớn làm ảnh hưởng đến đời sống của người dân xung quanh.', answer: false }
-          ],
-          explanation: 'a) Đúng. b) Sai, nhà máy điện mặt trời chiếm diện tích rất lớn. c) Đúng. d) Sai, sử dụng NL mặt trời không gây ồn (tiếng ồn là nhược điểm của điện gió)[cite: 3].'
-        },
-
-        // ==========================================
-        // MỤC II.2 NĂNG LƯỢNG TỪ GIÓ (4 TN + 2 Đ/S)
-        // ==========================================
-        {
-          type: 'mcq', section: 'II.2 Năng lượng từ gió',
-          question: 'Việc xây dựng và vận hành các nhà máy điện gió có nhược điểm nào ảnh hưởng trực tiếp đến đời sống con người?',
-          options: [
-            'Phát ra tiếng ồn và có thể làm nhiễu tín hiệu phát thanh.',
-            'Làm cạn kiệt nguồn nước ngầm trong khu vực lân cận.',
-            'Tạo ra mùi hôi thối do quá trình chuyển hóa động năng.',
-            'Làm tăng nhiệt độ không khí cục bộ quanh khu dân cư.'
-          ],
-          answer: 0, // A
-          explanation: 'Các nhà máy điện gió phát ra tiếng ồn và tua-bin điện gió có thể làm nhiễu tín hiệu phát thanh[cite: 3].'
-        },
-        {
-          type: 'mcq', section: 'II.2 Năng lượng từ gió',
-          question: 'Vì sao khai thác năng lượng gió ngoài khơi (trên biển) lại có triển vọng lớn hơn so với trên đất liền?',
-          options: [
-            'Vì chi phí xây dựng trên biển rẻ hơn rất nhiều so với trên đất liền.',
-            'Vì tốc độ gió trên đại dương thường ổn định hơn và mạnh hơn.',
-            'Vì sóng biển giúp tua-bin gió quay với tốc độ gấp 10 lần.',
-            'Vì không bị ảnh hưởng bởi quá trình rỉ sét do nước biển.'
+            'P = A.t',
+            'P = A/t',
+            'P = t/A',
+            'P = F.s.t'
           ],
           answer: 1, // B
-          explanation: 'Vì tốc độ gió trên đại dương thường ổn định hơn và mạnh hơn so với tốc độ gió trên đất liền nên năng lượng gió ngoài khơi có triển vọng lớn[cite: 3].'
+          explanation: 'Nếu trong thời gian t, công thực hiện là A thì công suất P được tính theo công thức P = A/t[cite: 4].'
         },
         {
-          type: 'mcq', section: 'II.2 Năng lượng từ gió',
-          question: 'Ưu điểm lớn nhất của việc sử dụng năng lượng gió đối với việc bảo vệ môi trường toàn cầu là gì?',
+          type: 'mcq', section: 'II. Công suất', level: 'Biết',
+          question: 'Đơn vị đo nào sau đây KHÔNG phải là đơn vị của công suất?',
           options: [
-            'Giúp thanh lọc hoàn toàn khói bụi công nghiệp bay trong không khí.',
-            'Không chiếm bất kỳ diện tích nào trên mặt đất.',
-            'Không phát thải các chất ô nhiễm và khí gây hiệu ứng nhà kính, giúp giảm biến đổi khí hậu.',
-            'Hút khí CO2 từ môi trường và chuyển hóa thành không khí sạch.'
-          ],
-          answer: 2, // C
-          explanation: 'Khai thác năng lượng gió không phát thải các chất gây ô nhiễm không khí hay khí gây hiệu ứng nhà kính, là giải pháp quan trọng giảm biến đổi khí hậu[cite: 3].'
-        },
-        {
-          type: 'mcq', section: 'II.2 Năng lượng từ gió',
-          question: 'Hoạt động của các tua-bin điện gió khổng lồ thường gây ra nhược điểm trực tiếp đối với nhóm sinh vật nào?',
-          options: [
-            'Các sinh vật phù du sống dưới đáy biển.',
-            'Các loài thực vật hạt kín mọc trên mặt đất.',
-            'Các loài động vật ăn cỏ lớn như bò, ngựa.',
-            'Các loài chim (đặc biệt là chim di cư) và dơi.'
+            'Oát (W)',
+            'Kilôoát (kW)',
+            'Mã lực (HP)',
+            'Jun (J)'
           ],
           answer: 3, // D
-          explanation: 'Tua-bin điện gió có thể ảnh hưởng đến vùng hoạt động của các loài chim (đặc biệt là chim di cư) và dơi[cite: 3].'
+          explanation: 'Jun (J) là đơn vị của công (năng lượng), không phải đơn vị của công suất. Các đơn vị của công suất là W, kW, HP, BTU/h[cite: 4].'
         },
         {
-          type: 'tf_group', section: 'II.2 Năng lượng từ gió',
-          question: 'Đánh giá tính đúng/sai của các phát biểu về ưu điểm và triển vọng của năng lượng gió:',
-          items: [
-            { text: 'a) Năng lượng từ gió là một nguồn năng lượng tái tạo luôn có sẵn trong thiên nhiên.', answer: true },
-            { text: 'b) Việc vận hành các tua-bin gió xả ra môi trường một lượng lớn khí carbon dioxide.', answer: false },
-            { text: 'c) Năng lượng gió ngoài khơi có triển vọng lớn do tốc độ gió mạnh và ổn định.', answer: true },
-            { text: 'd) Công nghệ khai thác điện gió hiện nay đã đạt mức hoàn hảo, không còn nhược điểm gì.', answer: false }
-          ],
-          explanation: 'a) Đúng. b) Sai, năng lượng gió không phát thải khí nhà kính. c) Đúng. d) Sai, điện gió vẫn có hiệu suất thấp, giá thành đầu tư cao và phát tiếng ồn[cite: 3].'
-        },
-        {
-          type: 'tf_group', section: 'II.2 Năng lượng từ gió',
-          question: 'Những nhược điểm sau đây của điện gió là đúng hay sai?',
-          items: [
-            { text: 'a) Cánh quạt của các nhà máy điện gió phát ra tiếng ồn gây ảnh hưởng đến sinh vật.', answer: true },
-            { text: 'b) Chi phí đầu tư ban đầu để xây dựng các trụ điện gió là rất thấp.', answer: false },
-            { text: 'c) Hoạt động của tua-bin gió có nguy cơ làm nhiễu tín hiệu phát thanh trong vùng.', answer: true },
-            { text: 'd) Cánh quạt gió chuyển động có thể gây cản trở vùng hoạt động của các loài chim.', answer: true }
-          ],
-          explanation: 'a) Đúng. b) Sai, giá thành đầu tư ban đầu của điện gió rất cao. c) Đúng. d) Đúng[cite: 3].'
-        },
-
-        // ==========================================
-        // MỤC II.3 NĂNG LƯỢNG TỪ SÓNG BIỂN (4 TN + 2 Đ/S)
-        // ==========================================
-        {
-          type: 'mcq', section: 'II.3 Năng lượng từ sóng biển',
-          question: 'Ưu điểm nổi bật của năng lượng từ sóng biển khi khai thác là gì?',
+          type: 'mcq', section: 'II. Công suất', level: 'Hiểu',
+          question: 'Một máy A thực hiện công 500 J trong 5 giây. Một máy B thực hiện công 800 J trong 10 giây. Máy nào thực hiện công nhanh hơn?',
           options: [
-            'Luôn có sẵn trong tự nhiên và không tạo ra chất thải gây ô nhiễm.',
-            'Cho công suất phát điện hoàn toàn ổn định 24/24 trong mọi điều kiện thời tiết.',
-            'Giá thành xây dựng hệ thống khai thác rẻ nhất trong các loại năng lượng.',
-            'Có thể dễ dàng xây dựng ngay trên đất liền mà không cần bờ biển.'
+            'Máy A thực hiện công nhanh hơn vì có công suất lớn hơn.',
+            'Máy B thực hiện công nhanh hơn vì công sinh ra lớn hơn.',
+            'Cả hai máy thực hiện công nhanh như nhau.',
+            'Không thể so sánh được.'
           ],
           answer: 0, // A
-          explanation: 'Năng lượng từ sóng biển luôn có sẵn trong tự nhiên, không tạo chất thải[cite: 3].'
+          explanation: 'Công suất máy A: P_A = 500/5 = 100 W. Công suất máy B: P_B = 800/10 = 80 W. P_A > P_B nên máy A làm việc nhanh hơn.'
         },
         {
-          type: 'mcq', section: 'II.3 Năng lượng từ sóng biển',
-          question: 'Để đạt được công suất điện lớn, các nhà máy điện sóng biển gặp phải nhược điểm gì về mặt không gian?',
+          type: 'mcq', section: 'II. Công suất', level: 'Hiểu',
+          question: 'Trên một bóng đèn có ghi 50 W. Ý nghĩa của con số này là gì?',
           options: [
-            'Phải đào rất sâu dưới đáy đại dương để chứa tua-bin.',
-            'Cần không gian rộng trên biển, dễ gây cản trở và ảnh hưởng đến giao thông đường biển.',
-            'Gây che khuất ánh sáng mặt trời của toàn bộ sinh vật biển bên dưới.',
-            'Yêu cầu một lượng lớn diện tích rừng ngập mặn bị chặt phá để lấy chỗ lắp đặt.'
+            'Bóng đèn đó có thể tạo ra lực 50 N trong 1 giây.',
+            'Bóng đèn đó chuyển hóa 50 J điện năng thành quang năng và nhiệt năng trong vòng 1 giây.',
+            'Bóng đèn đó sinh ra công cơ học lớn nhất là 50 J.',
+            'Thời gian để bóng đèn sáng tối đa là 50 giây.'
           ],
           answer: 1, // B
-          explanation: 'Để có công suất điện lớn cần nhiều máy phát đặt trong không gian rộng, gây ảnh hưởng đến giao thông đường biển và hệ sinh thái[cite: 3].'
+          explanation: 'Công suất mô tả tốc độ chuyển hoá năng lượng. Bóng đèn 50 W có nghĩa là bóng đèn đó có thể chuyển hoá 50 J điện năng trong vòng 1 s thành quang năng, nhiệt năng[cite: 4].'
         },
         {
-          type: 'mcq', section: 'II.3 Năng lượng từ sóng biển',
-          question: 'Khả năng phát điện của các hệ thống khai thác năng lượng sóng biển có nhược điểm lớn về mặt tự nhiên là gì?',
+          type: 'mcq', section: 'II. Công suất', level: 'Hiểu',
+          question: 'Đơn vị "Mã lực (HP)" dùng để đo công suất của động cơ có giá trị bằng bao nhiêu oát?',
           options: [
-            'Gây bão tố và lốc xoáy liên tục ở những vùng lắp đặt.',
-            'Làm suy giảm hoàn toàn sự đa dạng sinh học của đại dương.',
-            'Phụ thuộc rất lớn vào các mùa trong năm và chịu ảnh hưởng nặng nề bởi thiên tai.',
-            'Nhanh chóng làm giảm tốc độ gió trên biển.'
-          ],
-          answer: 2, // C
-          explanation: 'Khai thác năng lượng sóng phụ thuộc rất lớn vào các mùa trong năm và chịu ảnh hưởng bởi thiên tai[cite: 3].'
-        },
-        {
-          type: 'mcq', section: 'II.3 Năng lượng từ sóng biển',
-          question: 'Sóng biển, nguồn gốc sinh ra năng lượng sóng, được hình thành chủ yếu do tác động của yếu tố nào?',
-          options: [
-            'Dòng chảy của các con sông đổ ra cửa biển.',
-            'Lực hút hấp dẫn từ Mặt Trăng và Mặt Trời.',
-            'Động đất ngầm hoặc núi lửa dưới đáy đại dương.',
-            'Hoạt động của gió thổi trên mặt đại dương.'
+            '1000 W',
+            '500 W',
+            '1055 W',
+            '746 W'
           ],
           answer: 3, // D
-          explanation: 'Sóng biển được hình thành chủ yếu do tác động của gió. Tốc độ gió càng lớn và thời gian gió thổi càng lâu thì sóng biển càng lớn[cite: 3].'
+          explanation: 'Người ta còn dùng đơn vị khác của công suất là Mã lực (HP): 1 HP = 746 W[cite: 4].'
         },
         {
-          type: 'tf_group', section: 'II.3 Năng lượng từ sóng biển',
-          question: 'Xác định tính đúng/sai của các thông tin sau về ưu điểm và đặc tính của sóng biển:',
+          type: 'tf_group', section: 'II. Công suất', level: 'Hiểu',
+          question: 'Hai xe nâng (A và B) nâng cùng một thùng hàng có trọng lượng 500 N lên sàn xe tải cao 1 m. Xe A nâng mất 10 giây, xe B nâng mất 15 giây. Xác định tính đúng/sai của các nhận định:',
           items: [
-            { text: 'a) Năng lượng từ sóng biển là dạng năng lượng luôn có sẵn trong tự nhiên.', answer: true },
-            { text: 'b) Việc khai thác điện từ sóng biển sinh ra rất nhiều chất thải rắn độc hại.', answer: false },
-            { text: 'c) Tại Việt Nam, mùa đông với gió mùa đông bắc là thời điểm năng lượng sóng mạnh nhất.', answer: true },
-            { text: 'd) Sóng biển được hình thành hoàn toàn độc lập, không liên quan gì đến gió.', answer: false }
+            { text: 'a) Công do xe A thực hiện lớn hơn công do xe B thực hiện.', answer: false },
+            { text: 'b) Cả hai xe đều thực hiện một lượng công bằng nhau là 500 J.', answer: true },
+            { text: 'c) Công suất của xe nâng A lớn hơn công suất của xe nâng B.', answer: true },
+            { text: 'd) Công suất của xe nâng B là khoảng 50 W.', answer: false }
           ],
-          explanation: 'a) Đúng. b) Sai, năng lượng sóng biển không tạo chất thải. c) Đúng, vào mùa đông gió mùa đông bắc tạo ra vùng sóng mạnh. d) Sai, sóng biển hình thành chủ yếu do gió[cite: 3].'
+          explanation: 'a) Sai, công là như nhau. b) Đúng, A = P.h = 500 N × 1 m = 500 J. c) Đúng, vì cùng sinh một công nhưng xe A tốn ít thời gian hơn (P_A = 50 W > P_B = 33,3 W). d) Sai, P_B = 500 / 15 ≈ 33,3 W.'
         },
         {
-          type: 'tf_group', section: 'II.3 Năng lượng từ sóng biển',
-          question: 'Đánh giá các phát biểu về nhược điểm của việc khai thác điện sóng biển:',
+          type: 'tf_group', section: 'II. Công suất', level: 'Vận dụng',
+          question: 'Theo Bảng 4.1 về một số giá trị công suất, các so sánh sau đúng hay sai?',
           items: [
-            { text: 'a) Cần lắp đặt nhiều máy phát trên một vùng biển rộng lớn để đạt công suất điện cao.', answer: true },
-            { text: 'b) Chi phí đầu tư ban đầu cho việc lắp đặt thiết bị khai thác sóng biển là rất thấp.', answer: false },
-            { text: 'c) Các thiết bị nổi và ngầm có nguy cơ làm cản trở giao thông đường biển.', answer: true },
-            { text: 'd) Khả năng phát điện từ sóng biển ít khi bị ảnh hưởng bởi sự thay đổi của các mùa.', answer: false }
+            { text: 'a) Công suất của một con ngựa bình thường là khoảng 700 W.', answer: true },
+            { text: 'b) Công suất của một chiếc ô tô thông thường luôn lớn hơn công suất của một đầu máy xe lửa.', answer: false },
+            { text: 'c) Nhà máy thuỷ điện Hoà Bình có công suất khoảng 5.10⁹ W.', answer: true },
+            { text: 'd) Mặt Trời có công suất phát xạ bức xạ cực kỳ lớn, khoảng 37.10²⁵ W.', answer: true }
           ],
-          explanation: 'a) Đúng. b) Sai, đòi hỏi giá thành đầu tư ban đầu cao. c) Đúng. d) Sai, phụ thuộc rất lớn vào các mùa trong năm và thiên tai[cite: 3].'
-        },
-
-        // ==========================================
-        // MỤC II.4 NĂNG LƯỢNG TỪ DÒNG SÔNG (4 TN + 2 Đ/S)
-        // ==========================================
-        {
-          type: 'mcq', section: 'II.4 Năng lượng từ dòng sông',
-          question: 'So với sử dụng năng lượng hoá thạch, việc khai thác sức chảy của dòng sông (thủy điện) có ưu điểm gì?',
-          options: [
-            'Ít tác động tiêu cực đến môi trường không khí hơn và không xả khí thải nhà kính do quá trình đốt cháy.',
-            'Làm cho thảm thực vật hai bên bờ sông phát triển nhanh gấp đôi.',
-            'Lọc sạch hoàn toàn các chất ô nhiễm hóa học có sẵn trong nước.',
-            'Tạo ra các ion làm mát toàn bộ khu vực xung quanh nhà máy.'
-          ],
-          answer: 0, // A
-          explanation: 'Năng lượng dòng sông ít tác động tiêu cực đến môi trường so với năng lượng hóa thạch, vì không phát thải khí nhà kính như việc đốt than, dầu[cite: 3].'
+          explanation: 'a) Đúng, ngựa khoảng 700 W. b) Sai, ô tô (2.10⁴W-3.10⁵W) nhỏ hơn đầu xe lửa (10⁶W-3.10⁶W). c) Đúng. d) Đúng[cite: 4].'
         },
         {
-          type: 'mcq', section: 'II.4 Năng lượng từ dòng sông',
-          question: 'Khi xây dựng các đập thủy điện, tác động tiêu cực đối với các loài sinh vật dưới nước là gì?',
-          options: [
-            'Làm tăng nồng độ kim loại nặng hòa tan trong nước.',
-            'Làm cho các loài động vật mất khả năng di chuyển từ hạ nguồn lên thượng nguồn.',
-            'Thay đổi giới tính của các loài cá do nước chảy qua tua-bin.',
-            'Kích thích tảo độc sinh sản nhanh chóng che lấp mặt hồ.'
-          ],
-          answer: 1, // B
-          explanation: 'Sử dụng đập tích trữ nước có nguy cơ làm cho các loài động vật không có khả năng di chuyển từ hạ nguồn lên thượng nguồn[cite: 3].'
+          type: 'short', section: 'II. Công suất', level: 'Vận dụng',
+          question: 'Một máy cẩu thực hiện được một công là 30 000 J trong thời gian 15 giây. Tính công suất của máy cẩu này (đơn vị: W).',
+          answer: '2000',
+          unit: 'W',
+          explanation: 'Công suất P = A / t = 30000 / 15 = 2000 W.'
         },
         {
-          type: 'mcq', section: 'II.4 Năng lượng từ dòng sông',
-          question: 'Việc tích trữ lượng nước khổng lồ tại các hồ đập thủy điện có thể dẫn đến nhược điểm gì về mặt địa chất?',
-          options: [
-            'Gây xói mòn sâu biến vùng đất xung quanh thành sa mạc.',
-            'Làm thay đổi chu kỳ quay tự nhiên của Trái Đất.',
-            'Gây áp lực lớn lên thân đập, có thể dẫn đến nứt gãy địa tầng và gây động đất.',
-            'Làm phun trào các mạch nước nóng từ dưới lớp vỏ Trái Đất.'
-          ],
-          answer: 2, // C
-          explanation: 'Nước ngập gây áp lực lớn lên địa chất ở trong đập và thân đập, có thể dẫn đến nứt, gãy địa tầng, gây động đất[cite: 3].'
+          type: 'short', section: 'II. Công suất', level: 'Vận dụng',
+          question: 'Một máy bơm nước có công suất 1 kW hoạt động liên tục trong 1 giờ (3600 giây). Hỏi máy bơm đã thực hiện một công bằng bao nhiêu kilôjun (kJ)?',
+          answer: '3600',
+          unit: 'kJ',
+          explanation: 'Đổi P = 1 kW = 1000 W. Công A = P × t = 1000 × 3600 = 3600000 J = 3600 kJ.'
         },
         {
-          type: 'mcq', section: 'II.4 Năng lượng từ dòng sông',
-          question: 'Các nhà máy thuỷ điện công suất lớn thường gặp phải nhược điểm lớn nào về mặt xã hội?',
-          options: [
-            'Tạo ra sự mất cân bằng về giới tính dân cư vùng hạ lưu.',
-            'Buộc người dân xung quanh phải thay đổi toàn bộ ngôn ngữ giao tiếp.',
-            'Phải tiêu tốn lượng nước sinh hoạt khổng lồ của các thành phố liền kề.',
-            'Bắt buộc phải di dời số lượng lớn dân cư khỏi vùng ngập lụt, làm thay đổi tập quán sinh sống của họ.'
-          ],
-          answer: 3, // D
-          explanation: 'Với các nhà máy thủy điện công suất lớn, cần di chuyển số lượng lớn dân cư ra khỏi vùng gần sông, làm thay đổi văn hóa, tập quán sinh sống của họ[cite: 3].'
+          type: 'short', section: 'II. Công suất', level: 'Vận dụng',
+          question: 'Máy điều hòa có công suất làm lạnh ghi trên vỏ máy là 9000 BTU/h. Hãy quy đổi công suất này ra đơn vị Oát (W). Biết 1 BTU/h = 0,293 W.',
+          answer: '2637',
+          unit: 'W',
+          explanation: 'P = 9000 × 0,293 = 2637 W[cite: 4].'
         },
         {
-          type: 'tf_group', section: 'II.4 Năng lượng từ dòng sông',
-          question: 'Nhận xét về ưu điểm và nguyên lý của năng lượng từ dòng sông:',
-          items: [
-            { text: 'a) Sức chảy của dòng sông là nguồn năng lượng có sẵn và liên tục được tự nhiên bổ sung.', answer: true },
-            { text: 'b) Khai thác thủy điện xả ra nhiều khí CO2 hơn so với đốt than đá.', answer: false },
-            { text: 'c) Năng lượng dòng chảy được biến đổi làm quay tua-bin máy phát điện để tạo ra điện năng.', answer: true },
-            { text: 'd) Xây dựng thủy điện có lợi ích là tuyệt đối không gây bất kỳ tác động nào đến thiên nhiên.', answer: false }
-          ],
-          explanation: 'a) Đúng. b) Sai, năng lượng dòng sông ít tác động tiêu cực đến môi trường, không thải khí CO2 như hóa thạch. c) Đúng. d) Sai, xây dựng thủy điện có nhiều tác động lớn đến sinh thái, địa chất[cite: 3].'
-        },
-        {
-          type: 'tf_group', section: 'II.4 Năng lượng từ dòng sông',
-          question: 'Đánh giá các tác động tiêu cực của việc đắp đập làm hồ thủy điện:',
-          items: [
-            { text: 'a) Việc đắp đập ngăn sông làm giảm diện tích rừng do bị ngập trong lòng hồ.', answer: true },
-            { text: 'b) Tích nước làm mức nước cạn ở hạ nguồn, gây biến đổi sâu sắc môi trường sống của sinh vật.', answer: true },
-            { text: 'c) Áp lực của cột nước khổng lồ tại hồ chứa không có khả năng gây ảnh hưởng đến địa tầng.', answer: false },
-            { text: 'd) Đập thủy điện ngăn cản hoàn toàn đường di cư sinh sản của các loài thủy sản trên sông.', answer: true }
-          ],
-          explanation: 'a) Đúng. b) Đúng. c) Sai, áp lực lớn có thể gây nứt gãy địa tầng, động đất. d) Đúng[cite: 3].'
-        },
-
-        // ==========================================
-        // MỤC III. SỬ DỤNG HIỆU QUẢ NL (4 TN + 2 Đ/S)
-        // ==========================================
-        {
-          type: 'mcq', section: 'III. Sử dụng hiệu quả NL và Bảo vệ môi trường',
-          question: 'Mục tiêu chính của việc giảm hao phí và sử dụng hiệu quả năng lượng trong đời sống là gì?',
-          options: [
-            'Giảm chi phí sử dụng năng lượng, đồng thời giảm lượng phát thải khí gây ô nhiễm môi trường.',
-            'Thúc đẩy người dân thay thế liên tục các thiết bị điện tử mới mỗi năm.',
-            'Gia tăng việc khai thác các mỏ than đá và dầu mỏ để dự trữ.',
-            'Làm cho các thiết bị điện sinh nhiệt nhiều hơn để sưởi ấm vào mùa đông.'
-          ],
-          answer: 0, // A
-          explanation: 'Mục tiêu là tiết kiệm năng lượng: giảm chi phí, giảm khai thác NL hóa thạch giúp giảm lượng phát thải khí gây ô nhiễm môi trường[cite: 3].'
-        },
-        {
-          type: 'mcq', section: 'III. Sử dụng hiệu quả NL và Bảo vệ môi trường',
-          question: 'Định nghĩa nào dưới đây mô tả đúng nhất khái niệm "sử dụng hiệu quả năng lượng"?',
-          options: [
-            'Cắt bỏ hoàn toàn việc sử dụng các thiết bị tiêu tốn điện năng lớn.',
-            'Dùng ít năng lượng hơn để thực hiện cùng một công việc hoặc chức năng của thiết bị, máy móc.',
-            'Chỉ sử dụng điện lưới vào ban ngày và thắp nến vào ban đêm.',
-            'Bật tối đa công suất của tất cả thiết bị để rút ngắn thời gian làm việc.'
-          ],
-          answer: 1, // B
-          explanation: 'Sử dụng hiệu quả năng lượng là việc dùng ít năng lượng hơn để thực hiện cùng một công việc hoặc cùng một chức năng của thiết bị, máy móc[cite: 3].'
-        },
-        {
-          type: 'mcq', section: 'III. Sử dụng hiệu quả NL và Bảo vệ môi trường',
-          question: 'Biện pháp nào sau đây giúp tận dụng nguồn năng lượng tự nhiên, góp phần bảo vệ môi trường trong sinh hoạt gia đình?',
-          options: [
-            'Bật máy điều hòa nhiệt độ ở 18 độ C cả ngày.',
-            'Dùng bóng đèn sợi đốt công suất lớn thay cho bóng LED.',
-            'Kê bàn học gần cửa sổ, sơn phòng sáng màu và mở cửa thông gió tự nhiên.',
-            'Đóng kín cửa và bật quạt thông gió 24/24 để tạo luồng khí nhân tạo.'
-          ],
-          answer: 2, // C
-          explanation: 'Tận dụng gió và ánh sáng tự nhiên bằng cách mở cửa, kê bàn gần cửa sổ, sơn phòng sáng màu là hành động sử dụng hiệu quả năng lượng[cite: 3].'
-        },
-        {
-          type: 'mcq', section: 'III. Sử dụng hiệu quả NL và Bảo vệ môi trường',
-          question: 'Vì sao việc tăng cường sử dụng phương tiện giao thông công cộng lại là biện pháp thiết thực bảo vệ môi trường?',
-          options: [
-            'Vì xe buýt và tàu điện chạy chậm hơn xe máy nên không gây tai nạn.',
-            'Vì các phương tiện công cộng luôn miễn phí nên người dân không tốn tiền.',
-            'Vì hành khách không cần sử dụng điều hòa cá nhân khi lên xe công cộng.',
-            'Vì nó giúp tiết kiệm năng lượng nhiên liệu và giảm thiểu khí thải độc hại trên bình quân đầu người.'
-          ],
-          answer: 3, // D
-          explanation: 'Sử dụng phương tiện giao thông công cộng thay cá nhân góp phần tiết kiệm năng lượng nhiên liệu và giảm thiểu phát thải khí thải[cite: 3].'
-        },
-        {
-          type: 'tf_group', section: 'III. Sử dụng hiệu quả NL và Bảo vệ môi trường',
-          question: 'Xác định các hành động đúng đắn giúp tiết kiệm điện tại gia đình và trường học:',
-          items: [
-            { text: 'a) Tắt ti vi, quạt máy, đèn điện khi đi ra ngoài hoặc không có nhu cầu sử dụng.', answer: true },
-            { text: 'b) Mở cửa tủ lạnh thật lâu mỗi lần lấy đồ để luồng khí lạnh phả ra làm mát không gian bếp.', answer: false },
-            { text: 'c) Sử dụng hệ thống đèn LED chiếu sáng thay cho các loại đèn sợi đốt truyền thống.', answer: true },
-            { text: 'd) Bật máy điều hòa nhiệt độ ở mức 26°C hoặc sử dụng quạt thay cho điều hòa nếu không quá nóng.', answer: true }
-          ],
-          explanation: 'a) Đúng. b) Sai, mở tủ lạnh lâu gây thất thoát nhiệt, tốn điện. c) Đúng, đèn LED tiết kiệm năng lượng hơn. d) Đúng, để điều hòa trên 26 độ và ưu tiên dùng quạt[cite: 3].'
-        },
-        {
-          type: 'tf_group', section: 'III. Sử dụng hiệu quả NL và Bảo vệ môi trường',
-          question: 'Đánh giá mối liên hệ giữa việc sử dụng năng lượng tái tạo và bảo vệ môi trường:',
-          items: [
-            { text: 'a) Dùng năng lượng tái tạo sẽ thay thế bớt nhiên liệu hóa thạch, từ đó giảm khí phát thải nhà kính.', answer: true },
-            { text: 'b) Năng lượng tái tạo cũng sinh ra khói bụi độc hại nhưng với lượng nhỏ hơn rất nhiều.', answer: false },
-            { text: 'c) Việc chọn mua các sản phẩm tái chế và thân thiện với thiên nhiên cũng là một cách bảo vệ môi trường.', answer: true },
-            { text: 'd) Tiết kiệm năng lượng chỉ mang lại lợi ích giảm tiền điện cá nhân chứ không tác động gì đến môi trường chung.', answer: false }
-          ],
-          explanation: 'a) Đúng. b) Sai, năng lượng như điện gió, điện mặt trời không xả khói bụi độc hại hay khí nhà kính. c) Đúng. d) Sai, tiết kiệm năng lượng làm giảm tiêu thụ điện, từ đó giảm phát thải khí nhà kính từ các nhà máy nhiệt điện[cite: 3].'
+          type: 'short', section: 'II. Công suất', level: 'Vận dụng',
+          question: 'Mỗi lần đập, tim người thực hiện một công khoảng 1 J. Nếu một người có nhịp tim là 75 nhịp/phút thì công suất trung bình của tim là bao nhiêu W? (Làm tròn 2 chữ số thập phân)',
+          answer: '1,25',
+          unit: 'W',
+          explanation: 'Trong 1 phút (60s), tim đập 75 nhịp, tức sinh công A = 75 × 1 J = 75 J. Công suất P = A / t = 75 / 60 = 1,25 W.'
         }
       ]
     };
